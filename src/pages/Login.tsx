@@ -74,7 +74,7 @@ function Login() {
                     <div className="space-y-6">
 <div className="w-47.5 h-17.5 flex items-center justify-start">
     <img
-        src="/icon-branco4.png"
+        src="/icon-branco.png"
         alt="Logo"
         className="max-h-full object-contain scale-90"
     />

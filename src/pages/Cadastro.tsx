@@ -88,7 +88,7 @@ function Cadastro() {
 
           <div className="w-40 h-17.5 flex items-center justify-start">
     <img
-        src="/icon-verde2.png"
+        src="/icon-verde.png"
         alt="Logo"
         className="max-h-full object-contain ml-2"
     />
