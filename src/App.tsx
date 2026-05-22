@@ -1,4 +1,4 @@
-import { BrowserRouter, /*Routes, Route*/ } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import Navbar from "./components/navbar/Navbar";
 // import Footer from "./components/footer/Footer";
 // import { AuthProvider } from "./contexts/AuthContext";
@@ -10,7 +10,7 @@ import { BrowserRouter, /*Routes, Route*/ } from "react-router-dom";
 // import DeletarApolice from "./components/apolices/DeletarApolice";
 // import Perfil from "./pages/Perfil";
 // import FormPlanos from "./components/plano/FormPlano";
-// import ListaPlanos from "./components/plano/ListaPlanos";
+import ListaPlanos from "./components/plano/ListaPlanos";
 // import DeletarPlanos from "./components/plano/DeletarPlano";
 
 function App() {
@@ -34,21 +34,21 @@ function App() {
 
 
 
-					{/* <Routes>
-							<Route path="/" element={<Login />} />
-							<Route path="/login" element={<Login />} />
+					<Routes>
+							<Route path="/" element={<ListaPlanos />} />
+							{/* <Route path="/login" element={<Login />} />
 							<Route path="/home" element={<Home />} />
 							<Route path="/cadastro" element={<Cadastro />} />
 							<Route path="/apolices" element={<ListaApolices />} />
 							<Route path="/cadastrarapolices" element={<FormApolice />} />
 							<Route path="/editarapolices/:id" element={<FormApolice />} />
-							<Route path="/deletarapolices/:id" element={<DeletarApolice />} />
+							<Route path="/deletarapolices/:id" element={<DeletarApolice />} /> */}
 							<Route path="/planos" element={<ListaPlanos />} />
-							<Route path="/cadastrarplanos" element={<FormPlanos />} />
+							{/* <Route path="/cadastrarplanos" element={<FormPlanos />} />
 							<Route path="/editarplanos/:id" element={<FormPlanos />} />
 							<Route path="/deletarplanos/:id" element={<DeletarPlanos />} />
-							<Route path="/perfil" element={<Perfil />} />
-						</Routes> */}
+							<Route path="/perfil" element={<Perfil />} /> */}
+						</Routes>
 				</div>
 			{/*	<Footer /> */}
 			</BrowserRouter>
