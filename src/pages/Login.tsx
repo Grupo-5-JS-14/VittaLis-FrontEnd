@@ -1,23 +1,8 @@
 import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "../contexts/AuthContext"
-import {
-    useContext,
-    useEffect,
-    useState,
-    type ChangeEvent,
-    type FormEvent
-} from "react"
-
+import { useContext, useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import type UsuarioLogin from "../models/UsuarioLogin"
-
-import {
-    Eye,
-    EyeOff,
-    Lock,
-    Mail,
-    ShieldCheck
-} from "lucide-react"
-
+import { Eye, EyeOff, Lock, Mail, ShieldCheck } from "lucide-react"
 import { ClipLoader } from "react-spinners"
 
 function Login() {
@@ -56,9 +41,7 @@ function Login() {
     return (
         <section className="w-full h-screen overflow-hidden bg-background flex flex-col lg:flex-row font-sans antialiased">
 
-            {/* ===================================================== */}
             {/* LADO ESQUERDO                                         */}
-            {/* ===================================================== */}
 
             <div
                 className="hidden lg:flex relative w-[42%] h-screen bg-cover bg-center p-8 xl:p-10 flex-col justify-between overflow-hidden"
@@ -72,13 +55,13 @@ function Login() {
 
                     {/* TOPO */}
                     <div className="space-y-6">
-<div className="w-47.5 h-17.5 flex items-center justify-start">
-    <img
-        src="/icon-branco.png"
-        alt="Logo"
-        className="max-h-full object-contain scale-90"
-    />
-</div>
+                        <div className="w-47.5 h-17.5 flex items-center justify-start">
+                            <img
+                                src="/icon-branco.png"
+                                alt="Logo"
+                                className="max-h-full object-contain scale-90"
+                            />
+                        </div>
 
                         {/* Badge */}
                         <div className="w-fit flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 backdrop-blur-md">
@@ -92,7 +75,7 @@ function Login() {
                         {/* TEXTO */}
                         <div className="space-y-4 max-w-md">
 
-                            <h1 className="text-text-white text-4xl xl:text-5xl font-bold leading-tight">
+                            <h1 className="text-white text-4xl xl:text-5xl font-bold leading-tight">
                                 Mais que um seguro,
                                 <br />
                                 um compromisso
@@ -378,10 +361,10 @@ function Login() {
                             >
 
                                 <svg className="w-4 h-4" viewBox="0 0 24 24">
-                                    <path fill="#EA4335" d="M12 5.04c1.64 0 3.12.56 4.28 1.67l3.2-3.2C17.52 1.58 14.96 1 12 1 7.35 1 3.37 3.67 1.39 7.56l3.78 2.93c.89-2.67 3.39-4.45 6.83-4.45z"/>
-                                    <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.46c-.29 1.48-1.14 2.73-2.42 3.57l3.74 2.9c2.19-2.02 3.71-5 3.71-8.62z"/>
-                                    <path fill="#FBBC05" d="M5.17 14.77c-.23-.69-.37-1.43-.37-2.2s.14-1.51.37-2.2L1.39 7.44C.5 9.21 0 11.16 0 13.2s.5 3.99 1.39 5.76l3.78-2.99z"/>
-                                    <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.74-2.9c-1.1.74-2.51 1.18-4.22 1.18-3.44 0-5.94-1.78-6.83-4.45L1.39 16.9C3.37 20.79 7.35 23 12 23z"/>
+                                    <path fill="#EA4335" d="M12 5.04c1.64 0 3.12.56 4.28 1.67l3.2-3.2C17.52 1.58 14.96 1 12 1 7.35 1 3.37 3.67 1.39 7.56l3.78 2.93c.89-2.67 3.39-4.45 6.83-4.45z" />
+                                    <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.46c-.29 1.48-1.14 2.73-2.42 3.57l3.74 2.9c2.19-2.02 3.71-5 3.71-8.62z" />
+                                    <path fill="#FBBC05" d="M5.17 14.77c-.23-.69-.37-1.43-.37-2.2s.14-1.51.37-2.2L1.39 7.44C.5 9.21 0 11.16 0 13.2s.5 3.99 1.39 5.76l3.78-2.99z" />
+                                    <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.74-2.9c-1.1.74-2.51 1.18-4.22 1.18-3.44 0-5.94-1.78-6.83-4.45L1.39 16.9C3.37 20.79 7.35 23 12 23z" />
                                 </svg>
 
                                 Google
