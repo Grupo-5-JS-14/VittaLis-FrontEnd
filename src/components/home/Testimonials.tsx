@@ -5,19 +5,19 @@ export default function TestimonialsBento() {
     {
       name: "Noelia Nogueira",
       location: "São Paulo, SP",
-      avatar: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80",
+      avatar: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=60",
       text: "Fiz a simulação e contratei tudo direto pelo celular. O atendimento humanizado pelo WhatsApp me deu toda a segurança que eu precisava."
     },
     {
       name: "Afonso Oliveira",
       location: "Belo Horizonte, MG",
-      avatar: "https://images.unsplash.com/photo-1759701546655-d90ec831aa52?q=80",
+      avatar: "https://images.unsplash.com/photo-1652565460212-dd09a896a3fd?w=60",
       text: "O preço é bizarramente justo pelo nível de tranquilidade que entrega. Sem letras miúdas ou taxas escondidas."
     },
     {
       name: "Marcos Silva",
       location: "Curitiba, PR",
-      avatar: "https://images.unsplash.com/photo-1733348137551-dde596fd3cf5?q=80",
+      avatar: "https://images.unsplash.com/photo-1733348137551-dde596fd3cf5?w=60",
       text: "Finalmente uma empresa de seguros moderna que fala a nossa língua e não tenta complicar o que deveria ser simples."
     }
   ];
@@ -44,7 +44,7 @@ export default function TestimonialsBento() {
             
             <div className="mt-8 flex items-center space-x-3">
               <img 
-                src="https://plus.unsplash.com/premium_photo-1689551670902-19b441a6afde?q=80" 
+                src="https://plus.unsplash.com/premium_photo-1689551670902-19b441a6afde?w=60" 
                 alt="Jessica" 
                 className="w-10 h-10 rounded-full object-cover border-2 border-white/20"
               />
