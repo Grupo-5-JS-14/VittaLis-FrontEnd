@@ -1,21 +1,17 @@
 @import "tailwindcss";
 
-/* SCROLL */
-html {
-  scroll-behavior: smooth;
-}
+@theme {
 
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  --color-primary: #004747;
+  --color-secondary: #ff7a00;
 
-/* BODY */
-body {
-  min-height: 100vh;
-  background: #F5F7F6;
-  color: #12312F;
-  font-family: "Poppins", sans-serif;
+  --color-surface: #ffffff;
+
+  --color-text: #12312F;
+
+  --color-border: #E5E7EB;
+
+  --radius-card: 32px;
+  --radius-button: 18px;
+
 }
