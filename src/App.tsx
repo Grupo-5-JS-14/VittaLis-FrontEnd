@@ -1,9 +1,10 @@
-import { BrowserRouter, /*Routes, Route*/ } from "react-router-dom";
+import {  Route } from "lucide-react";
+import { BrowserRouter, Routes, } from "react-router-dom";
+import AdminDashboard from "./pages/Admin";
 // import Navbar from "./components/navbar/Navbar";
 // import Footer from "./components/footer/Footer";
 // import { AuthProvider } from "./contexts/AuthContext";
 // import Login from "./pages/Login";
-// import Home from "./pages/Home";
 // import Cadastro from "./pages/Cadastro";
 // import ListaApolices from "./components/apolices/ListaApolices";
 // import FormApolice from "./components/apolices/FormApolice";
@@ -16,29 +17,31 @@ import { BrowserRouter, /*Routes, Route*/ } from "react-router-dom";
 function App() {
 	return (
 		<>
+			
 			{/*<AuthProvider>*/}
 			<BrowserRouter>
 				{/* <Navbar /> */}
 				<div className="min-h-screen">
+					
+					{/* {	<Login /> */}
+						<AdminDashboard />
+						{/* // <Cadastro />
+						// <ListaApolices />
+						// <FormApolice />
+						// <DeletarApolice />
+						// <ListaPlanos />
+						// <FormPlanos />
+						// <DeletarPlanos />
+						// <Perfil />  */}
+						
 
-					{/*	<Login />
-						<Home />
-						<Cadastro />
-						<ListaApolices />
-						<FormApolice />
-						<DeletarApolice />
-						<ListaPlanos />
-						<FormPlanos />
-						<DeletarPlanos />
-						<Perfil /> */}
 
 
-
-					{/* <Routes>
-							<Route path="/" element={<Login />} />
-							<Route path="/login" element={<Login />} />
-							<Route path="/home" element={<Home />} />
-							<Route path="/cadastro" element={<Cadastro />} />
+					{ <Routes>
+							{/* <Route path="/" element={<Login />} />
+							<Route path="/login" element={<Login />} /> */}
+							{/* <Route path="/home" element={<Home />} /> */}
+							{/* <Route path="/cadastro" element={<Cadastro />} />
 							<Route path="/apolices" element={<ListaApolices />} />
 							<Route path="/cadastrarapolices" element={<FormApolice />} />
 							<Route path="/editarapolices/:id" element={<FormApolice />} />
@@ -47,8 +50,8 @@ function App() {
 							<Route path="/cadastrarplanos" element={<FormPlanos />} />
 							<Route path="/editarplanos/:id" element={<FormPlanos />} />
 							<Route path="/deletarplanos/:id" element={<DeletarPlanos />} />
-							<Route path="/perfil" element={<Perfil />} />
-						</Routes> */}
+							<Route path="/perfil" element={<Perfil />} /> */}
+						</Routes> }
 				</div>
 			{/*	<Footer /> */}
 			</BrowserRouter>
