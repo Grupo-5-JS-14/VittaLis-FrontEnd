@@ -1,4 +1,5 @@
 import { BrowserRouter, /*Routes, Route*/ } from "react-router-dom";
+import About from "./pages/About";
 // import Navbar from "./components/navbar/Navbar";
 // import Footer from "./components/footer/Footer";
 // import { AuthProvider } from "./contexts/AuthContext";
@@ -21,7 +22,8 @@ function App() {
 				{/* <Navbar /> */}
 				<div className="min-h-screen">
 
-					{/*	<Login />
+					{ <About isDarkMode={false} />
+					/*	<Login />
 						<Home />
 						<Cadastro />
 						<ListaApolices />
