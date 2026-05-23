@@ -39,12 +39,12 @@ function Login() {
     }
 
     return (
-        <section className="w-full h-screen overflow-hidden bg-background flex flex-col lg:flex-row font-sans antialiased">
+        <section className="w-full min-h-screen bg-background flex font-sans antialiased">
 
             {/* LADO ESQUERDO                                         */}
 
             <div
-                className="hidden lg:flex relative w-[42%] h-screen bg-cover bg-center p-8 xl:p-10 flex-col justify-between overflow-hidden"
+                className="hidden xl:flex relative w-[40%] min-h-screen bg-cover bg-center p-6 2xl:p-10 flex-col justify-between"
                 style={{ backgroundImage: "url('/bg-verde.png')" }}
             >
 

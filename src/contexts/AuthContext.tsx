@@ -1,13 +1,6 @@
-import {
-    createContext,
-    useState,
-    type ReactNode
-} from "react"
-
+import {createContext, useState, type ReactNode} from "react"
 import { toast } from "sonner"
-
 import { login } from "../services/Service"
-
 import type UsuarioLogin from "../models/UsuarioLogin"
 
 interface AuthContextProps {
