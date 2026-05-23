@@ -1,10 +1,10 @@
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react"
+import { useState, type ChangeEvent, type FormEvent } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import type Usuario from "../models/Usuario"
 import { cadastrarUsuario } from "../services/Service"
 import { Eye, EyeOff, ImageIcon, Lock as LockIcon, Mail, ShieldCheck, User } from "lucide-react"
 import { ClipLoader } from "react-spinners"
+import type UsuarioCadastro from "../models/UsuarioCadastro"
 
 function Cadastro() {
 
@@ -15,30 +15,24 @@ function Cadastro() {
     const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false)
     const [confirmarSenha, setConfirmarSenha] = useState<string>("")
 
-    const [usuario, setUsuario] = useState<Usuario>({
-        id: 0,
+    const [usuario, setUsuario] = useState<UsuarioCadastro>({
         nome: '',
         usuario: '',
         senha: '',
         foto: '',
-        idade: 0,
-        dataCadastro: ''
+        idade: 0
     })
-
-    useEffect(() => {
-        if (usuario.id !== 0) {
-            retornar()
-        }
-    }, [usuario])
 
     function retornar() {
         navigate('/')
     }
 
     function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = e.target
+
         setUsuario({
             ...usuario,
-            [e.target.name]: e.target.value
+            [name]: name === "idade" ? Number(value) : value
         })
     }
 
@@ -49,18 +43,30 @@ function Cadastro() {
     async function cadastrarNovoUsuario(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
 
-        if (confirmarSenha === usuario.senha && usuario.senha.length >= 8) {
-            setIsLoading(true)
-            try {
-                await cadastrarUsuario(`/usuarios/cadastrar`, usuario, setUsuario)
-                toast.success('Usuário cadastrado com sucesso!')
-            } catch (error) {
-                toast.error('Erro ao cadastrar usuário!')
-            }
-        } else {
+        if (confirmarSenha !== usuario.senha || usuario.senha.length < 8) {
             toast.error('As senhas não coincidem ou possuem menos de 8 caracteres.')
-            setUsuario({ ...usuario, senha: '' })
-            setConfirmarSenha('')
+            return
+        }
+
+        setIsLoading(true)
+
+        try {
+            const payload = {
+                nome: usuario.nome.trim(),
+                usuario: usuario.usuario.trim(),
+                senha: usuario.senha,
+                foto: usuario.foto?.trim() || null,
+                idade: Number(usuario.idade)
+            }
+
+            await cadastrarUsuario(`/usuarios/cadastrar`, payload, setUsuario)
+
+            toast.success('Usuário cadastrado com sucesso!')
+            navigate('/')
+
+        } catch (error: any) {
+            console.log("ERRO BACKEND:", error.response?.data)
+            toast.error('Erro ao cadastrar usuário!')
         }
 
         setIsLoading(false)
@@ -354,6 +360,21 @@ function Cadastro() {
                                         className="w-full h-12 rounded-xl border border-border bg-surface-soft pl-11 pr-4 text-sm text-text placeholder:text-text-light outline-none transition-all focus:border-primary focus:ring-1 focus:ring-primary"
                                     />
                                 </div>
+                            </div>
+                            {/* Idade */}
+                            <div>
+                                <label className="block mb-2 text-primary font-semibold text-sm">
+                                    Idade
+                                </label>
+
+                                <input
+                                    type="number"
+                                    name="idade"
+                                    value={usuario.idade}
+                                    onChange={atualizarEstado}
+                                    className="w-full h-12 rounded-xl border border-border bg-surface-soft px-4 text-sm"
+                                    placeholder="Sua idade"
+                                />
                             </div>
 
                             {/* Senha */}
