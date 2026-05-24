@@ -19,3 +19,9 @@ body {
   color: #12312F;
   font-family: "Poppins", sans-serif;
 }
+
+/* TRANSIÇÃO ENTRE SEÇÕES */
+.section-transition {
+  position: relative;
+  transition: all 0.5s ease-in-out;
+}
