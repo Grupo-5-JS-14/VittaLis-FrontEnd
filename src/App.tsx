@@ -4,6 +4,7 @@ import Footer from "./components/footer/Footer";
 // import { AuthProvider } from "./contexts/AuthContext";
 // import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Perfil from "./pages/Perfil";
 // import Cadastro from "./pages/Cadastro";
 // import ListaApolices from "./components/apolices/ListaApolices";
 // import FormApolice from "./components/apolices/FormApolice";
@@ -20,17 +21,17 @@ function App() {
 			<BrowserRouter>
 				<Navbar />
 				<div className="min-h-screen">
-
+						<Perfil />
 					{/* <Login /> */}
-						<Home />
 						{/*	<Cadastro />
 						<ListaApolices />
+						<Home />
 						<FormApolice />
 						<DeletarApolice />
 						<ListaPlanos />
 						<FormPlanos />
 						<DeletarPlanos />
-						<Perfil /> */}
+						 */}
 
 
 

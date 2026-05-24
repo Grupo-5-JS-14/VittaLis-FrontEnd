@@ -126,8 +126,8 @@ function Perfil() {
   }
   
   return (
-    <div className="h-screen bg-[#f8faf9] text-[#173c3a]">
-      <div className="flex">
+    <div className="min-h-screen bg-[#f8faf9] text-[#173c3a]">
+      <div className="flex min-h-screen">
 
         {/* Barra lateral - config e estilização */}
         <aside className="hidden min-h-[calc(100vh-74px)] w-64.5 shrink-0 border-r border-[#dde8e5] bg-white lg:flex lg:flex-col lg:justify-between">
@@ -182,7 +182,7 @@ function Perfil() {
         </aside>
         {/* Barra lateral - config e estilização Fim*/}
 
-        <main className="h-screen flex-1 px-8 pt-8">
+        <main className="flex-1 px-8 pt-8 pb-10">
           <section>
             <div className="mb-6">
               <h1 className="text-4xl font-poppins font-semibold text-[#005b5b] md:text-4xl">
