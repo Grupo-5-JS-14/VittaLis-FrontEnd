@@ -14,4 +14,16 @@
   --radius-card: 32px;
   --radius-button: 18px;
 
+/* BODY */
+body {
+  min-height: 100vh;
+  background: #F5F7F6;
+  color: #12312F;
+  font-family: "Poppins", sans-serif;
+}
+
+/* TRANSIÇÃO ENTRE SEÇÕES */
+.section-transition {
+  position: relative;
+  transition: all 0.5s ease-in-out;
 }
