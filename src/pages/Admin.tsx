@@ -1,5 +1,5 @@
-import { Bell, User, Shield, FileText, CreditCard, Users, HeartPulse, Settings, LogOut, Menu, TrendingUp, TrendingDown, } from "lucide-react";
-import { ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Tooltip, CartesianGrid, XAxis, YAxis, BarChart, Bar, Legend, } from "recharts";
+import { Bell, Shield, FileText, CreditCard, Users, LogOut, Menu, TrendingUp, TrendingDown, } from "lucide-react";
+import { ResponsiveContainer, LineChart, Line, Tooltip, CartesianGrid, XAxis, YAxis, BarChart, Bar, Legend, } from "recharts";
 
 const apolices = [
   {
@@ -78,7 +78,7 @@ const tipos = [...new Set(apolices.map(item => item.tipo))];
 const pieData = meses.map((mes, index) => {
   const apoliceMes = apolices.filter(item => Number(item.data.split("/")[1]) - 1 === index);
 
-  const data = {
+  const data: Record<string, number | string> = {
     month: mes
   };
 
