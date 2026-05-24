@@ -1,3 +1,500 @@
+import { useContext, useEffect, useState } from "react";
+import { BadgeCheck, CheckCircle, Clock, CreditCard, FileText, HandCoins, Headphones, ShieldCheck, Users, } from "lucide-react";
+
+import type Plano from "../../models/Plano";
+import { buscar } from "../../services/Service";
+import { AuthContext } from "../../contexts/AuthContext";
+import CardPlano from "./CardPlano";
+import ModalPlano from "./ModalPlano";
+
 function ListaPlanos() {
+  const planosPadrao: Plano[] = [
+    {
+      id: 1,
+      nome: "Individual",
+      descricao: "Proteção financeira para você e para quem você ama.",
+      valor: 34.9,
+    },
+    {
+      id: 2,
+      nome: "Familiar",
+      descricao: "Proteção completa para toda sua família.",
+      valor: 79.9,
+    },
+    {
+      id: 3,
+      nome: "Acidentes Pessoais",
+      descricao: "Mais segurança no dia a dia para imprevistos.",
+      valor: 24.9,
+    },
+    {
+      id: 4,
+      nome: "Empresarial",
+      descricao: "Cuidado e segurança para seus colaboradores e sua empresa.",
+      valor: 0,
+    },
+  ];
+
+  const [planos, setPlanos] = useState<Plano[]>(planosPadrao);
+  const [isLoading, setIsLoading] = useState(false);
+  const [tipoCobranca, setTipoCobranca] = useState<"mensal" | "anual">(
+    "mensal"
+  );
+
+  const auth = useContext(AuthContext) as any;
+  const usuario = auth?.usuario;
+  const token = usuario?.token || "";
+
+  /*
+    QUANDO TIVER ADMIN FUNCIONANDO
+    const isAdmin = !!token && usuario?.tipo === "admin";
+  */
+  const isAdmin = false; /* comentar qnd tiver admin funcionando */
+
+  const header = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  async function buscarPlanos() {
+    if (!token) {
+      setPlanos(planosPadrao);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      await buscar(
+        "/planos/all",
+        (resposta: Plano[]) => {
+          if (resposta && resposta.length > 0) {
+            setPlanos(resposta);
+          } else {
+            setPlanos(planosPadrao);
+          }
+        },
+        header
+      );
+    } catch (error) {
+      console.error("Erro ao buscar planos:", error);
+      setPlanos(planosPadrao);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    buscarPlanos();
+  }, [token]);
+
+  return (
+    <main
+      style={{
+        width: "100%",
+        minHeight: "100vh",
+        background:
+          "radial-gradient(circle at top, #ffffff 0%, #f8fbfa 42%, #f5f8f7 100%)",
+        color: "#004346",
+        padding: "34px 24px 44px",
+      }}
+    >
+      <section
+        style={{
+          width: "100%",
+          maxWidth: "1120px",
+          margin: "0 auto",
+        }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <h1
+            style={{
+              fontSize: "42px",
+              lineHeight: "48px",
+              fontWeight: 900,
+              color: "#004346",
+              margin: 0,
+              letterSpacing: "-1px",
+            }}
+          >
+            Nossos planos
+          </h1>
+
+          <p
+            style={{
+              marginTop: "6px",
+              color: "#5f6d70",
+              fontSize: "15px",
+            }}
+          >
+            Escolha a proteção ideal para você e sua família.
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "34px",
+            marginTop: "34px",
+            alignItems: "start",
+          }}
+        >
+          <InfoItem
+            icon={<ShieldCheck size={24} />}
+            title="Contratação 100% digital"
+            text="Rápida, simples e segura."
+          />
+
+          <InfoItem
+            icon={<Users size={24} />}
+            title="Coberturas completas"
+            text="Proteção para todas as fases da vida."
+          />
+
+          <InfoItem
+            icon={<Clock size={24} />}
+            title="Assistência 24h"
+            text="Suporte quando você mais precisa."
+          />
+
+          <InfoItem
+            icon={<FileText size={24} />}
+            title="Sem burocracia"
+            text="Processo fácil e transparente do início ao fim."
+          />
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "34px",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              width: "300px",
+              background: "#ffffff",
+              border: "1px solid #dbe6e4",
+              borderRadius: "999px",
+              padding: "4px",
+              boxShadow: "0 8px 20px rgba(0, 67, 70, 0.10)",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: "4px",
+                bottom: "4px",
+                left: tipoCobranca === "mensal" ? "4px" : "150px",
+                width: "146px",
+                borderRadius: "999px",
+                background:
+                  "linear-gradient(135deg, #006b6b 0%, #004346 100%)",
+                boxShadow: "0 6px 14px rgba(0, 67, 70, 0.22)",
+                transition:
+                  "left 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.25s ease",
+              }}
+            />
+
+            <button
+              type="button"
+              onClick={() => setTipoCobranca("mensal")}
+              style={{
+                position: "relative",
+                zIndex: 1,
+                width: "146px",
+                border: "none",
+                background: "transparent",
+                color: tipoCobranca === "mensal" ? "#ffffff" : "#00565a",
+                borderRadius: "999px",
+                padding: "9px 0",
+                fontWeight: 900,
+                cursor: "pointer",
+                transition: "color 0.25s ease, transform 0.2s ease",
+                transform:
+                  tipoCobranca === "mensal" ? "scale(1.03)" : "scale(1)",
+              }}
+            >
+              Mensal
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setTipoCobranca("anual")}
+              style={{
+                position: "relative",
+                zIndex: 1,
+                width: "146px",
+                border: "none",
+                background: "transparent",
+                color: tipoCobranca === "anual" ? "#ffffff" : "#00565a",
+                borderRadius: "999px",
+                padding: "9px 0",
+                fontWeight: 900,
+                cursor: "pointer",
+                transition: "color 0.25s ease, transform 0.2s ease",
+                transform:
+                  tipoCobranca === "anual" ? "scale(1.03)" : "scale(1)",
+              }}
+            >
+              Anual{" "}
+              <span
+                style={{
+                  color: tipoCobranca === "anual" ? "#b9ffe0" : "#00a66a",
+                  transition: "color 0.25s ease",
+                }}
+              >
+                10% OFF
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <p
+          style={{
+            textAlign: "center",
+            marginTop: "8px",
+            color: "#5f6d70",
+            fontSize: "13px",
+            minHeight: "18px",
+            transition: "opacity 0.25s ease",
+          }}
+        >
+          {tipoCobranca === "mensal"
+            ? "Pague mensalmente e mantenha sua proteção ativa."
+            : "Economize contratando no plano anual."}
+        </p>
+
+        {isAdmin && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginTop: "28px",
+            }}
+          >
+            <ModalPlano
+              tipo="cadastrar"
+              buscarPlanos={buscarPlanos}
+              token={token}
+            />
+          </div>
+        )}
+
+        {isLoading ? (
+          <p
+            style={{
+              textAlign: "center",
+              marginTop: "40px",
+              color: "#5f6d70",
+            }}
+          >
+            Carregando planos...
+          </p>
+        ) : (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gap: "10px",
+              marginTop: "30px",
+              alignItems: "stretch",
+            }}
+          >
+            {planos.map((plano) => (
+              <CardPlano
+                key={plano.id}
+                plano={plano}
+                buscarPlanos={buscarPlanos}
+                isAdmin={isAdmin}
+                token={token}
+                tipoCobranca={tipoCobranca}
+              />
+            ))}
+          </div>
+        )}
+
+        <div
+          style={{
+            width: "82%",
+            maxWidth: "900px",
+            margin: "18px auto 0",
+            background: "linear-gradient(90deg, #eaf7f4, #f8fcfb)",
+            borderRadius: "13px",
+            padding: "11px 18px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "16px",
+            boxShadow: "0 6px 18px rgba(0, 67, 70, 0.06)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                background: "#ffffff",
+                color: "#006b6b",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <Headphones size={25} />
+            </div>
+
+            <div>
+              <h3
+                style={{
+                  margin: 0,
+                  fontSize: "14px",
+                  fontWeight: 900,
+                  color: "#004346",
+                }}
+              >
+                Precisa de ajuda para escolher?
+              </h3>
+
+              <p
+                style={{
+                  marginTop: "2px",
+                  color: "#5f6d70",
+                  fontSize: "11.5px",
+                }}
+              >
+                Nossa equipe te ajuda a encontrar o plano ideal.
+              </p>
+            </div>
+          </div>
+
+          <button
+            style={{
+              border: "none",
+              background: "#00565a",
+              color: "#ffffff",
+              padding: "9px 16px",
+              borderRadius: "8px",
+              fontSize: "11.5px",
+              fontWeight: 900,
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+              boxShadow: "0 5px 12px rgba(0, 67, 70, 0.16)",
+              transition: "transform 0.2s ease, background 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-1px)";
+              e.currentTarget.style.background = "#004346";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.background = "#00565a";
+            }}
+          >
+            Falar com especialista
+          </button>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "32px",
+            marginTop: "24px",
+          }}
+        >
+          <InfoItem
+            small
+            icon={<BadgeCheck size={22} />}
+            title="Processo 100% digital"
+            text="Contrate online em poucos minutos."
+          />
+
+          <InfoItem
+            small
+            icon={<CreditCard size={22} />}
+            title="Pagamento seguro"
+            text="Ambiente criptografado."
+          />
+
+          <InfoItem
+            small
+            icon={<CheckCircle size={22} />}
+            title="Cancelamento fácil"
+            text="Sem complicações."
+          />
+
+          <InfoItem
+            small
+            icon={<HandCoins size={22} />}
+            title="Reembolso garantido"
+            text="Conforme condições do plano."
+          />
+        </div>
+      </section>
+    </main>
+  );
 }
+
+interface InfoItemProps {
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+  small?: boolean;
+}
+
+function InfoItem({ icon, title, text, small = false }: InfoItemProps) {
+  return (
+    <div style={{ display: "flex", alignItems: "flex-start", gap: "14px" }}>
+      <div
+        style={{
+          width: small ? "42px" : "48px",
+          height: small ? "42px" : "48px",
+          minWidth: small ? "42px" : "48px",
+          borderRadius: "50%",
+          background: "#dff3ef",
+          color: "#006b6b",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {icon}
+      </div>
+
+      <div>
+        <h3
+          style={{
+            margin: 0,
+            color: "#004346",
+            fontSize: "14px",
+            fontWeight: 900,
+          }}
+        >
+          {title}
+        </h3>
+
+        <p
+          style={{
+            marginTop: "5px",
+            color: "#5f6d70",
+            fontSize: "13px",
+            lineHeight: "18px",
+          }}
+        >
+          {text}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default ListaPlanos;
