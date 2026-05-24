@@ -5,6 +5,7 @@ import Footer from "./components/footer/Footer";
 // import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Perfil from "./pages/Perfil";
+//import Login from "./pages/Login";
 // import Cadastro from "./pages/Cadastro";
 // import ListaApolices from "./components/apolices/ListaApolices";
 // import FormApolice from "./components/apolices/FormApolice";
@@ -37,10 +38,10 @@ function App() {
 
 					 <Routes>
 							<Route path="/" element={<Home />} />
-							{/* <Route path="/login" element={<Login />} /> */}
 							<Route path="/home" element={<Home />} />
 						{/*	<Route path="/cadastro" element={<Cadastro />} />
 							<Route path="/apolices" element={<ListaApolices />} />
+							<Route path="/login" element={<Login />} />
 							<Route path="/cadastrarapolices" element={<FormApolice />} />
 							<Route path="/editarapolices/:id" element={<FormApolice />} />
 							<Route path="/deletarapolices/:id" element={<DeletarApolice />} />

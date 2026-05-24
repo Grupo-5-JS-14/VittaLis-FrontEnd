@@ -122,11 +122,11 @@ function Perfil() {
   function logout() {
       //handleLogout() colocar posteriormente
       toast.success('O Usuário foi desconectado com sucesso!')
-      navigate('/')
+      navigate('/login')
   }
   
   return (
-    <div className="min-h-screen bg-[#f8faf9] text-[#173c3a]">
+    <div className="min-h-screen bg-[#f8faf9] font-poppins text-[#173c3a]">
       <div className="flex min-h-screen">
 
         {/* Barra lateral - config e estilização */}
