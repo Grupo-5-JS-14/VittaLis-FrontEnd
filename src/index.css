@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+
+/* SCROLL */
+html {
+  scroll-behavior: smooth;
+}
+
+/* RESET
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */
 @theme {
 
   --color-primary: #004747;
@@ -14,7 +26,7 @@
   --radius-card: 32px;
   --radius-button: 18px;
 
-/* BODY */
+BODY
 body {
   min-height: 100vh;
   background: #F5F7F6;
