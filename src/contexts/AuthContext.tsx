@@ -18,43 +18,67 @@ export const AuthContext = createContext<AuthContextProps>(
   {} as AuthContextProps
 )
 
-export function AuthProvider({ children }: AuthProviderProps) {
-  const [usuario, setUsuario] = useState<UsuarioLogin>({
-    id: 0,
-    nome: '',
-    usuario: '',
-    senha: '',
-    foto: '',
-    token: '',
-  })
+const USUARIO_STORAGE_KEY = 'usuario'
 
+const usuarioInicial: UsuarioLogin = {
+  id: 0,
+  nome: '',
+  usuario: '',
+  senha: '',
+  foto: '',
+  token: '',
+}
+
+function carregarUsuarioSalvo() {
+  const usuarioSalvo = localStorage.getItem(USUARIO_STORAGE_KEY)
+
+  if (!usuarioSalvo) {
+    return usuarioInicial
+  }
+
+  try {
+    return {
+      ...usuarioInicial,
+      ...JSON.parse(usuarioSalvo)
+    }
+  } catch {
+    localStorage.removeItem(USUARIO_STORAGE_KEY)
+    return usuarioInicial
+  }
+}
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [usuario, setUsuario] = useState<UsuarioLogin>(carregarUsuarioSalvo)
   const [isLoading, setIsLoading] = useState(false)
 
   async function handleLogin(usuarioLogin: UsuarioLogin) {
     setIsLoading(true)
 
     try {
-      await login(`/usuarios/logar`, usuarioLogin, setUsuario)
-      toast.success('Login realizado com sucesso!')
-      
-    } catch (error) {
-      toast.error('Usuário ou senha inválidos!')
-    }
+      await login(`/usuarios/logar`, usuarioLogin, (dadosUsuario: UsuarioLogin) => {
+        const usuarioAutenticado = {
+          ...usuarioInicial,
+          ...dadosUsuario
+        }
 
-    setIsLoading(false)
+        setUsuario(usuarioAutenticado)
+        localStorage.setItem(
+          USUARIO_STORAGE_KEY,
+          JSON.stringify(usuarioAutenticado)
+        )
+      })
+
+      toast.success('Login realizado com sucesso!')
+    } catch {
+      toast.error('Usuário ou senha inválidos!')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   function handleLogout() {
-    setUsuario({
-      id: 0,
-      nome: '',
-      usuario: '',
-      senha: '',
-      foto: '',
-      token: '',
-      idade: 0,
-      dataCadastro: ''
-    })
+    setUsuario(usuarioInicial)
+    localStorage.removeItem(USUARIO_STORAGE_KEY)
 
     toast.success('Logout realizado!')
   }

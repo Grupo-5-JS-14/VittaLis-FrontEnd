@@ -44,11 +44,15 @@ function BarraLateral() {
         <div className="flex h-30 items-center justify-center bg-[#12312F] px-8 text-white">
           <div className="flex items-center gap-4">
             <div className="grid h-16 w-16 place-items-center rounded-full bg-white text-[#005b5b]">
-              <User size={36} fill="#005b5b" />
+              <img
+                src={ usuario.foto }
+                alt={usuario.nome}
+                className="h-16 w-16 rounded-full object-cover"
+              />
             </div>
 
             <div>
-              <p className="text-base font-bold">Olá, {usuario.nome}!</p>
+              <p className="text-base font-bold">Olá, {usuario.nome || 'Usuario'}!</p>
               <p className="mt-1 text-xs font-medium text-white/85">
                 É um prazer tê-lo conosco novamente!
               </p>

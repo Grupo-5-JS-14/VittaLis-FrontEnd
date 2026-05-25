@@ -1,14 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
- import { AuthProvider } from "./contexts/AuthContext";
- import { Toaster } from 'sonner'
-// import Login from "./pages/Login";
+import { AuthProvider } from "./contexts/AuthContext";
 import Home from "./pages/Home";
 import Perfil from "./pages/Perfil";
 import Login from "./pages/Login";
+import Cadastro from "./pages/Cadastro";
 //import Login from "./pages/Login";
-// import Cadastro from "./pages/Cadastro";
 // import ListaApolices from "./components/apolices/ListaApolices";
 // import FormApolice from "./components/apolices/FormApolice";
 // import DeletarApolice from "./components/apolices/DeletarApolice";
@@ -32,24 +30,14 @@ function App() {
 				<BrowserRouter>
 					<Navbar />
 					<div className="min-h-screen">
-						{/* <Login /> */}
-							{/*	<Cadastro />
-							<ListaApolices />
-							<Home />
-							<FormApolice />
-							<DeletarApolice />
-							<ListaPlanos />
-							<FormPlanos />
-							<DeletarPlanos />
-							*/}
-
-
 
 						<Routes>
 								<Route path="/" element={<Home />} />
 								<Route path="/home" element={<Home />} />
 								<Route path="/perfil" element={<Perfil />} />
 								<Route path="/login" element={<Login />} />
+								<Route path="/cadastro" element={<Cadastro />} />
+
 								<Route path="/apolices" element={<RotaVazia />} />
 								<Route path="/apolices/:id" element={<RotaVazia />} />
 								<Route path="/apolices/:id/opcoes" element={<RotaVazia />} />
@@ -59,7 +47,7 @@ function App() {
 								<Route path="/beneficiarios" element={<RotaVazia />} />
 								<Route path="/fale-conosco" element={<RotaVazia />} />
 								<Route path="/configuracoes" element={<RotaVazia />} />
-							{/*	<Route path="/cadastro" element={<Cadastro />} />
+							{/*	
 								 />
 								<Route path="/cadastrarapolices" element={<FormApolice />} />
 								<Route path="/editarapolices/:id" element={<FormApolice />} />

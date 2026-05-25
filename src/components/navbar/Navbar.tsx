@@ -11,6 +11,7 @@ export default function Navbar() {
     { label: "Início", href: "/home" },
     { label: "Planos", href: "/planos" },
     { label: "Ajuda", href: "/ajuda" },
+    { label: "Perfil", href: "/perfil" },
   ];
 
   return (
