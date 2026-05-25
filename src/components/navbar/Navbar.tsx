@@ -53,13 +53,13 @@ export default function Navbar() {
             {/* Links Desktop - Atualizados para Link */}
             <div className="flex items-center space-x-8">
               {linksMenu.map((link, idx) => (
-                <Link
+                <a
                   key={idx}
                   href={link.href}
                   className="text-sm font-semibold text-text/90 hover:text-[#FF7A38] transition-colors"
                 >
                   {link.label}
-                </Link>
+                </a>
               ))}
               {isLoggedIn && isAdmin && (
                 <Link
@@ -80,7 +80,7 @@ export default function Navbar() {
                     className="px-6 py-2.5 text-sm font-bold rounded-xl text-text border-2 border-text text-center"
                   >
                     Entrar
-                  </Link>
+                  </a>
                   <Link to="/simulacao">
                     <button className="px-6 py-3 text-sm font-bold rounded-xl text-white bg-[#FF7A38] cursor-pointer">
                       Cotação rápida
@@ -93,7 +93,7 @@ export default function Navbar() {
                   className="px-6 py-3 text-sm font-bold rounded-xl text-white bg-text text-center"
                 >
                   Meu Perfil
-                </Link>
+                </a>
               )}
             </div>
           </div>
@@ -168,7 +168,7 @@ export default function Navbar() {
           aria-label={isLoggedIn ? "Ver perfil" : "Ir para o login"}
         >
           <User className="h-6 w-6" />
-        </Link>
+        </a>
 
         {/* Botão Hambúrguer */}
         <button

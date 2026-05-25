@@ -6,12 +6,11 @@ import {
   IconShield as Shield,
   IconUser as User,
   IconUsers as Users,
-  IconWallet as Wallet
+  IconWallet as Wallet,
 } from '@tabler/icons-react'
-
+import { useContext } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../contexts/AuthContext'
-import { useContext } from 'react'
 
 const menuItems = [
   { label: 'Tela Inicial', icon: Home, path: '/home' },
@@ -24,10 +23,9 @@ const menuItems = [
 
 function BarraLateral() {
   const navigate = useNavigate()
-
-  const { usuario, handleLogout } = useContext(AuthContext)
-
   const location = useLocation()
+  const { usuario, handleLogout } = useContext(AuthContext)
+  const nomeUsuario = usuario.nome || 'Usuário'
 
   function handleMenuClick(path: string) {
     navigate(path)
@@ -44,19 +42,19 @@ function BarraLateral() {
         <div className="flex h-30 items-center justify-center bg-text px-8 text-white">
           <div className="flex items-center gap-4">
             {usuario.foto ? (
-  <img
-    src={usuario.foto}
-    alt={usuario.nome || "Usuário"}
-    className="h-16 w-16 rounded-full object-cover border-2 border-white"
-  />
-) : (
-  <div className="grid h-16 w-16 place-items-center rounded-full bg-white text-[#005b5b]">
-    <User size={36} fill="#005b5b" />
-  </div>
-)}
+              <img
+                src={usuario.foto}
+                alt={nomeUsuario}
+                className="h-16 w-16 rounded-full border-2 border-white object-cover"
+              />
+            ) : (
+              <div className="grid h-16 w-16 place-items-center rounded-full bg-white text-[#005b5b]">
+                <User size={36} fill="#005b5b" />
+              </div>
+            )}
 
             <div>
-              <p className="text-base font-bold">Olá, {usuario.nome}!</p>
+              <p className="text-base font-bold">Olá, {nomeUsuario}!</p>
               <p className="mt-1 text-xs font-medium text-white/85">
                 É um prazer tê-lo conosco novamente!
               </p>
