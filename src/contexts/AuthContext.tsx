@@ -31,30 +31,30 @@ export function AuthProvider({ children }: AuthProviderProps) {
           senha: '',
           foto: '',
           token: '',
+          acesso: '',
           role: '',
-          tipo: '',
-          admin: false,
         }
   )
 
   const [isLoading, setIsLoading] = useState(false)
 
   async function handleLogin(usuarioLogin: UsuarioLogin) {
-    setIsLoading(true)
+  try {
+    await login(`/usuarios/logar`, usuarioLogin, (resposta: UsuarioLogin) => {
+      const usuarioLogado = {
+        ...resposta,
+        token: resposta.token || resposta.acesso || "",
+      };
 
-    try {
-      await login(`/usuarios/logar`, usuarioLogin, (resposta: UsuarioLogin) => {
-        setUsuario(resposta)
-        localStorage.setItem('usuario', JSON.stringify(resposta))
-      })
+      setUsuario(usuarioLogado);
+      localStorage.setItem("usuario", JSON.stringify(usuarioLogado));
+    });
 
-      toast.success('Login realizado com sucesso!')
-    } catch (error) {
-      toast.error('Usuário ou senha inválidos!')
-    }
-
-    setIsLoading(false)
+    toastAlerta("Usuário logado com sucesso", "sucesso");
+  } catch (error) {
+    toastAlerta("Dados do usuário inconsistentes", "erro");
   }
+}
 
   function handleLogout() {
     setUsuario({
@@ -64,9 +64,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       senha: '',
       foto: '',
       token: '',
+      acesso: '',
       role: '',
-      tipo: '',
-      admin: false,
     })
 
     localStorage.removeItem('usuario')

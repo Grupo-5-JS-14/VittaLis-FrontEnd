@@ -6,7 +6,9 @@ export default interface UsuarioLogin {
   foto: string;
   token: string;
 
+  acesso?: string;
   role?: string;
   tipo?: string;
   admin?: boolean;
+  message?: string;
 }

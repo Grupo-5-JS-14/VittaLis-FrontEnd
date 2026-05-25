@@ -34,9 +34,9 @@ function FormPlano({
 
   const header = {
     headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+      Authorization: token,
+  },
+};
 
   useEffect(() => {
     if (tipo === "editar" && plano) {

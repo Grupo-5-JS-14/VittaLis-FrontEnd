@@ -43,7 +43,7 @@ function ListaPlanos() {
 
   const auth = useContext(AuthContext) as any;
   const usuario = auth?.usuario;
-  const token = usuario?.token || "";
+  const token = usuario?.token || usuario?.acesso || "";
 
   const isAdmin =
     usuario?.role === "admin" ||
@@ -51,7 +51,11 @@ function ListaPlanos() {
     usuario?.tipo === "admin" ||
     usuario?.admin === true;
   
-  const header = { headers: { Authorization: `Bearer ${token}`, }, };
+  const header = {
+    headers: {
+      Authorization: token,
+  },
+};
 
   async function buscarPlanos() {
     try {

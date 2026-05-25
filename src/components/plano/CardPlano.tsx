@@ -16,10 +16,12 @@ function CardPlano({
   token,
   tipoCobranca,
 }: CardPlanoProps) {
+  const valorMensal = Number(plano.valor);
+
   const valor =
     tipoCobranca === "anual"
-      ? plano.valor * 12 * 0.9
-      : plano.valor;
+      ? valorMensal * 12 * 0.9
+      : valorMensal;
 
   return (
     <article className="flex flex-col justify-between rounded-2xl border border-[#dbe6e4] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
