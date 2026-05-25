@@ -17,6 +17,7 @@ function DeletarPlano({
   buscarPlanos,
   token,
 }: DeletarPlanoProps) {
+
   const [isLoading, setIsLoading] = useState(false);
 
   const header = {
@@ -26,6 +27,7 @@ function DeletarPlano({
   };
 
   async function deletarPlano() {
+
     if (!token) {
       alert("Você precisa estar logado como admin para fazer essa ação.");
       return;
@@ -39,14 +41,20 @@ function DeletarPlano({
     try {
       setIsLoading(true);
 
-      await deletar(`/planos/deletar/${plano.id}`, header);
+      await deletar(
+        `/admin/planos/deletar/${plano.id}`,
+        header
+      );
 
       alert("Plano deletado com sucesso!");
+
       buscarPlanos();
       fecharModal();
+
     } catch (error) {
       console.error("Erro ao deletar plano:", error);
       alert("Erro ao deletar o plano.");
+
     } finally {
       setIsLoading(false);
     }
@@ -54,7 +62,9 @@ function DeletarPlano({
 
   return (
     <div className="flex flex-col gap-5">
+
       <div className="flex items-center gap-4 pr-8">
+
         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
           <AlertTriangle size={30} />
         </div>
@@ -71,7 +81,10 @@ function DeletarPlano({
       </div>
 
       <div className="rounded-xl border border-gray-200 bg-[#f8fbfa] p-5">
-        <p className="text-sm text-gray-600">Você está prestes a deletar:</p>
+
+        <p className="text-sm text-gray-600">
+          Você está prestes a deletar:
+        </p>
 
         <h3 className="mt-2 text-xl font-black text-[#004346]">
           {plano?.nome}
@@ -83,9 +96,12 @@ function DeletarPlano({
 
         <p className="mt-3 font-black text-[#ff6b2c]">
           {Number(plano?.valor) > 0
-            ? `R$ ${Number(plano?.valor || 0).toFixed(2).replace(".", ",")}/mês`
+            ? `R$ ${Number(plano?.valor || 0)
+                .toFixed(2)
+                .replace(".", ",")}/mês`
             : "Sob consulta"}
         </p>
+
       </div>
 
       <p className="text-gray-700">
@@ -93,6 +109,7 @@ function DeletarPlano({
       </p>
 
       <div className="flex gap-3">
+
         <button
           type="button"
           onClick={fecharModal}
@@ -109,6 +126,7 @@ function DeletarPlano({
         >
           {isLoading ? "Deletando..." : "Deletar"}
         </button>
+
       </div>
     </div>
   );

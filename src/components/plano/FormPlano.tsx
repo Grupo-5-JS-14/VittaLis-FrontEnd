@@ -93,10 +93,10 @@ function FormPlano({
           valor: Number(planoForm.valor),
         };
 
-        await cadastrar("/planos/cadastrar", planoCadastro, setPlanoForm, header);
+       await cadastrar( "/admin/planos/cadastrar", planoCadastro, setPlanoForm, header )
         alert("Plano cadastrado com sucesso!");
       } else {
-        await atualizar("/planos/atualizar", planoForm, setPlanoForm, header);
+        await atualizar( "/admin/planos/atualizar", planoForm, setPlanoForm, header )
         alert("Plano atualizado com sucesso!");
       }
 
