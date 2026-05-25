@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import { Toaster } from 'sonner'
 import './index.css'
 import App from './App.tsx'
-import { Toaster } from 'sonner'
 //import { GoogleOAuthProvider } from '@react-oauth/google'
 
 createRoot(document.getElementById('root')!).render(

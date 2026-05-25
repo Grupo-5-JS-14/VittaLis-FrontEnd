@@ -7,17 +7,15 @@ import FormPlano from "./FormPlano";
 interface ModalPlanoProps {
   plano?: Plano;
   tipo: "cadastrar" | "editar" | "deletar";
-  cadastrarPlanoLocal: (plano: Plano) => void;
-  atualizarPlanoLocal: (plano: Plano) => void;
-  deletarPlanoLocal: (id: number) => void;
+  buscarPlanos: () => void;
+  token: string;
 }
 
 function ModalPlano({
   plano,
   tipo,
-  cadastrarPlanoLocal,
-  atualizarPlanoLocal,
-  deletarPlanoLocal,
+  buscarPlanos,
+  token,
 }: ModalPlanoProps) {
   const [modalAberto, setModalAberto] = useState(false);
 
@@ -49,7 +47,11 @@ function ModalPlano({
 
   return (
     <>
-      <button type="button" onClick={abrirModal} className={classeBotao()}>
+      <button
+        type="button"
+        onClick={abrirModal}
+        className={classeBotao()}
+      >
         {textoBotao()}
       </button>
 
@@ -68,15 +70,16 @@ function ModalPlano({
               <DeletarPlano
                 plano={plano}
                 fecharModal={fecharModal}
-                deletarPlanoLocal={deletarPlanoLocal}
+                buscarPlanos={buscarPlanos}
+                token={token}
               />
             ) : (
               <FormPlano
                 plano={plano}
-                tipo={tipo}
+                tipo={tipo === "editar" ? "editar" : "cadastrar"}
                 fecharModal={fecharModal}
-                cadastrarPlanoLocal={cadastrarPlanoLocal}
-                atualizarPlanoLocal={atualizarPlanoLocal}
+                buscarPlanos={buscarPlanos}
+                token={token}
               />
             )}
           </div>
@@ -87,3 +90,4 @@ function ModalPlano({
 }
 
 export default ModalPlano;
+

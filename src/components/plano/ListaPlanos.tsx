@@ -45,24 +45,11 @@ function ListaPlanos() {
   const usuario = auth?.usuario;
   const token = usuario?.token || "";
 
-  /*
-    QUANDO TIVER ADMIN FUNCIONANDO
-    const isAdmin = !!token && usuario?.tipo === "admin";
-  */
-  const isAdmin = false; /* comentar qnd tiver admin funcionando */
-
-  const header = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  const isAdmin = usuario?.role === "admin";
+  
+  const header = { headers: { Authorization: `Bearer ${token}`, }, };
 
   async function buscarPlanos() {
-    if (!token) {
-      setPlanos(planosPadrao);
-      return;
-    }
-
     try {
       setIsLoading(true);
 
@@ -75,7 +62,7 @@ function ListaPlanos() {
             setPlanos(planosPadrao);
           }
         },
-        header
+        token ? header : {}
       );
     } catch (error) {
       console.error("Erro ao buscar planos:", error);
