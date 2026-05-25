@@ -1,12 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Menu, X, User, Lock } from "lucide-react";
-import { Link } from "react-router-dom"; // Garantindo a importação do Link
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const isLoggedIn = false;
-  const isAdmin = false;
+  const { usuario } = useContext(AuthContext);
+
+  const isLoggedIn = usuario.token !== "";
+
+  const isAdmin =
+    usuario?.role === "admin" ||
+    usuario?.role === "ROLE_ADMIN" ||
+    usuario?.tipo === "admin" ||
+    usuario?.admin === true;
 
   const linksMenu = [
     { label: "Início", href: "/home" },
@@ -40,6 +48,7 @@ export default function Navbar() {
                   </svg>
                 </div>
               </div>
+
               <div className="flex flex-col select-none">
                 <span className="text-xl font-black text-text tracking-wider leading-none uppercase group-hover:text-[#FF7A38] transition-colors">
                   Vittalis
@@ -61,6 +70,7 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+
               {isLoggedIn && isAdmin && (
                 <Link
                   to="/admin"
@@ -81,6 +91,7 @@ export default function Navbar() {
                   >
                     Entrar
                   </Link>
+
                   <Link to="/simulacao">
                     <button className="px-6 py-3 text-sm font-bold rounded-xl text-white bg-[#FF7A38] cursor-pointer">
                       Cotação rápida
@@ -136,7 +147,6 @@ export default function Navbar() {
 
       {/* Barra Inferior Fixa (Mobile Bottom Navigation) */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-slate-100 z-50 px-6 flex items-center justify-between font-['Poppins',sans-serif]">
-        
         {/* Símbolo da Vittalis - Atualizado para Link */}
         <Link
           to="/home"
@@ -151,11 +161,12 @@ export default function Navbar() {
               strokeWidth="2.5"
               className="w-full h-full"
             >
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
             </svg>
+
             <div className="absolute inset-0 flex items-center justify-center scale-[0.4] translate-y-px">
               <svg viewBox="0 0 24 24" fill="#FF7A38">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
             </div>
           </div>

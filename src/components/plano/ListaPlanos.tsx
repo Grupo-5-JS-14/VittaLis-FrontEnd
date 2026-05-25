@@ -45,7 +45,11 @@ function ListaPlanos() {
   const usuario = auth?.usuario;
   const token = usuario?.token || "";
 
-  const isAdmin = usuario?.role === "admin";
+  const isAdmin =
+    usuario?.role === "admin" ||
+    usuario?.role === "ROLE_ADMIN" ||
+    usuario?.tipo === "admin" ||
+    usuario?.admin === true;
   
   const header = { headers: { Authorization: `Bearer ${token}`, }, };
 

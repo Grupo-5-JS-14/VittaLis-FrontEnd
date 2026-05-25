@@ -31,6 +31,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
           senha: '',
           foto: '',
           token: '',
+          role: '',
+          tipo: '',
+          admin: false,
         }
   )
 
@@ -61,6 +64,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       senha: '',
       foto: '',
       token: '',
+      role: '',
+      tipo: '',
+      admin: false,
     })
 
     localStorage.removeItem('usuario')
