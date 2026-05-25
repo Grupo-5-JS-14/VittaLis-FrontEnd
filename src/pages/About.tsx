@@ -170,7 +170,7 @@ function CardValor({ icon, titulo, descricao }: CardValorProps) {
 
 function About() {
   return (
-    <div className="min-h-screen w-full overflow-x-hidden scroll-smooth transition-colors duration-500 bg-zinc-50 text-[#1a4a45]">
+    <div className="min-h-screen w-full overflow-x-hidden scroll-smooth transition-colors duration-500 bg-zinc-50 text-[#1a4a45] flex flex-col gap-16 md:gap-24">
       {/* HERO */}
       <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden px-4 py-20">
         <div className="absolute inset-0">
@@ -336,8 +336,10 @@ function About() {
       </section>
 
       {/* DIFERENCIAIS */}
-      <section className="w-full bg-[#1a4a45] px-4 sm:px-6 py-24 md:py-32 flex justify-center">
+      <section className="w-full bg-[#1a4a45] px-4 sm:px-6 pb-24 md:pb-32 flex justify-center">
         <div className="w-full max-w-7xl mx-auto flex flex-col items-center">
+          <div className="h-16 md:h-24" aria-hidden="true" />
+
           <div className="text-center mb-12 md:mb-16 flex flex-col items-center">
             <span className="text-xs font-bold text-[#fdba74] tracking-widest uppercase">
               Por que escolher a Vittalis
@@ -374,6 +376,8 @@ function About() {
               </div>
             ))}
           </div>
+
+          <div className="h-16 md:h-24" aria-hidden="true" />
         </div>
       </section>
     </div>
