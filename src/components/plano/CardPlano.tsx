@@ -1,7 +1,14 @@
-import type Planos from "../../models/Plano";
+import { Briefcase, CheckCircle, Heart, ShieldCheck, Users, } from "lucide-react";
 
-interface CardPlanosProps {
-    planos: Planos
+import type Plano from "../../models/Plano";
+import ModalPlano from "./ModalPlano";
+
+interface CardPlanoProps {
+  plano: Plano;
+  buscarPlanos: () => void;
+  isAdmin: boolean;
+  token: string;
+  tipoCobranca: "mensal" | "anual";
 }
 
 function CardPlanos({ planos }: CardPlanosProps) {

@@ -1,8 +1,12 @@
 import { Play, Heart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; // 1. Importado o hook
 
 export default function Hero() {
+  const navigate = useNavigate(); // 2. Inicializado o navigate
+
   const handleCotacaoRapida = () => {
     console.log("Iniciando cotação rápida...");
+    navigate("/simulacao"); // 3. Redireciona o usuário para /simulacao
   };
 
   return (
@@ -18,12 +22,6 @@ export default function Hero() {
           {/* Lado Esquerdo - Conteúdo e Textos */}
           <div className="lg:col-span-6 flex flex-col justify-center text-left">
             
-            {/* Badge de Seguro Descomplicado */}
-            <div className="inline-flex items-center space-x-2 bg-white/10 w-fit px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider mb-6 backdrop-blur-xs">
-              <Heart className="h-3.5 w-3.5 fill-current text-orange-400" />
-              <span className="text-slate-200">Seguro de vida descomplicado</span>
-            </div>
-
             {/* Título Principal com destaque em Laranja */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight">
               Mais que um seguro, um compromisso com o que mais importa: <span className="text-[#FF7A38]">a sua vida.</span>
@@ -64,18 +62,6 @@ export default function Hero() {
               />
             </div>
             
-            {/* Card de Status Flutuante Branco */}
-            <div className="absolute -bottom-6 right-2 sm:right-6 bg-white text-[#12312F] p-4 rounded-2xl shadow-xl border border-slate-100 flex items-start space-x-3 max-w-65">
-              <div className="bg-emerald-50 p-2 rounded-xl text-emerald-600 mt-0.5">
-                <div className="w-5 h-5 border-2 border-emerald-600 rounded-full flex items-center justify-center text-[10px] font-bold">✓</div>
-              </div>
-              <div>
-                <p className="text-xs text-slate-400">Sua proteção</p>
-                <p className="text-base font-bold text-[#12312F] leading-tight">Ativa</p>
-                <p className="text-[11px] text-slate-500 mt-1 leading-snug">Você e sua família protegidos hoje e sempre.</p>
-              </div>
-            </div>
-
           </div>
 
         </div>
