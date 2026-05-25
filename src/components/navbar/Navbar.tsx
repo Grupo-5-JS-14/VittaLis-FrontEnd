@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X, User, Lock } from "lucide-react";
+import { Link } from "react-router-dom"; // Garantindo a importação do Link
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,9 +19,9 @@ export default function Navbar() {
       <nav className="hidden lg:block w-full bg-white border-b border-slate-100 sticky top-0 z-50 font-['Poppins',sans-serif]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* Logo Vittalis */}
-            <a
-              href="/home"
+            {/* Logo Vittalis - Atualizado para Link */}
+            <Link
+              to="/home"
               className="flex items-center space-x-3 shrink-0 group cursor-pointer"
             >
               <div className="relative w-9 h-9 flex items-center justify-center transition-transform group-hover:scale-105">
@@ -47,57 +48,59 @@ export default function Navbar() {
                   Seguro de Vida
                 </span>
               </div>
-            </a>
+            </Link>
 
-            {/* Links */}
+            {/* Links Desktop - Atualizados para Link */}
             <div className="flex items-center space-x-8">
               {linksMenu.map((link, idx) => (
-                <a
+                <Link
                   key={idx}
-                  href={link.href}
+                  to={link.href}
                   className="text-sm font-semibold text-[#12312F]/90 hover:text-[#FF7A38] transition-colors"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
               {isLoggedIn && isAdmin && (
-                <a
-                  href="/admin"
+                <Link
+                  to="/admin"
                   className="text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors"
                 >
                   Painel ADM
-                </a>
+                </Link>
               )}
             </div>
 
-            {/* Botões */}
+            {/* Botões Desktop */}
             <div className="flex items-center space-x-4">
               {!isLoggedIn ? (
                 <>
-                  <a
-                    href="/login"
+                  <Link
+                    to="/login"
                     className="px-6 py-2.5 text-sm font-bold rounded-xl text-[#12312F] border-2 border-[#12312F] text-center"
                   >
                     Entrar
-                  </a>
-                  <button className="px-6 py-3 text-sm font-bold rounded-xl text-white bg-[#FF7A38]">
-                    Cotação rápida
-                  </button>
+                  </Link>
+                  <Link to="/simulacao">
+                    <button className="px-6 py-3 text-sm font-bold rounded-xl text-white bg-[#FF7A38] cursor-pointer">
+                      Cotação rápida
+                    </button>
+                  </Link>
                 </>
               ) : (
-                <a
-                  href="/perfil"
+                <Link
+                  to="/perfil"
                   className="px-6 py-3 text-sm font-bold rounded-xl text-white bg-[#12312F] text-center"
                 >
                   Meu Perfil
-                </a>
+                </Link>
               )}
             </div>
           </div>
         </div>
       </nav>
 
-   {/* Mobile */}
+      {/* Mobile - Menu de links expansível */}
       <div
         className={`lg:hidden fixed left-0 right-0 bg-white border-t border-slate-100 shadow-2xl z-40 transition-all duration-300 ease-in-out font-['Poppins',sans-serif] ${
           isOpen
@@ -107,34 +110,36 @@ export default function Navbar() {
       >
         <div className="px-6 py-6 space-y-1">
           {linksMenu.map((link, idx) => (
-            <a
+            <Link
               key={idx}
-              href={link.href}
+              to={link.href}
               onClick={() => setIsOpen(false)}
               className="block text-base font-bold text-[#12312F] hover:text-[#FF7A38] py-3 border-b border-slate-50 transition-colors"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
 
-          {/* Admin condicional dentro do menu expansível */}
+          {/* Admin condicional Mobile - Atualizado para Link */}
           {isLoggedIn && isAdmin && (
-            <a
-              href="/admin"
+            <Link
+              to="/admin"
               onClick={() => setIsOpen(false)}
               className="flex items-center space-x-2 text-base font-bold text-red-600 bg-red-50/60 px-3 py-3 rounded-xl transition-colors mt-3"
             >
               <Lock className="h-4 w-4" />
               <span>Painel ADM</span>
-            </a>
+            </Link>
           )}
         </div>
       </div>
 
-          <div className="lg:hidden fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-slate-100 z-50 px-6 flex items-center justify-between font-['Poppins',sans-serif]">
-        {/* Símbolo da Vittalis (Retorna para Home) */}
-        <a
-          href="/home"
+      {/* Barra Inferior Fixa (Mobile Bottom Navigation) */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-slate-100 z-50 px-6 flex items-center justify-between font-['Poppins',sans-serif]">
+        
+        {/* Símbolo da Vittalis - Atualizado para Link */}
+        <Link
+          to="/home"
           className="flex items-center justify-center p-2"
           aria-label="Ir para Home"
         >
@@ -154,18 +159,18 @@ export default function Navbar() {
               </svg>
             </div>
           </div>
-        </a>
+        </Link>
 
-        {/* Ícone do Usuário (Perfil ou Entrar) */}
-        <a
-          href={isLoggedIn ? "/perfil" : "/login"}
+        {/* Ícone do Usuário - Atualizado para Link */}
+        <Link
+          to={isLoggedIn ? "/perfil" : "/login"}
           className="p-2 text-[#12312F] hover:text-[#FF7A38] transition-colors"
           aria-label={isLoggedIn ? "Ver perfil" : "Ir para o login"}
         >
           <User className="h-6 w-6" />
-        </a>
+        </Link>
 
-        {/* Botão Hambúrguer (Abre o menu para cima) */}
+        {/* Botão Hambúrguer */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="text-[#12312F] hover:text-[#FF7A38] focus:outline-none p-2 transition-colors cursor-pointer"

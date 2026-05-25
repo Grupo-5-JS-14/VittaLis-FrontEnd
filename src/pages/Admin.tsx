@@ -146,7 +146,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-[#f5f7f7] flex">
       {/* SIDEBAR */}
 
-      <aside className="w-[270px] bg-gradient-to-b from-[#014d4e] to-[#012d2e] text-white flex flex-col justify-between p-5">
+      <aside className="w-67.5 bg-linear-to-b from-[#014d4e] to-[#012d2e] text-white flex flex-col justify-between p-5">
         <div>
           <div className="mb-10">
             <h1 className="text-3xl font-bold">VITTALIS</h1>
@@ -276,7 +276,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* CHART */}
-              <div className="h-[360px] w-full">
+              <div className="h-90 w-full">
 
                 <ResponsiveContainer width="100%" height="100%">
 
@@ -345,7 +345,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* CHART */}
-              <div className="h-[280px] w-full mb-8">
+              <div className="h-70 w-full mb-8">
 
                 <ResponsiveContainer width="100%" height="100%">
 
