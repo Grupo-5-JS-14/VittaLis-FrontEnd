@@ -7,6 +7,7 @@ import Footer from "./components/footer/Footer";
 import Home from "./pages/Home";
 import Perfil from "./pages/Perfil";
 import Login from "./pages/Login";
+import Cadastro from "./pages/Cadastro";
 //import Login from "./pages/Login";
 // import Cadastro from "./pages/Cadastro";
 // import ListaApolices from "./components/apolices/ListaApolices";
@@ -59,6 +60,10 @@ function App() {
 								<Route path="/beneficiarios" element={<RotaVazia />} />
 								<Route path="/fale-conosco" element={<RotaVazia />} />
 								<Route path="/configuracoes" element={<RotaVazia />} />
+								<Route
+							path="/cadastro"
+							element={<Cadastro />}
+						/>
 							{/*	<Route path="/cadastro" element={<Cadastro />} />
 								 />
 								<Route path="/cadastrarapolices" element={<FormApolice />} />
@@ -71,7 +76,25 @@ function App() {
 								*/}
 							</Routes> 
 					</div>
+
+
+						<Toaster
+					position="top-right"
+					richColors
+					closeButton
+					toastOptions={{
+						style: {
+							background: '#FFFFFF',
+							border: '1px solid #DCE7E3',
+							color: '#12312F',
+							borderRadius: '16px',
+							padding: '16px',
+						},
+					}}
+				/>
 					<Footer />
+
+
 				</BrowserRouter>
 			</AuthProvider>
 		</>

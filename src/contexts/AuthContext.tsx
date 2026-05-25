@@ -19,14 +19,20 @@ export const AuthContext = createContext<AuthContextProps>(
 )
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [usuario, setUsuario] = useState<UsuarioLogin>({
-    id: 0,
-    nome: '',
-    usuario: '',
-    senha: '',
-    foto: '',
-    token: '',
-  })
+  const usuarioSalvo = localStorage.getItem('usuario')
+
+  const [usuario, setUsuario] = useState<UsuarioLogin>(
+    usuarioSalvo
+      ? JSON.parse(usuarioSalvo)
+      : {
+          id: 0,
+          nome: '',
+          usuario: '',
+          senha: '',
+          foto: '',
+          token: '',
+        }
+  )
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -34,9 +40,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsLoading(true)
 
     try {
-      await login(`/usuarios/logar`, usuarioLogin, setUsuario)
+      await login(`/usuarios/logar`, usuarioLogin, (resposta: UsuarioLogin) => {
+        setUsuario(resposta)
+        localStorage.setItem('usuario', JSON.stringify(resposta))
+      })
+
       toast.success('Login realizado com sucesso!')
-      
     } catch (error) {
       toast.error('Usuário ou senha inválidos!')
     }
@@ -52,9 +61,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       senha: '',
       foto: '',
       token: '',
-      idade: 0,
-      dataCadastro: ''
     })
+
+    localStorage.removeItem('usuario')
 
     toast.success('Logout realizado!')
   }
@@ -65,7 +74,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         usuario,
         handleLogout,
         handleLogin,
-        isLoading
+        isLoading,
       }}
     >
       {children}

@@ -40,7 +40,7 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="flex flex-col select-none">
-                <span className="text-xl font-black text-[#12312F] tracking-wider leading-none uppercase group-hover:text-[#FF7A38] transition-colors">
+                <span className="text-xl font-black text-text tracking-wider leading-none uppercase group-hover:text-[#FF7A38] transition-colors">
                   Vittalis
                 </span>
                 <span className="text-[9px] font-bold text-slate-400 tracking-widest uppercase mt-0.5">
@@ -55,7 +55,7 @@ export default function Navbar() {
                 <a
                   key={idx}
                   href={link.href}
-                  className="text-sm font-semibold text-[#12312F]/90 hover:text-[#FF7A38] transition-colors"
+                  className="text-sm font-semibold text-text/90 hover:text-[#FF7A38] transition-colors"
                 >
                   {link.label}
                 </a>
@@ -76,7 +76,7 @@ export default function Navbar() {
                 <>
                   <a
                     href="/login"
-                    className="px-6 py-2.5 text-sm font-bold rounded-xl text-[#12312F] border-2 border-[#12312F] text-center"
+                    className="px-6 py-2.5 text-sm font-bold rounded-xl text-text border-2 border-text text-center"
                   >
                     Entrar
                   </a>
@@ -87,7 +87,7 @@ export default function Navbar() {
               ) : (
                 <a
                   href="/perfil"
-                  className="px-6 py-3 text-sm font-bold rounded-xl text-white bg-[#12312F] text-center"
+                  className="px-6 py-3 text-sm font-bold rounded-xl text-white bg-text text-center"
                 >
                   Meu Perfil
                 </a>
@@ -111,7 +111,7 @@ export default function Navbar() {
               key={idx}
               href={link.href}
               onClick={() => setIsOpen(false)}
-              className="block text-base font-bold text-[#12312F] hover:text-[#FF7A38] py-3 border-b border-slate-50 transition-colors"
+              className="block text-base font-bold text-text hover:text-[#FF7A38] py-3 border-b border-slate-50 transition-colors"
             >
               {link.label}
             </a>
@@ -159,7 +159,7 @@ export default function Navbar() {
         {/* Ícone do Usuário (Perfil ou Entrar) */}
         <a
           href={isLoggedIn ? "/perfil" : "/login"}
-          className="p-2 text-[#12312F] hover:text-[#FF7A38] transition-colors"
+          className="p-2 text-text hover:text-[#FF7A38] transition-colors"
           aria-label={isLoggedIn ? "Ver perfil" : "Ir para o login"}
         >
           <User className="h-6 w-6" />
@@ -168,7 +168,7 @@ export default function Navbar() {
         {/* Botão Hambúrguer (Abre o menu para cima) */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-[#12312F] hover:text-[#FF7A38] focus:outline-none p-2 transition-colors cursor-pointer"
+          className="text-text hover:text-[#FF7A38] focus:outline-none p-2 transition-colors cursor-pointer"
         >
           {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>

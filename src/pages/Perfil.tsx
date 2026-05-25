@@ -4,12 +4,15 @@ import {
   IconCurrencyReal as CircleDollarSign,
   IconShield as Shield,
 } from "@tabler/icons-react";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
+
 import BarraLateral from "../components/perfil/BarraLateral";
 import CardAjuda from "../components/perfil/CardAjuda";
 import CardsResumo from "../components/perfil/CardsResumo";
 import FiltrosApolices from "../components/perfil/FiltrosApolices";
 import TabelaApolices from "../components/perfil/TabelaApolices";
+import { AuthContext } from "../contexts/AuthContext";
+
 import type {
   ApolicePerfil,
   ItemCardResumo,
@@ -84,6 +87,8 @@ function Perfil() {
   const [tipoSelecionado, setTipoSelecionado] = useState("Todos");
   const [statusSelecionado, setStatusSelecionado] = useState("Todos");
 
+  const { usuario } = useContext(AuthContext);
+
   const apolicesFiltradas = useMemo(() => {
     const buscaNormalizada = busca.trim().toLowerCase();
 
@@ -112,6 +117,31 @@ function Perfil() {
 
         <main className="flex-1 px-8 pt-8 pb-10">
           <section>
+            <div className="mb-8 flex items-center gap-4 rounded-[28px] border border-[#e5e7eb] bg-white p-5 shadow-sm">
+              <img
+                src={
+                  usuario.foto ||
+                  "https://i.pinimg.com/736x/fe/6d/c3/fe6dc31f5d5f3463c9fbd7b4c5c9bca3.jpg"
+                }
+                alt={usuario.nome}
+                className="h-16 w-16 rounded-full object-cover"
+              />
+
+              <div>
+                <p className="text-sm text-[#647b78]">
+                  Bem-vinda de volta,
+                </p>
+
+                <h2 className="text-2xl font-semibold text-[#005b5b]">
+                  {usuario.nome || "Usuário"}
+                </h2>
+
+                <p className="text-sm text-[#647b78]">
+                  {usuario.usuario}
+                </p>
+              </div>
+            </div>
+
             <div className="mb-6">
               <h1 className="text-4xl font-poppins font-semibold text-[#005b5b] md:text-4xl">
                 Minhas apólices
@@ -123,6 +153,7 @@ function Perfil() {
             </div>
 
             <CardsResumo cards={cardsResumo} />
+
             <FiltrosApolices
               busca={busca}
               setBusca={setBusca}
@@ -131,7 +162,9 @@ function Perfil() {
               statusSelecionado={statusSelecionado}
               setStatusSelecionado={setStatusSelecionado}
             />
+
             <TabelaApolices apolices={apolicesFiltradas} />
+
             <CardAjuda />
           </section>
         </main>
