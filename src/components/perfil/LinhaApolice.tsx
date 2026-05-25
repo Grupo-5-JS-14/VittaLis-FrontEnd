@@ -20,11 +20,11 @@ function LinhaApolice({ apolice }: LinhaApoliceProps) {
     <article className="p-5">
       <div className="grid gap-4 xl:grid-cols-[2.4fr_1.45fr_1fr_1fr_1fr_1fr_150px] xl:items-center">
         <div className="flex items-center gap-4">
-          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#e9f4f2] text-[#12312F]">
+          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#e9f4f2] text-#12312F">
             <Shield size={23} />
           </div>
           <div>
-            <p className="text-sm font-extrabold text-[#12312F]">
+            <p className="text-sm font-extrabold text-#12312F">
               {apolice.id}
             </p>
             <p className="mt-1 text-xs text-[#647b78]">{apolice.type}</p>
@@ -54,13 +54,13 @@ function LinhaApolice({ apolice }: LinhaApoliceProps) {
           </p>
         </div>
         <p className="text-sm text-[#526865] xl:text-center">
-          <span className="mr-2 font-bold text-[#12312F] xl:hidden">
+          <span className="mr-2 font-bold text-#12312F xl:hidden">
             Cobertura:
           </span>
           {apolice.coverage}
         </p>
         <div className="xl:text-center">
-          <span className="mr-2 font-bold text-[#12312F] xl:hidden">
+          <span className="mr-2 font-bold text-#12312F xl:hidden">
             Status:
           </span>
           <span
@@ -73,7 +73,7 @@ function LinhaApolice({ apolice }: LinhaApoliceProps) {
         <button
           type="button"
           onClick={() => navigate(`/apolices/${apolice.id}`)}
-          className="flex h-9 w-full items-center justify-center gap-2 rounded-md border border-[#12312F] px-3 text-xs font-bold text-[#12312F] transition hover:bg-[#eef7f5]"
+          className="flex h-9 w-full items-center justify-center gap-2 rounded-md border border-#12312F px-3 text-xs font-bold text-#12312F transition hover:bg-[#eef7f5]"
         >
           Ver detalhes
           <ChevronRight size={15} />

@@ -47,7 +47,7 @@ function FiltrosApolices({
     <div className="mt-6 rounded-md border border-[#dde8e5] bg-white p-4 shadow-[0_12px_30px_rgba(0,91,91,0.05)]">
       <div className="grid gap-4 lg:grid-cols-[1fr_220px_220px_auto]">
         <label className="flex h-11 items-center gap-3 rounded-md border border-[#d9e5e2] px-4 text-sm text-[#647b78]">
-          <Search size={18} className="text-[#12312F]" />
+          <Search size={18} className="text-#12312F" />
           <input
             value={busca}
             onChange={(event) => setBusca(event.target.value)}
@@ -135,7 +135,7 @@ function FiltrosApolices({
         <button
           type="button"
           onClick={limparFiltros}
-          className="flex h-11 items-center justify-center gap-3 rounded-md border border-[#12312F] px-5 text-sm font-bold text-[#005b5b] transition hover:bg-[#eef7f5]"
+          className="flex h-11 items-center justify-center gap-3 rounded-md border border-#12312F px-5 text-sm font-bold text-[#005b5b] transition hover:bg-[#eef7f5]"
         >
           Limpar filtros
           <Filter size={17} />

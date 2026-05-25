@@ -4,7 +4,7 @@ function CardAjuda() {
   return (
     <div className="mt-7 flex flex-col gap-4 rounded-md bg-[#eaf5f3] px-6 py-6 md:flex-row md:items-center md:justify-between">
       <div className="flex items-center gap-5">
-        <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-[#d6ebe8] text-[#12312F]">
+        <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-[#d6ebe8] text-#12312F">
           <Headphones size={34} fill="#005b5b" />
         </div>
         <div>
@@ -17,7 +17,7 @@ function CardAjuda() {
         </div>
       </div>
 
-      <button className="h-12 rounded-md bg-[#12312F] px-8 text-sm font-bold text-white transition hover:bg-[#004747]">
+      <button className="h-12 rounded-md bg-#12312F px-8 text-sm font-bold text-white transition hover:bg-#004747">
         Fale com um especialista
       </button>
     </div>

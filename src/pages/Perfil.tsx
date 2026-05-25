@@ -24,102 +24,123 @@ import { buscar } from "../services/Service";
 
 function Perfil() {
   const [busca, setBusca] = useState("");
-
   const [tipoSelecionado, setTipoSelecionado] = useState("Todos");
-
   const [statusSelecionado, setStatusSelecionado] = useState("Todos");
-
   const [apolices, setApolices] = useState<ApolicePerfil[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { usuario } = useContext(AuthContext);
 
+  const tokenRaw = usuario?.token || usuario?.acesso || "";
+
+  const tokenFormatado = tokenRaw.startsWith("Bearer ")
+    ? tokenRaw
+    : `Bearer ${tokenRaw}`;
+
   const header = {
     headers: {
-      Authorization: `Bearer ${usuario.token}`,
+      Authorization: tokenFormatado,
     },
   };
 
+  function formatarData(data: string) {
+    if (!data) return "Sem data";
+
+    return new Date(data).toLocaleDateString("pt-BR");
+  }
+
+  function formatarValor(valor: number) {
+    return Number(valor || 0).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+  }
+
+  function verificarStatus(status: any) {
+    return status === true || status === "ATIVA" || status === "Ativa";
+  }
+
   async function buscarApolices() {
+    if (!tokenRaw) {
+      console.log("Token não encontrado no Perfil.");
+      return;
+    }
+
     try {
-      const resposta: any = await buscar(
-        `/apolices/all`,
-        setApolices,
+      setIsLoading(true);
+
+      await buscar(
+        "/apolices/all",
+        (resposta: any[]) => {
+          console.log("APÓLICES DO BACK:", resposta);
+          console.log("USUÁRIO LOGADO:", usuario);
+
+          const lista = Array.isArray(resposta) ? resposta : [];
+
+          const apolicesDoUsuario = lista.filter((apolice: any) => {
+            return apolice.usuario?.id === usuario.id;
+          });
+
+          const apolicesFormatadas: ApolicePerfil[] = apolicesDoUsuario.map(
+            (apolice: any) => {
+              const statusAtivo = verificarStatus(apolice.status);
+
+              return {
+                id: `VIT-${String(apolice.id).padStart(8, "0")}`,
+                type: apolice.plano?.nome || "Plano contratado",
+                hiredAt: formatarData(apolice.dataContratacao),
+                dueAt: apolice.dataVencimento
+                  ? formatarData(apolice.dataVencimento)
+                  : "Em vigência",
+                dueNote: statusAtivo ? "Apólice ativa" : "Cancelada",
+                coverage: formatarValor(apolice.valorFinal),
+                status: statusAtivo,
+                overdue: !statusAtivo,
+              };
+            }
+          );
+
+          setApolices(apolicesFormatadas);
+        },
         header
       );
-
-      const apolicesFormatadas: ApolicePerfil[] = resposta.map(
-        (apolice: any) => ({
-          id: apolice.id?.toString(),
-          type: apolice.plano?.nome || "Plano",
-          hiredAt: apolice.dataContratacao || "Sem data",
-          dueAt: apolice.dataVencimento || "Sem data",
-          dueNote: apolice.ativa ? "Ativa" : "Vencida",
-          coverage: `R$ ${Number(apolice.valorCobertura || 0)
-            .toFixed(2)
-            .replace(".", ",")}`,
-          status: apolice.ativa,
-          overdue: !apolice.ativa,
-        })
-      );
-
-      setApolices(apolicesFormatadas);
-    } catch (error) {
-      console.error("Erro ao buscar apólices:", error);
+    } catch (error: any) {
+      console.error("Erro ao buscar apólices:", error.response?.data || error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    if (usuario.token !== "") {
+    if (tokenRaw) {
       buscarApolices();
     }
-  }, [usuario]);
+  }, [tokenRaw, usuario.id]);
 
   const cardsResumo: ItemCardResumo[] = [
     {
       label: "Apólices ativas",
-
-      value: apolices
-        .filter((a) => a.status)
-        .length
-        .toString(),
-
+      value: apolices.filter((a) => a.status).length.toString(),
       note: "Total contratado",
-
       icon: Shield,
-
       tone: "text-[#005b5b] bg-[#e9f4f2]",
     },
-
     {
       label: "Apólices em análise",
-
       value: "0",
-
       note: "Aguardando aprovação",
-
       icon: ClipboardList,
-
       tone: "text-[#005b5b] bg-[#e9f4f2]",
     },
-
     {
       label: "Apólices vencidas",
-
-      value: apolices
-        .filter((a) => !a.status)
-        .length
-        .toString(),
-
+      value: apolices.filter((a) => !a.status).length.toString(),
       note: "Total vencidas",
-
       icon: CalendarDays,
-
       tone: "text-[#ff6f2c] bg-[#fff1e9]",
     },
-
     {
       label: "Valor total de cobertura",
-
       value: `R$ ${apolices
         .reduce((acc, apolice) => {
           const valor = Number(
@@ -127,20 +148,18 @@ function Perfil() {
               .replace("R$", "")
               .replace(/\./g, "")
               .replace(",", ".")
+              .trim()
           );
 
           return acc + valor;
         }, 0)
         .toLocaleString("pt-BR", {
           minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
         })}`,
-
       note: "Em apólices ativas",
-
       icon: CircleDollarSign,
-
       tone: "text-[#005b5b] bg-[#e9f4f2]",
-
       wide: true,
     },
   ];
@@ -179,22 +198,18 @@ function Perfil() {
                   usuario.foto ||
                   "https://i.pinimg.com/736x/fe/6d/c3/fe6dc31f5d5f3463c9fbd7b4c5c9bca3.jpg"
                 }
-                alt={usuario.nome}
+                alt={usuario.nome || "Usuário"}
                 className="h-16 w-16 rounded-full object-cover"
               />
 
               <div>
-                <p className="text-sm text-[#647b78]">
-                  Bem-vinda de volta,
-                </p>
+                <p className="text-sm text-[#647b78]">Bem-vindo de volta,</p>
 
                 <h2 className="text-2xl font-semibold text-[#005b5b]">
                   {usuario.nome || "Usuário"}
                 </h2>
 
-                <p className="text-sm text-[#647b78]">
-                  {usuario.usuario}
-                </p>
+                <p className="text-sm text-[#647b78]">{usuario.usuario}</p>
               </div>
             </div>
 
@@ -219,7 +234,13 @@ function Perfil() {
               setStatusSelecionado={setStatusSelecionado}
             />
 
-            <TabelaApolices apolices={apolicesFiltradas} />
+            {isLoading ? (
+              <p className="mt-8 text-center text-sm text-[#647b78]">
+                Carregando apólices...
+              </p>
+            ) : (
+              <TabelaApolices apolices={apolicesFiltradas} />
+            )}
 
             <CardAjuda />
           </section>

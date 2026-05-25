@@ -1,18 +1,8 @@
 import { useContext, useState } from "react";
-
+import { cadastrar } from "../../services/Service";
 import type Plano from "../../models/Plano";
 import ModalPlano from "./ModalPlano";
 import { AuthContext } from "../../contexts/AuthContext";
-
-/*
-  QUANDO A ROTA DE APÓLICES ESTIVER FUNCIONANDO:
-
-  1. Descomente esse import:
-
-  import { cadastrar } from "../../services/Service";
-
-  2. Dentro da função contratarPlano(), descomente o bloco indicado.
-*/
 
 interface CardPlanoProps {
   plano: Plano;
@@ -26,7 +16,6 @@ function CardPlano({
   plano,
   buscarPlanos,
   isAdmin,
-  token,
   tipoCobranca,
 }: CardPlanoProps) {
   const auth = useContext(AuthContext) as any;
@@ -34,24 +23,31 @@ function CardPlano({
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const tokenRaw = usuario?.token || usuario?.acesso || "";
+
+  const tokenFormatado = tokenRaw.startsWith("Bearer ")
+    ? tokenRaw
+    : `Bearer ${tokenRaw}`;
+
   const valorMensal = Number(plano.valor || 0);
 
   const valor =
-    tipoCobranca === "anual" ? valorMensal * 12 * 0.9 : valorMensal;
+    tipoCobranca === "anual"
+      ? valorMensal * 12 * 0.9
+      : valorMensal;
 
   const valorFormatado = valor.toFixed(2).replace(".", ",");
 
   const valorMensalEquivalente =
     tipoCobranca === "anual" ? valor / 12 : valorMensal;
 
-  const valorMensalEquivalenteFormatado = valorMensalEquivalente
-    .toFixed(2)
-    .replace(".", ",");
+  const valorMensalEquivalenteFormatado =
+    valorMensalEquivalente.toFixed(2).replace(".", ",");
 
   async function contratarPlano() {
     if (isLoading) return;
 
-    if (!token) {
+    if (!tokenRaw) {
       alert("Você precisa estar logado para contratar um plano.");
       return;
     }
@@ -69,42 +65,40 @@ function CardPlano({
     try {
       setIsLoading(true);
 
-      /*
-        qnd estiver pronto os componentes de apólice, descomente o bloco abaixo !!!
+      const header = {
+        headers: {
+          Authorization: tokenFormatado,
+        },
+      };
 
-        import { cadastrar } from "../../services/Service";
+      const novaApolice = {
+      usuario: {
+        id: usuario.id,
+      },
+      plano: {
+        id: plano.id,
+      },
+};
 
-        e substitua o alert temporário pelo bloco abaixo:
+      console.log("USUARIO:", usuario);
+      console.log("TOKEN FORMATADO:", tokenFormatado);
+      console.log("BODY:", novaApolice);
 
+      await cadastrar(
+        "/apolices/cadastrar",
+        novaApolice,
+        () => {},
+        header
+      );
 
-        const tokenFormatado = token.startsWith("Bearer ")
-          ? token
-          : `Bearer ${token}`;
-
-        const novaApolice = {
-          usuario: {
-            id: usuario.id,
-          },
-          plano: {
-            id: plano.id,
-          },
-        };
-
-        await cadastrar("/apolices/cadastrar", novaApolice, () => {}, {
-          headers: {
-            Authorization: tokenFormatado,
-          },
-        });
-
-        alert("Plano contratado com sucesso!");
-      */
+      alert("Plano contratado com sucesso!");
+    } catch (error: any) {
+      console.error("Erro completo:", error.response?.data || error);
 
       alert(
-        `Plano ${plano.nome} selecionado! A contratação da apólice será ativada quando a funcionalidade estiver pronta.`
+        error.response?.data?.message ||
+          "Erro ao contratar plano."
       );
-    } catch (error) {
-      console.error("Erro ao contratar plano:", error);
-      alert("Erro ao contratar plano.");
     } finally {
       setIsLoading(false);
     }
@@ -150,14 +144,14 @@ function CardPlano({
             tipo="editar"
             plano={plano}
             buscarPlanos={buscarPlanos}
-            token={token}
+            token={tokenRaw}
           />
 
           <ModalPlano
             tipo="deletar"
             plano={plano}
             buscarPlanos={buscarPlanos}
-            token={token}
+            token={tokenRaw}
           />
         </div>
       ) : (
