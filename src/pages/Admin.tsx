@@ -1,4 +1,5 @@
 import { Bell, Shield, FileText, CreditCard, Users, LogOut, Menu, TrendingUp, TrendingDown, } from "lucide-react";
+import { useEffect, useState } from "react";
 import { ResponsiveContainer, LineChart, Line, Tooltip, CartesianGrid, XAxis, YAxis, BarChart, Bar, Legend, } from "recharts";
 
 const apolices = [
@@ -58,55 +59,37 @@ const apolices = [
   }
 ];
 
-const totalGeral = apolices.reduce(
-  (acc, item) => acc + item.valor,
-  0
-);
-
-const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-
-const lineData = meses.map((mes, index) => ({
-  month: mes,
-  apolices: apolices.filter(item => Number(item.data.split("/")[1]) - 1 === index).length,
-  novas: apolices
-    .filter(item => Number(item.data.split("/")[1]) - 1 === index)
-    .reduce((acc, item) => acc + item.valor, 0)
-}));
-
-const tipos = [...new Set(apolices.map(item => item.tipo))];
-
-const pieData = meses.map((mes, index) => {
-  const apoliceMes = apolices.filter(item => Number(item.data.split("/")[1]) - 1 === index);
-
-  const data: Record<string, number | string> = {
-    month: mes
-  };
-
-  tipos.forEach(tipo => {
-
-    data[tipo] = apoliceMes.filter(item => item.tipo === tipo).reduce((acc, item) => acc + item.valor, 0);
-  })
-
-  return data;
-
-});
-
-const clientesAtivos = apolices.filter(
-  item => item.status === "Ativa"
-);
-
-const clientesInativos = apolices.filter(
-  item => item.status !== "Ativa"
-);
-
-const valorInativos = clientesInativos.reduce((acc, item) => acc + item.valor, 0)
-
-const valorAtivos = totalGeral - valorInativos
-
 
 const data = new Date();
 
 const dataDiara = data.toLocaleDateString("pt-BR");
+
+// BUSCADOR DE DATA
+
+
+function converterData(dataBR: string) {
+  const [dia, mes, ano] = dataBR.split("/");
+
+  return new Date(`${ano}-${mes}-${dia}`);
+}
+
+const datasConvertidas = apolices.map(item =>
+  converterData(item.data)
+);
+
+
+const menorData = new Date(
+  Math.min(...datasConvertidas.map(data => data.getTime()))
+);
+
+const maiorData = new Date(
+  Math.max(...datasConvertidas.map(data => data.getTime()))
+);
+
+function formatarInputDate(data: Date) {
+  return data.toISOString().split("T")[0];
+}
+
 
 function StatsCard({ title, value, percentage, positive = true, icon, }: any) {
   return (
@@ -142,49 +125,166 @@ function StatsCard({ title, value, percentage, positive = true, icon, }: any) {
 }
 
 export default function AdminDashboard() {
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  
+  const [ativo, setAtivo] = useState<string | null>(null);
+  
+  useEffect(() => {
+    
+  if (sidebarOpen) {
+
+    setIsVisible(true)
+
+  setTimeout(() => {
+    setIsAnimating(true)
+  }, 20)
+
+} else {
+  
+  setIsAnimating(false)
+  
+    setTimeout(() => {
+      setIsVisible(false)
+    }, 300)
+
+  }
+
+}, [sidebarOpen])
+
+const [dataInicial, setDataInicial] = useState(
+  formatarInputDate(menorData)
+);
+const [dataFinal, setDataFinal] = useState(
+  formatarInputDate(maiorData)
+);
+
+const apolicesFiltradas = apolices.filter((item) => {
+  if (!dataInicial || !dataFinal) {
+    return true;
+  }
+  const dataItem = converterData(item.data);
+  
   return (
-    <div className="min-h-screen bg-[#f5f7f7] flex">
+    dataItem >= new Date(dataInicial) &&
+    dataItem <= new Date(dataFinal)
+  );
+});
+
+const totalGeral = apolicesFiltradas.reduce(
+  (acc, item) => acc + item.valor,
+  0
+);
+
+
+const clientesAtivos = apolicesFiltradas.filter(
+  item => item.status === "Ativa"
+);
+
+const clientesInativos = apolicesFiltradas.filter(
+  item => item.status !== "Ativa"
+);
+
+const valorInativos = clientesInativos.reduce((acc, item) => acc + item.valor, 0)
+
+const valorAtivos = totalGeral - valorInativos
+
+const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+
+const [isVisible, setIsVisible] = useState(false)
+const [isAnimating, setIsAnimating] = useState(false)
+
+const lineData = meses.map((mes, index) => ({
+  month: mes,
+  apolices: apolicesFiltradas.filter(item => Number(item.data.split("/")[1]) - 1 === index).length,
+  Valor: apolicesFiltradas
+  .filter(item => Number(item.data.split("/")[1]) - 1 === index)
+    .reduce((acc, item) => acc + item.valor, 0)
+}));
+
+const tipos = [...new Set(apolices.map(item => item.tipo))];
+
+const pieData = meses.map((mes, index) => {
+  const apoliceMes = apolicesFiltradas.filter(item => Number(item.data.split("/")[1]) - 1 === index);
+
+  const data: Record<string, number | string> = {
+    month: mes
+  };
+  
+  tipos.forEach(tipo => {
+    
+    data[tipo] = apoliceMes.filter(item => item.tipo === tipo).reduce((acc, item) => acc + item.valor, 0);
+  })
+  
+  return data;
+  
+});
+
+return (
+  <div className="min-h-screen bg-[#f5f7f7] flex">
       {/* SIDEBAR */}
 
-      <aside className="w-67.5 bg-linear-to-b from-[#014d4e] to-[#012d2e] text-white flex flex-col justify-between p-5">
-        <div>
-          <div className="mb-10">
-            <h1 className="text-3xl font-bold">VITTALIS</h1>
-            <p className="text-zinc-300 text-sm">Seguro de Vida</p>
+      {isVisible && (
+
+  <aside
+    className={`overflow-hidden p-6 transition-all duration-700 ease-in-out will-change-[width,opacity,transform] text-white bg-linear-to-b from-[#014d4e] to-[#012d2e]
+      ${isAnimating ? "w-67.5 opacity-100" : "w-0 opacity-0"}`}>
+  <div>
+
+    {/* LOGO */}
+
+    <div
+      className={`mb-15 transition-all duration-500`}>
+      <h1 className="text-3xl font-bold whitespace-nowrap">
+        VITTALIS
+      </h1>
+      <p className="text-zinc-300 text-sm whitespace-nowrap">
+        Seguro de Vida
+      </p>
+
+    </div>
+
+    {/* NAV */}
+
+    <nav className="space-y-1">
+
+      {[
+        "Dashboard",
+        "Clientes",
+        "Apólices",
+      ].map((item) => (
+
+        <button key={item} className={`w-full flex items-center gap-5 px-4 py-3 rounded-xl transition-all duration-300 
+          hover:cursor-pointer hover:scale-[1.02]
+          ${item === "Dashboard"
+              ? "bg-white/10"
+              : "hover:bg-white/5"
+            }
+            `}>
+
+          <div className="min-w-5">
+            <Shield size={18} />
           </div>
 
-          <nav className="space-y-2">
-            {[
-              "Dashboard",
-              "Clientes",
-              "Apólices",
-            ].map((item) => (
-              <button
-                key={item}
-                className={`w-full flex items-center gap-5 px-4 py-3 rounded-xl transition-all hover: cursor-pointer
-                ${item === "Dashboard"
-                    ? "bg-white/10"
-                    : "hover:bg-white/5"
-                  }`}
-              >
-                <div className="w-5 h-5">
-                  <Shield size={18} />
-                </div>
+          <span className="whitespace-nowrap">
+            {item}
+          </span>
 
-                {item}
-              </button>
-            ))}
-          </nav>
-        </div>
+        </button>
 
+      ))}
+    </nav>
+  </div>
         <div>
-
-          <button className="flex items-center gap-2 text-zinc-300 hover:text-white">
+          <button className="mt-25 bg-orange-500/60 w-full flex items-center gap-3 px-5 py-4 rounded-xl transition-all duration-300
+          hover:bg-orange-500 hover: cursor-pointer">
             <LogOut size={18} />
             Sair
           </button>
         </div>
-      </aside>
+</aside>
+      )}
 
       {/* CONTENT */}
 
@@ -193,8 +293,9 @@ export default function AdminDashboard() {
 
         <header className="h-20 bg-white border-b border-zinc-200 px-8 flex items-center justify-between">
           <div className="flex items-center gap-5">
-            <Menu />
-
+            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="hover:cursor-pointer">
+              <Menu />
+            </button>
             <h2 className="text-2xl font-semibold text-zinc-700">
               Painel administrativo
             </h2>
@@ -232,21 +333,29 @@ export default function AdminDashboard() {
               </p>
             </div>
 
-            <div className="flex gap-4">
-              <button className="border border-zinc-300 px-5 py-3 rounded-xl bg-white">
-                01/05/2024 - 31/05/2024
-              </button>
+              <div className="flex gap-4">
 
-              <button className="bg-[#014d4e] text-white px-5 py-3 rounded-xl hover:opacity-90 transition">
-                Exportar relatório
-              </button>
-            </div>
+                <input
+                  type="date"
+                  value={dataInicial}
+                  onChange={(e) => setDataInicial(e.target.value)}
+                  className="border border-zinc-300 px-4 py-2 rounded-xl"
+                />
+
+                <input
+                  type="date"
+                  value={dataFinal}
+                  onChange={(e) => setDataFinal(e.target.value)}
+                  className="border border-zinc-300 px-4 py-2 rounded-xl"
+                />
+
+              </div>
           </div>
 
           {/* CARDS */}
 
           <div className="grid grid-cols-4 gap-5 mb-6">
-            <StatsCard title="Clientes ativos" value={apolices.length} percentage="8,2%" positive icon={<Users />} />
+            <StatsCard title="Registro de Clientes" value={apolicesFiltradas.length} percentage="8,2%" positive icon={<Users />} />
 
             <StatsCard title="Apólices ativas" value={clientesAtivos.length} percentage="7,5%" positive icon={<Shield />} />
 
@@ -257,7 +366,7 @@ export default function AdminDashboard() {
 
           {/* GRÁFICOS */}
 
-          <div className="grid grid-cols-1 xl:grid-cols-[1.7fr_1fr] gap-5 mb-9">
+          <div className="grid grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-5 mb-9">
 
             {/* VISÃO GERAL */}
             <div className="bg-white rounded-2xl border border-zinc-200 p-6 flex flex-col min-w-0">
@@ -270,7 +379,7 @@ export default function AdminDashboard() {
                 </h2>
 
                 <button className="border border-zinc-300 px-4 py-2 rounded-lg text-sm hover:bg-zinc-50 transition">
-                  Últimos 6 meses
+                  Últimos 12 meses
                 </button>
 
               </div>
@@ -280,50 +389,22 @@ export default function AdminDashboard() {
 
                 <ResponsiveContainer width="100%" height="100%">
 
-                  <BarChart
-                    data={lineData}
-                    margin={{
-                      top: 10,
-                      right: 10,
-                      left: -10,
-                      bottom: 0
-                    }}
-                    barGap={6}
-                    barCategoryGap="18%"
-                  >
+                  <BarChart data={lineData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }} barGap={6} barCategoryGap="18%">
 
                     <CartesianGrid strokeDasharray="3 3" />
 
-                    <XAxis
-                      dataKey="month"
-                      tickMargin={10}
-                    />
+                    <XAxis dataKey="month" tickMargin={10} />
 
                     <YAxis yAxisId="left" />
 
-                    <YAxis
-                      yAxisId="right"
-                      orientation="right"
-                    />
+                    <YAxis yAxisId="right" orientation="right" />
 
                     <Tooltip />
-                    <Legend />
+                    <Legend  />
 
-                    <Bar
-                      yAxisId="left"
-                      dataKey="apolices"
-                      fill="#014d4e"
-                      radius={[8, 8, 0, 0]}
-                      barSize={18}
-                    />
+                    <Bar yAxisId="left" dataKey="apolices" fill="#014d4e" radius={[8, 8, 0, 0]} barSize={18} />
 
-                    <Bar
-                      yAxisId="right"
-                      dataKey="novas"
-                      fill="#ff8a3d"
-                      radius={[8, 8, 0, 0]}
-                      barSize={18}
-                    />
+                    <Bar yAxisId="right" dataKey="Valor" fill="#ff8a3d" radius={[8, 8, 0, 0]} barSize={18} />
 
                   </BarChart>
 
@@ -333,10 +414,10 @@ export default function AdminDashboard() {
             </div>
 
             {/* DISTRIBUIÇÃO */}
-            <div className="bg-white rounded-2xl border border-zinc-200 p-6 flex flex-col min-w-0">
+            <div className="bg-white rounded-2xl border border-zinc-200 p-7 flex flex-col min-w-0">
 
               {/* HEADER */}
-              <div className="mb-6">
+              <div className="mb-9">
 
                 <h2 className="text-2xl font-semibold text-zinc-800">
                   Distribuição
@@ -345,31 +426,21 @@ export default function AdminDashboard() {
               </div>
 
               {/* CHART */}
-              <div className="h-70 w-full mb-8">
+              <div className="h-70 w-full mb-1">
 
                 <ResponsiveContainer width="100%" height="100%">
 
-                  <LineChart
-                    data={pieData}
-                    margin={{
-                      top: 5,
-                      right: 10,
-                      left: -20,
-                      bottom: 0
-                    }}
-                  >
+                  <LineChart data={pieData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
 
                     <CartesianGrid strokeDasharray="3 3" />
 
-                    <XAxis
-                      dataKey="month"
-                      tickMargin={8}
-                    />
+                    <XAxis dataKey="month" tickMargin={8} />
 
                     <YAxis />
 
                     <Tooltip />
-                    <Legend />
+                    
+                    
 
                     {tipos.map((tipo, index) => (
 
@@ -386,6 +457,12 @@ export default function AdminDashboard() {
                         strokeWidth={3}
                         dot={{ r: 2 }}
                         activeDot={{ r: 5 }}
+
+                        opacity={
+                          ativo === null ? 1 : ativo === tipo ? 1 : 0.2
+                        }
+
+                        style={{transition: "all 0.2s ease"}}
                       />
 
                     ))}
@@ -397,7 +474,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* LEGENDA */}
-              <div className="space-y-5 mt-auto">
+              <div className="space-y-2 mt-2 p-10">
 
                 {tipos.map((tipo, index) => (
 
@@ -406,7 +483,7 @@ export default function AdminDashboard() {
                     className="flex items-center justify-between"
                   >
 
-                    <div className="flex items-center gap-3">
+                    <div onClick={() => setAtivo(ativo === tipo ? null : tipo)} className={`flex items-center gap-3 hover: cursor-pointer transition-opacity duration-100 ${ativo === null ? "opacity-100" : ativo === tipo ? "opacity-100" : "opacity-40"}`}>
 
                       <div
                         className="w-3 h-3 rounded-full"
@@ -430,7 +507,7 @@ export default function AdminDashboard() {
 
                       {(
                         (
-                          apolices
+                          apolicesFiltradas
                             .filter(item => item.tipo === tipo)
                             .reduce((acc, item) => acc + item.valor, 0)
                           / totalGeral
