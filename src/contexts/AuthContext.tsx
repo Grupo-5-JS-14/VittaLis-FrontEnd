@@ -1,99 +1,83 @@
-import {createContext, useState, type ReactNode} from "react"
-import { toast } from "sonner"
-import { login } from "../services/Service"
-import type UsuarioLogin from "../models/UsuarioLogin"
+import { createContext, useState, type ReactNode } from 'react'
+import { toast } from 'sonner'
+import { login } from '../services/Service'
+import type UsuarioLogin from '../models/UsuarioLogin'
 
 interface AuthContextProps {
-    usuario: UsuarioLogin
-    handleLogout(): void
-    handleLogin(usuario: UsuarioLogin): Promise<void>
-    isLoading: boolean
+  usuario: UsuarioLogin
+  handleLogout(): void
+  handleLogin(usuario: UsuarioLogin): Promise<void>
+  isLoading: boolean
 }
 
 interface AuthProviderProps {
-    children: ReactNode
+  children: ReactNode
 }
 
-export const AuthContext =
-    createContext<AuthContextProps>(
-        {} as AuthContextProps
-    )
+export const AuthContext = createContext<AuthContextProps>(
+  {} as AuthContextProps
+)
 
-export function AuthProvider({
-    children
-}: AuthProviderProps) {
+export function AuthProvider({ children }: AuthProviderProps) {
+  const usuarioSalvo = localStorage.getItem('usuario')
 
-    const [usuario, setUsuario] =
-        useState<UsuarioLogin>({
-            id: 0,
-            nome: "",
-            usuario: "",
-            senha: "",
-            foto: "",
-            token: ""
-        })
-
-    const [isLoading, setIsLoading] =
-        useState(false)
-
-    async function handleLogin(
-        usuarioLogin: UsuarioLogin
-    ) {
-
-        setIsLoading(true)
-
-        try {
-
-            await login(
-                `/usuarios/logar`,
-                usuarioLogin,
-                setUsuario
-            )
-
-            toast.success(
-                "Login realizado com sucesso!"
-            )
-
-        } catch (error) {
-
-            toast.error(
-                "Usuário ou senha inválidos!"
-            )
-
+  const [usuario, setUsuario] = useState<UsuarioLogin>(
+    usuarioSalvo
+      ? JSON.parse(usuarioSalvo)
+      : {
+          id: 0,
+          nome: '',
+          usuario: '',
+          senha: '',
+          foto: '',
+          token: '',
         }
+  )
 
-        setIsLoading(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  async function handleLogin(usuarioLogin: UsuarioLogin) {
+    setIsLoading(true)
+
+    try {
+      await login(`/usuarios/logar`, usuarioLogin, (resposta: UsuarioLogin) => {
+        setUsuario(resposta)
+        localStorage.setItem('usuario', JSON.stringify(resposta))
+      })
+
+      toast.success('Login realizado com sucesso!')
+    } catch (error) {
+      toast.error('Usuário ou senha inválidos!')
     }
 
-    function handleLogout() {
+    setIsLoading(false)
+  }
 
-        setUsuario({
-            id: 0,
-            nome: "",
-            usuario: "",
-            senha: "",
-            foto: "",
-            token: ""
-        })
+  function handleLogout() {
+    setUsuario({
+      id: 0,
+      nome: '',
+      usuario: '',
+      senha: '',
+      foto: '',
+      token: '',
+    })
 
-        toast.success(
-            "Logout realizado!"
-        )
-    }
+    localStorage.removeItem('usuario')
 
-    return (
+    toast.success('Logout realizado!')
+  }
 
-        <AuthContext.Provider
-            value={{
-                usuario,
-                handleLogout,
-                handleLogin,
-                isLoading
-            }}
-        >
-
-            {children}
-
-        </AuthContext.Provider>
-    )
+  return (
+    <AuthContext.Provider
+      value={{
+        usuario,
+        handleLogout,
+        handleLogin,
+        isLoading,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
 }

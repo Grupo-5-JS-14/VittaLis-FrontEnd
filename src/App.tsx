@@ -1,47 +1,104 @@
 import { BrowserRouter, Route, Routes, Outlet } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
-import { AuthProvider } from "./contexts/AuthContext";
-import Login from "./pages/Login";
+ import { AuthProvider } from "./contexts/AuthContext";
+ import { Toaster } from 'sonner'
+// import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Perfil from "./pages/Perfil";
+import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
-import ListaPlanos from "./components/plano/ListaPlanos";
-import AdminDashboard from "./pages/Admin";
-import SimuladorChat from "./components/chat/SimuladorChat";
+//import Login from "./pages/Login";
+// import Cadastro from "./pages/Cadastro";
+// import ListaApolices from "./components/apolices/ListaApolices";
+// import FormApolice from "./components/apolices/FormApolice";
+// import DeletarApolice from "./components/apolices/DeletarApolice";
+// import Perfil from "./pages/Perfil";
+// import FormPlanos from "./components/plano/FormPlano";
+// import ListaPlanos from "./components/plano/ListaPlanos";
+// import DeletarPlanos from "./components/plano/DeletarPlano";
 
-function LayoutComHeaderFooter() {
-  return (
-    <>
-      <Navbar />
-      <div className="min-h-screen">
-        <Outlet />
-      </div>
-      <Footer />
-    </>
-  );
+function RotaVazia() {
+	return (
+		<>
+			{/* Add rotas corretamente */}
+		</>
+	)
 }
 
 function App() {
-  return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* ROTAS COM NAVBAR E FOOTER */}
-          <Route element={<LayoutComHeaderFooter />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/planos" element={<ListaPlanos />} />
-          </Route>
+	return (
+		<>
+			<AuthProvider>
+				<BrowserRouter>
+					<Navbar />
+					<div className="min-h-screen">
+						{/* <Login /> */}
+							{/*	<Cadastro />
+							<ListaApolices />
+							<Home />
+							<FormApolice />
+							<DeletarApolice />
+							<ListaPlanos />
+							<FormPlanos />
+							<DeletarPlanos />
+							*/}
 
-          {/* ROTAS SEM NAVBAR E FOOTER */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/simulacao" element={<SimuladorChat />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
-  );
+
+
+						<Routes>
+								<Route path="/" element={<Home />} />
+								<Route path="/home" element={<Home />} />
+								<Route path="/perfil" element={<Perfil />} />
+								<Route path="/login" element={<Login />} />
+								<Route path="/apolices" element={<RotaVazia />} />
+								<Route path="/apolices/:id" element={<RotaVazia />} />
+								<Route path="/apolices/:id/opcoes" element={<RotaVazia />} />
+								<Route path="/apolices/:id/beneficiarios" element={<RotaVazia />} />
+								<Route path="/apolices/:id/documento" element={<RotaVazia />} />
+								<Route path="/pagamentos" element={<RotaVazia />} />
+								<Route path="/beneficiarios" element={<RotaVazia />} />
+								<Route path="/fale-conosco" element={<RotaVazia />} />
+								<Route path="/configuracoes" element={<RotaVazia />} />
+								<Route
+							path="/cadastro"
+							element={<Cadastro />}
+						/>
+							{/*	<Route path="/cadastro" element={<Cadastro />} />
+								 />
+								<Route path="/cadastrarapolices" element={<FormApolice />} />
+								<Route path="/editarapolices/:id" element={<FormApolice />} />
+								<Route path="/deletarapolices/:id" element={<DeletarApolice />} />
+								<Route path="/planos" element={<ListaPlanos />} />
+								<Route path="/cadastrarplanos" element={<FormPlanos />} />
+								<Route path="/editarplanos/:id" element={<FormPlanos />} />
+								<Route path="/deletarplanos/:id" element={<DeletarPlanos />} />
+								*/}
+							</Routes> 
+					</div>
+
+
+						<Toaster
+					position="top-right"
+					richColors
+					closeButton
+					toastOptions={{
+						style: {
+							background: '#FFFFFF',
+							border: '1px solid #DCE7E3',
+							color: '#12312F',
+							borderRadius: '16px',
+							padding: '16px',
+						},
+					}}
+				/>
+					<Footer />
+
+
+				</BrowserRouter>
+			</AuthProvider>
+		</>
+	)
 }
 
 export default App;

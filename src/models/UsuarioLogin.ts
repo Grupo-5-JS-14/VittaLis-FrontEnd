@@ -5,4 +5,5 @@ export default interface UsuarioLogin {
     senha: string
     foto: string
     token: string
+
 }
