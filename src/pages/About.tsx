@@ -360,17 +360,17 @@ function About() {
             {DIFERENCIAIS.map((dif, index) => (
               <div
                 key={index}
-                className="w-full max-w-90 bg-white/7 border border-white/12 rounded-3xl p-8 md:p-10 hover:-translate-y-3 transition-all duration-500 hover:bg-white/10"
+                className="w-full max-w-90 bg-white/7 border border-white/12 rounded-3xl p-6 md:p-8 hover:-translate-y-3 transition-all duration-500 hover:bg-white/10 flex flex-col items-center text-center"
               >
-                <div className="w-14 h-14 rounded-2xl bg-[#f97316]/20 border border-[#f97316]/30 flex items-center justify-center text-[#fdba74] mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-[#f97316]/20 border border-[#f97316]/30 flex items-center justify-center text-[#fdba74]">
                   {dif.icon}
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-4">
+                <h3 className="text-lg font-bold text-white mt-5 leading-tight">
                   {dif.titulo}
                 </h3>
 
-                <p className="text-sm sm:text-base text-[#a8c5c1] leading-relaxed">
+                <p className="mt-3 text-sm sm:text-base text-[#a8c5c1] leading-relaxed">
                   {dif.descricao}
                 </p>
               </div>
