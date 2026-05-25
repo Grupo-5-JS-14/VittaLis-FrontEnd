@@ -1,5 +1,15 @@
-import { useContext, useEffect, useState } from "react";
-import { BadgeCheck, CheckCircle, Clock, CreditCard, FileText, HandCoins, Headphones, ShieldCheck, Users, } from "lucide-react";
+import { useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  BadgeCheck,
+  CheckCircle,
+  Clock,
+  CreditCard,
+  FileText,
+  HandCoins,
+  Headphones,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 
 import type Plano from "../../models/Plano";
 import { buscar } from "../../services/Service";
@@ -43,19 +53,51 @@ function ListaPlanos() {
 
   const auth = useContext(AuthContext) as any;
   const usuario = auth?.usuario;
+
   const token = usuario?.token || usuario?.acesso || "";
 
   const isAdmin =
     usuario?.role === "admin" ||
+    usuario?.role === "ADMIN" ||
     usuario?.role === "ROLE_ADMIN" ||
     usuario?.tipo === "admin" ||
+    usuario?.tipo === "ADMIN" ||
     usuario?.admin === true;
-  
-  const header = {
+
+  const tokenFormatado = token
+  ? token.startsWith("Bearer ")
+    ? token
+    : `Bearer ${token}`
+  : "";
+
+const header = useMemo(() => {
+  return {
     headers: {
-      Authorization: token,
-  },
-};
+      Authorization: tokenFormatado,
+    },
+  };
+}, [tokenFormatado]);
+
+  function normalizarPlanos(resposta: any): Plano[] {
+    if (Array.isArray(resposta)) {
+      return resposta;
+    }
+
+    if (Array.isArray(resposta?.content)) {
+      return resposta.content;
+    }
+
+    if (Array.isArray(resposta?.data)) {
+      return resposta.data;
+    }
+
+    if (Array.isArray(resposta?.planos)) {
+      return resposta.planos;
+    }
+
+    console.error("Resposta de planos não veio como lista:", resposta);
+    return [];
+  }
 
   async function buscarPlanos() {
     try {
@@ -63,14 +105,16 @@ function ListaPlanos() {
 
       await buscar(
         "/planos/all",
-        (resposta: Plano[]) => {
-          if (resposta && resposta.length > 0) {
-            setPlanos(resposta);
+        (resposta: any) => {
+          const listaPlanos = normalizarPlanos(resposta);
+
+          if (listaPlanos.length > 0) {
+            setPlanos(listaPlanos);
           } else {
             setPlanos(planosPadrao);
           }
         },
-        token ? header : {}
+        tokenFormatado ? header : {}
       );
     } catch (error) {
       console.error("Erro ao buscar planos:", error);
@@ -83,6 +127,8 @@ function ListaPlanos() {
   useEffect(() => {
     buscarPlanos();
   }, [token]);
+
+  const planosParaExibir = Array.isArray(planos) ? planos : planosPadrao;
 
   return (
     <main
@@ -282,7 +328,7 @@ function ListaPlanos() {
           </div>
         )}
 
-        {isLoading ? (
+        {isLoading && planosParaExibir.length === 0 && (
           <p
             style={{
               textAlign: "center",
@@ -292,27 +338,43 @@ function ListaPlanos() {
           >
             Carregando planos...
           </p>
-        ) : (
-          <div
+        )}
+
+        <div
+          style={{
+            position: "relative",
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "10px",
+            marginTop: "30px",
+            alignItems: "stretch",
+            opacity: isLoading ? 0.7 : 1,
+            transition: "opacity 0.25s ease",
+          }}
+        >
+          {planosParaExibir.map((plano) => (
+            <CardPlano
+              key={plano.id}
+              plano={plano}
+              buscarPlanos={buscarPlanos}
+              isAdmin={isAdmin}
+              token={token}
+              tipoCobranca={tipoCobranca}
+            />
+          ))}
+        </div>
+
+        {isLoading && planosParaExibir.length > 0 && (
+          <p
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "10px",
-              marginTop: "30px",
-              alignItems: "stretch",
+              textAlign: "center",
+              marginTop: "12px",
+              color: "#5f6d70",
+              fontSize: "13px",
             }}
           >
-            {planos.map((plano) => (
-              <CardPlano
-                key={plano.id}
-                plano={plano}
-                buscarPlanos={buscarPlanos}
-                isAdmin={isAdmin}
-                token={token}
-                tipoCobranca={tipoCobranca}
-              />
-            ))}
-          </div>
+            Atualizando planos...
+          </p>
         )}
 
         <div
@@ -372,6 +434,7 @@ function ListaPlanos() {
           </div>
 
           <button
+            type="button"
             style={{
               border: "none",
               background: "#00565a",
@@ -440,7 +503,7 @@ function ListaPlanos() {
 }
 
 interface InfoItemProps {
-  icon: React.ReactNode;
+  icon: ReactNode;
   title: string;
   text: string;
   small?: boolean;

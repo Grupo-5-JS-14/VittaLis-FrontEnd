@@ -1,7 +1,12 @@
+import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, Outlet } from "react-router-dom";
+
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
+import LoadingVittaLis from "./components/loading/Loading";
+
 import { AuthProvider } from "./contexts/AuthContext";
+
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Cadastro from "./pages/Cadastro";
@@ -14,33 +19,49 @@ function LayoutComHeaderFooter() {
   return (
     <>
       <Navbar />
+
       <div className="min-h-screen">
         <Outlet />
       </div>
+
       <Footer />
     </>
   );
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const tempo = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(tempo);
+  }, []);
+
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          {/* ROTAS COM NAVBAR E FOOTER */}
-          <Route element={<LayoutComHeaderFooter />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/planos" element={<ListaPlanos />} />
-            <Route path="/perfil" element={<Perfil />} />
-          </Route>
+        {loading ? (
+          <LoadingVittaLis />
+        ) : (
+          <Routes>
+            {/* ROTAS COM NAVBAR E FOOTER */}
+            <Route element={<LayoutComHeaderFooter />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/planos" element={<ListaPlanos />} />
+              <Route path="/perfil" element={<Perfil />} />
+            </Route>
 
-          {/* ROTAS SEM NAVBAR E FOOTER */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/simulacao" element={<SimuladorChat />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-        </Routes>
+            {/* ROTAS SEM NAVBAR E FOOTER */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/simulacao" element={<SimuladorChat />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Routes>
+        )}
       </BrowserRouter>
     </AuthProvider>
   );

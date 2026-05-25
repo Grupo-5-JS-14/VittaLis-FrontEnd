@@ -50,9 +50,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       localStorage.setItem("usuario", JSON.stringify(usuarioLogado));
     });
 
-    toastAlerta("Usuário logado com sucesso", "sucesso");
+    toast.success("Usuário logado com sucesso", "sucesso");
   } catch (error) {
-    toastAlerta("Dados do usuário inconsistentes", "erro");
+    toast.error("Dados do usuário inconsistentes", "erro");
   }
 }
 

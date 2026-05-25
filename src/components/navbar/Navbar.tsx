@@ -8,7 +8,7 @@ export default function Navbar() {
 
   const { usuario } = useContext(AuthContext);
 
-  const isLoggedIn = usuario.token !== "";
+  const isLoggedIn = !!(usuario?.token || usuario?.acesso);
 
   const isAdmin =
     usuario?.role === "admin" ||

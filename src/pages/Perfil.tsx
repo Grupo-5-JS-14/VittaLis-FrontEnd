@@ -4,13 +4,15 @@ import {
   IconCurrencyReal as CircleDollarSign,
   IconShield as Shield,
 } from "@tabler/icons-react";
-import { useContext, useMemo, useState } from "react";
+
+import { useContext, useEffect, useMemo, useState } from "react";
 
 import BarraLateral from "../components/perfil/BarraLateral";
 import CardAjuda from "../components/perfil/CardAjuda";
 import CardsResumo from "../components/perfil/CardsResumo";
 import FiltrosApolices from "../components/perfil/FiltrosApolices";
 import TabelaApolices from "../components/perfil/TabelaApolices";
+
 import { AuthContext } from "../contexts/AuthContext";
 
 import type {
@@ -18,76 +20,130 @@ import type {
   ItemCardResumo,
 } from "../components/perfil/tipos";
 
-const cardsResumo: ItemCardResumo[] = [
-  {
-    label: "Apólices ativas",
-    value: "2",
-    note: "Total contratado",
-    icon: Shield,
-    tone: "text-[#005b5b] bg-[#e9f4f2]",
-  },
-  {
-    label: "Apólices em análise",
-    value: "0",
-    note: "Aguardando aprovação",
-    icon: ClipboardList,
-    tone: "text-[#005b5b] bg-[#e9f4f2]",
-  },
-  {
-    label: "Apólices vencidas",
-    value: "0",
-    note: "Nada a vencer",
-    icon: CalendarDays,
-    tone: "text-[#ff6f2c] bg-[#fff1e9]",
-  },
-  {
-    label: "Valor total de cobertura",
-    value: "R$ 300.000,00",
-    note: "Em apólices ativas",
-    icon: CircleDollarSign,
-    tone: "text-[#005b5b] bg-[#e9f4f2]",
-    wide: true,
-  },
-];
-
-const apolices: ApolicePerfil[] = [
-  {
-    id: "VIT-00012345",
-    type: "Seguro de Vida Individual",
-    hiredAt: "10/01/2024",
-    dueAt: "10/01/2025",
-    dueNote: "Faltam 220 dias",
-    coverage: "R$ 200.000,00",
-    status: true,
-    expanded: false,
-  },
-  {
-    id: "VIT-00012346",
-    type: "Seguro de Vida Familiar",
-    hiredAt: "08/01/2024",
-    dueAt: "08/01/2025",
-    dueNote: "Faltam 218 dias",
-    coverage: "R$ 100.000,00",
-    status: true,
-  },
-  {
-    id: "VIT-00009876",
-    type: "Seguro de Acidentes Pessoais",
-    hiredAt: "15/03/2023",
-    dueAt: "15/03/2024",
-    dueNote: "Vencida",
-    coverage: "R$ 50.000,00",
-    status: false,
-    overdue: true,
-  },
-];
+import { buscar } from "../services/Service";
 
 function Perfil() {
   const [busca, setBusca] = useState("");
+
   const [tipoSelecionado, setTipoSelecionado] = useState("Todos");
+
   const [statusSelecionado, setStatusSelecionado] = useState("Todos");
 
+  const [apolices, setApolices] = useState<ApolicePerfil[]>([]);
+
   const { usuario } = useContext(AuthContext);
+
+  const header = {
+    headers: {
+      Authorization: `Bearer ${usuario.token}`,
+    },
+  };
+
+  async function buscarApolices() {
+    try {
+      const resposta: any = await buscar(
+        `/apolices/all`,
+        setApolices,
+        header
+      );
+
+      const apolicesFormatadas: ApolicePerfil[] = resposta.map(
+        (apolice: any) => ({
+          id: apolice.id?.toString(),
+          type: apolice.plano?.nome || "Plano",
+          hiredAt: apolice.dataContratacao || "Sem data",
+          dueAt: apolice.dataVencimento || "Sem data",
+          dueNote: apolice.ativa ? "Ativa" : "Vencida",
+          coverage: `R$ ${Number(apolice.valorCobertura || 0)
+            .toFixed(2)
+            .replace(".", ",")}`,
+          status: apolice.ativa,
+          overdue: !apolice.ativa,
+        })
+      );
+
+      setApolices(apolicesFormatadas);
+    } catch (error) {
+      console.error("Erro ao buscar apólices:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (usuario.token !== "") {
+      buscarApolices();
+    }
+  }, [usuario]);
+
+  const cardsResumo: ItemCardResumo[] = [
+    {
+      label: "Apólices ativas",
+
+      value: apolices
+        .filter((a) => a.status)
+        .length
+        .toString(),
+
+      note: "Total contratado",
+
+      icon: Shield,
+
+      tone: "text-[#005b5b] bg-[#e9f4f2]",
+    },
+
+    {
+      label: "Apólices em análise",
+
+      value: "0",
+
+      note: "Aguardando aprovação",
+
+      icon: ClipboardList,
+
+      tone: "text-[#005b5b] bg-[#e9f4f2]",
+    },
+
+    {
+      label: "Apólices vencidas",
+
+      value: apolices
+        .filter((a) => !a.status)
+        .length
+        .toString(),
+
+      note: "Total vencidas",
+
+      icon: CalendarDays,
+
+      tone: "text-[#ff6f2c] bg-[#fff1e9]",
+    },
+
+    {
+      label: "Valor total de cobertura",
+
+      value: `R$ ${apolices
+        .reduce((acc, apolice) => {
+          const valor = Number(
+            apolice.coverage
+              .replace("R$", "")
+              .replace(/\./g, "")
+              .replace(",", ".")
+          );
+
+          return acc + valor;
+        }, 0)
+        .toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+        })}`,
+
+      note: "Em apólices ativas",
+
+      icon: CircleDollarSign,
+
+      tone: "text-[#005b5b] bg-[#e9f4f2]",
+
+      wide: true,
+    },
+  ];
 
   const apolicesFiltradas = useMemo(() => {
     const buscaNormalizada = busca.trim().toLowerCase();
@@ -108,7 +164,7 @@ function Perfil() {
 
       return correspondeBusca && correspondeTipo && correspondeStatus;
     });
-  }, [busca, tipoSelecionado, statusSelecionado]);
+  }, [busca, tipoSelecionado, statusSelecionado, apolices]);
 
   return (
     <div className="min-h-screen bg-[#f8faf9] font-poppins text-[#173c3a]">

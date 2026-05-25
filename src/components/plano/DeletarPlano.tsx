@@ -22,7 +22,7 @@ function DeletarPlano({
 
   const header = {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   };
 
