@@ -1,12 +1,17 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'https://blogpessoal-ks88.onrender.com'
+    baseURL: 'https://backend-seguro-vida.onrender.com'
 });
 
-export const cadastrarUsuario = async (url: string, dados: Object, setDados: Function) => {
-    const resposta = await api.post(url, dados)
-    setDados(resposta.data)
+export const cadastrarUsuario = async (
+  url: string,
+  dados: any,
+  setDados: Function
+) => {
+  const resposta = await api.post(url, dados)
+
+  setDados(resposta.data)
 }
 
 export const login = async (url: string, dados: Object, setDados: Function) => {
