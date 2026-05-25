@@ -55,7 +55,7 @@ export default function Navbar() {
               {linksMenu.map((link, idx) => (
                 <Link
                   key={idx}
-                  href={link.href}
+                  to={link.href}
                   className="text-sm font-semibold text-text/90 hover:text-[#FF7A38] transition-colors"
                 >
                   {link.label}
@@ -75,8 +75,8 @@ export default function Navbar() {
             <div className="flex items-center space-x-4">
               {!isLoggedIn ? (
                 <>
-                  <a
-                    href="/login"
+                  <Link
+                    to="/login"
                     className="px-6 py-2.5 text-sm font-bold rounded-xl text-text border-2 border-text text-center"
                   >
                     Entrar
@@ -88,8 +88,8 @@ export default function Navbar() {
                   </Link>
                 </>
               ) : (
-                <a
-                  href="/perfil"
+                <Link
+                  to="/perfil"
                   className="px-6 py-3 text-sm font-bold rounded-xl text-white bg-text text-center"
                 >
                   Meu Perfil
@@ -161,9 +161,9 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Ícone do Usuário (Perfil ou Entrar) */}
-        <a
-          href={isLoggedIn ? "/perfil" : "/login"}
+        {/* Ícone do Usuário - Atualizado para Link */}
+        <Link
+          to={isLoggedIn ? "/perfil" : "/login"}
           className="p-2 text-text hover:text-[#FF7A38] transition-colors"
           aria-label={isLoggedIn ? "Ver perfil" : "Ir para o login"}
         >
