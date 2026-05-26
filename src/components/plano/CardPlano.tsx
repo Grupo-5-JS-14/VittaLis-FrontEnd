@@ -105,32 +105,33 @@ function CardPlano({
   }
 
     return (
-    <article className="flex h-full w-full flex-col justify-between rounded-2xl border border-[#dbe6e4] bg-white p-5 sm:p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-      <div>
-        <h2 className="text-xl sm:text-2xl font-black text-[#004346] wrap-break-words">
+    <article className="flex h-full min-h-90 w-full flex-col rounded-2xl border border-[#dbe6e4] bg-white p-5 sm:p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+      <div className="flex flex-1 flex-col">
+        <h2 className="min-h-16 text-xl sm:text-2xl font-black text-[#004346] wrap-break-words">
           {plano.nome}
         </h2>
 
-        <p className="mt-3 text-sm sm:text-base leading-relaxed text-gray-600 wrap-break-words">
+        <p className="mt-3 min-h-24 text-sm sm:text-base leading-relaxed text-gray-600 wrap-break-words">
           {plano.descricao}
         </p>
 
-        <p className="mt-6 text-xs font-semibold text-gray-500">
+        <div className="mt-auto pt-6">
+          <p className="text-xs font-semibold text-gray-500">
           à partir de:
         </p>
 
-        <div className="mt-1 flex flex-wrap items-end gap-1">
-          <span className="text-3xl sm:text-4xl font-black text-[#ff6b2c]">
+          <div className="mt-1 flex flex-wrap items-end gap-1">
+            <span className="text-3xl sm:text-4xl font-black text-[#ff6b2c]">
             R$ {valorFormatado}
           </span>
 
-          <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-500">
             /{tipoCobranca === "mensal" ? "mês" : "ano"}
           </span>
         </div>
 
-        {tipoCobranca === "anual" && (
-          <div className="mt-2">
+          {tipoCobranca === "anual" && (
+            <div className="mt-2 min-h-10">
             <p className="text-sm font-semibold text-green-600">
               10% de desconto no plano anual
             </p>
@@ -140,6 +141,7 @@ function CardPlano({
             </p>
           </div>
         )}
+        </div>
       </div>
 
       {isAdmin ? (
