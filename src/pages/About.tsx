@@ -15,10 +15,6 @@ import {
 const heroImg =
   "https://images.unsplash.com/photo-1609220136736-443140cffec6?w=800&q=80";
 
-interface AboutProps {
-  isDarkMode: boolean;
-}
-
 interface ValorItem {
   icon: React.ReactNode;
   titulo: string;
@@ -100,8 +96,8 @@ const TIME: MembroItem[] = [
     linkedin: "https://www.linkedin.com/in/gabriel-coutinho-de-souza/",
   },
   {
-    nome: "Kay Ira",
-    cargo: "Front-end Developer",
+    nome: "Kay Ira do Val",
+    cargo: "PO e Developer",
     foto: "https://avatars.githubusercontent.com/u/260806102?v=4",
     linkedin: "https://www.linkedin.com/in/kayane-do-val-lima/",
   },
@@ -150,58 +146,31 @@ interface CardValorProps {
   icon: React.ReactNode;
   titulo: string;
   descricao: string;
-  isDarkMode: boolean;
 }
 
-function CardValor({ icon, titulo, descricao, isDarkMode }: CardValorProps) {
+function CardValor({ icon, titulo, descricao }: CardValorProps) {
   return (
-    <div
-      className={`w-full h-full rounded-4xl border p-6 sm:p-8 md:p-10 shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 flex flex-col items-center justify-start text-center ${
-        isDarkMode
-          ? "bg-[#0f3d35] border-white/10"
-          : "bg-white border-zinc-200"
-      }`}
-    >
-      <div
-        className={`w-20 h-20 rounded-full flex items-center justify-center ${
-          isDarkMode
-            ? "bg-white/10 text-white"
-            : "bg-[#EEF7F1] text-[#1a4a45]"
-        }`}
-      >
+    <div className="w-full h-full rounded-4xl border p-6 sm:p-8 md:p-10 shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 flex flex-col items-center justify-start text-center bg-white border-zinc-200">
+      <div className="w-20 h-20 rounded-full flex items-center justify-center bg-[#EEF7F1] text-[#1a4a45]">
         {icon}
       </div>
 
-      <h3
-        className={`text-xl font-black mt-8 ${
-          isDarkMode ? "text-white" : "text-[#1a4a45]"
-        }`}
-      >
+      <h3 className="text-xl font-black mt-8 text-[#1a4a45]">
         {titulo}
       </h3>
 
       <div className="w-14 h-1 bg-[#f97316] rounded-full mt-4" />
 
-      <p
-        className={`mt-6 leading-relaxed text-sm sm:text-base ${
-          isDarkMode ? "text-zinc-300" : "text-zinc-600"
-        }`}
-      >
+      <p className="mt-6 leading-relaxed text-sm sm:text-base text-zinc-600">
         {descricao}
       </p>
     </div>
   );
 }
 
-function About({ isDarkMode }: AboutProps) {
+function About() {
   return (
-    <div
-      className={`min-h-screen w-full overflow-x-hidden scroll-smooth transition-colors duration-500 ${
-        isDarkMode
-          ? "bg-[#1a4a45] text-white"
-          : "bg-zinc-50 text-[#1a4a45]"
-      }`}
-    >
+    <div className="min-h-screen w-full overflow-x-hidden scroll-smooth transition-colors duration-500 bg-zinc-50 text-[#1a4a45] flex flex-col gap-16 md:gap-24">
       {/* HERO */}
       <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden px-4 py-20">
         <div className="absolute inset-0">
@@ -240,35 +209,19 @@ function About({ isDarkMode }: AboutProps) {
         <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center justify-items-center">
           <div className="w-full flex flex-col items-center lg:items-start text-center lg:text-left">
             <div className="flex items-center justify-center lg:justify-start gap-4 mb-8 flex-wrap">
-              <span
-                className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-xl text-white ${
-                  isDarkMode ? "bg-[#f97316]" : "bg-[#1a4a45]"
-                }`}
-              >
+              <span className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-xl text-white bg-[#1a4a45]">
                 1
               </span>
 
-              <h2
-                className={`text-3xl sm:text-5xl font-black ${
-                  isDarkMode ? "text-white" : "text-[#f97316]"
-                }`}
-              >
+              <h2 className="text-3xl sm:text-5xl font-black text-[#f97316]">
                 NOSSA{" "}
-                <span
-                  className={
-                    isDarkMode ? "text-[#f97316]" : "text-[#1a4a45]"
-                  }
-                >
+                <span className="text-[#1a4a45]">
                   HISTÓRIA
                 </span>
               </h2>
             </div>
 
-            <div
-              className={`max-w-xl space-y-6 text-sm sm:text-lg leading-relaxed ${
-                isDarkMode ? "text-[#c8dcd8]" : "text-zinc-700"
-              }`}
-            >
+            <div className="max-w-xl space-y-6 text-sm sm:text-lg leading-relaxed text-zinc-700">
               <p>
                 A Vittalis foi fundada em 2010 com uma crença simples: toda
                 família merece proteção de qualidade.
@@ -294,36 +247,20 @@ function About({ isDarkMode }: AboutProps) {
       </section>
 
       {/* VALORES */}
-      <section
-        className={`w-full px-4 sm:px-6 py-24 md:py-32 flex justify-center transition-colors duration-500 ${
-          isDarkMode ? "bg-[#0f3d35]" : "bg-zinc-100"
-        }`}
-      >
+      <section className="w-full px-4 sm:px-6 py-24 md:py-32 flex justify-center transition-colors duration-500 bg-zinc-100">
         <div className="w-full max-w-7xl mx-auto flex flex-col items-center">
           <div className="text-center mb-12 md:mb-16 flex flex-col items-center">
             <div className="flex items-center justify-center gap-4 flex-wrap">
-              <span
-                className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-xl text-white ${
-                  isDarkMode ? "bg-[#f97316]" : "bg-[#1a4a45]"
-                }`}
-              >
+              <span className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-xl text-white bg-[#1a4a45]">
                 2
               </span>
 
-              <h2
-                className={`text-3xl sm:text-5xl font-black text-center ${
-                  isDarkMode ? "text-white" : "text-[#1a4a45]"
-                }`}
-              >
+              <h2 className="text-3xl sm:text-5xl font-black text-center text-[#1a4a45]">
                 NOSSOS <span className="text-[#f97316]">VALORES</span>
               </h2>
             </div>
 
-            <p
-              className={`mt-6 text-sm sm:text-base max-w-2xl text-center ${
-                isDarkMode ? "text-zinc-300" : "text-zinc-600"
-              }`}
-            >
+            <p className="mt-6 text-sm sm:text-base max-w-2xl text-center text-zinc-600">
               Os princípios que guiam cada decisão da Vittalis.
             </p>
           </div>
@@ -335,7 +272,6 @@ function About({ isDarkMode }: AboutProps) {
                   icon={valor.icon}
                   titulo={valor.titulo}
                   descricao={valor.descricao}
-                  isDarkMode={isDarkMode}
                 />
               </div>
             ))}
@@ -344,36 +280,20 @@ function About({ isDarkMode }: AboutProps) {
       </section>
 
       {/* TIME */}
-      <section
-        className={`w-full px-4 sm:px-6 py-24 md:py-32 flex justify-center transition-colors duration-500 ${
-          isDarkMode ? "bg-[#145046]" : "bg-white"
-        }`}
-      >
+      <section className="w-full px-4 sm:px-6 py-24 md:py-32 flex justify-center transition-colors duration-500 bg-white">
         <div className="w-full max-w-7xl mx-auto flex flex-col items-center">
           <div className="text-center mb-12 md:mb-16 flex flex-col items-center">
             <div className="flex items-center justify-center gap-4 flex-wrap">
-              <span
-                className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-xl text-white ${
-                  isDarkMode ? "bg-[#f97316]" : "bg-[#1a4a45]"
-                }`}
-              >
+              <span className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-xl text-white bg-[#1a4a45]">
                 3
               </span>
 
-              <h2
-                className={`text-4xl sm:text-5xl font-black ${
-                  isDarkMode ? "text-white" : "text-[#1a4a45]"
-                }`}
-              >
+              <h2 className="text-4xl sm:text-5xl font-black text-[#1a4a45]">
                 NOSSO <span className="text-[#f97316]">TIME</span>
               </h2>
             </div>
 
-            <p
-              className={`mt-6 text-sm sm:text-lg max-w-2xl ${
-                isDarkMode ? "text-[#c8dcd8]" : "text-zinc-600"
-              }`}
-            >
+            <p className="mt-6 text-sm sm:text-lg max-w-2xl text-zinc-600">
               O time que faz a Vittalis acontecer todos os dias.
             </p>
           </div>
@@ -382,11 +302,7 @@ function About({ isDarkMode }: AboutProps) {
             {TIME.map((membro, index) => (
               <div
                 key={index}
-                className={`rounded-3xl border p-8 w-full max-w-85 flex flex-col items-center shadow-md hover:-translate-y-2 transition-all duration-300 ${
-                  isDarkMode
-                    ? "bg-[#0f3d35] border-white/10"
-                    : "bg-white border-zinc-200"
-                }`}
+                className="rounded-3xl border p-8 w-full max-w-85 flex flex-col items-center shadow-md hover:-translate-y-2 transition-all duration-300 bg-white border-zinc-200"
               >
                 <img
                   src={membro.foto}
@@ -394,19 +310,11 @@ function About({ isDarkMode }: AboutProps) {
                   className="w-28 h-28 rounded-full object-cover shadow-lg"
                 />
 
-                <h3
-                  className={`mt-5 text-2xl font-bold text-center ${
-                    isDarkMode ? "text-white" : "text-[#1a4a45]"
-                  }`}
-                >
+                <h3 className="mt-5 text-2xl font-bold text-center text-[#1a4a45]">
                   {membro.nome}
                 </h3>
 
-                <span
-                  className={`font-semibold text-center text-sm mt-1 ${
-                    isDarkMode ? "text-zinc-300" : "text-zinc-500"
-                  }`}
-                >
+                <span className="font-semibold text-center text-sm mt-1 text-zinc-500">
                   {membro.cargo}
                 </span>
 
@@ -415,11 +323,7 @@ function About({ isDarkMode }: AboutProps) {
                     href={membro.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`p-3 rounded-full transition-all ${
-                      isDarkMode
-                        ? "bg-white/10 hover:bg-[#1a4a45] hover:text-white"
-                        : "bg-zinc-100 hover:bg-[#1a4a45] hover:text-white"
-                    }`}
+                    className="p-3 rounded-full transition-all bg-zinc-100 hover:bg-[#1a4a45] hover:text-white"
                     aria-label={`LinkedIn de ${membro.nome}`}
                   >
                     <LinkedinLogo size={22} />
@@ -432,8 +336,10 @@ function About({ isDarkMode }: AboutProps) {
       </section>
 
       {/* DIFERENCIAIS */}
-      <section className="w-full bg-[#1a4a45] px-4 sm:px-6 py-24 md:py-32 flex justify-center">
+      <section className="w-full bg-[#1a4a45] px-4 sm:px-6 pb-24 md:pb-32 flex justify-center">
         <div className="w-full max-w-7xl mx-auto flex flex-col items-center">
+          <div className="h-16 md:h-24" aria-hidden="true" />
+
           <div className="text-center mb-12 md:mb-16 flex flex-col items-center">
             <span className="text-xs font-bold text-[#fdba74] tracking-widest uppercase">
               Por que escolher a Vittalis
@@ -454,22 +360,24 @@ function About({ isDarkMode }: AboutProps) {
             {DIFERENCIAIS.map((dif, index) => (
               <div
                 key={index}
-                className="w-full max-w-90 bg-white/7 border border-white/12 rounded-3xl p-8 md:p-10 hover:-translate-y-3 transition-all duration-500 hover:bg-white/10"
+                className="w-full max-w-90 bg-white/7 border border-white/12 rounded-3xl p-6 md:p-8 hover:-translate-y-3 transition-all duration-500 hover:bg-white/10 flex flex-col items-center text-center"
               >
-                <div className="w-14 h-14 rounded-2xl bg-[#f97316]/20 border border-[#f97316]/30 flex items-center justify-center text-[#fdba74] mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-[#f97316]/20 border border-[#f97316]/30 flex items-center justify-center text-[#fdba74]">
                   {dif.icon}
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-4">
+                <h3 className="text-lg font-bold text-white mt-5 leading-tight">
                   {dif.titulo}
                 </h3>
 
-                <p className="text-sm sm:text-base text-[#a8c5c1] leading-relaxed">
+                <p className="mt-3 text-sm sm:text-base text-[#a8c5c1] leading-relaxed">
                   {dif.descricao}
                 </p>
               </div>
             ))}
           </div>
+
+          <div className="h-16 md:h-24" aria-hidden="true" />
         </div>
       </section>
     </div>

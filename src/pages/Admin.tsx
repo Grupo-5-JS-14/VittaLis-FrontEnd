@@ -1,5 +1,6 @@
 import { Bell, Shield, FileText, CreditCard, Users, LogOut, Menu, TrendingUp, TrendingDown, } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom'
 import { ResponsiveContainer, LineChart, Line, Tooltip, CartesianGrid, XAxis, YAxis, BarChart, Bar, Legend, } from "recharts";
 import type Apolice from "../models/Apolice";
 import { AuthContext } from "../contexts/AuthContext";
@@ -314,6 +315,12 @@ useEffect(() => {
     paginaAtual * registrosPorPagina + registrosPorPagina
   );
 
+  const navigate = useNavigate()
+
+  function Logout() {
+    navigate('/login')
+  }
+
   return (
     <div className="min-h-screen bg-[#f5f7f7] flex">
       {/* SIDEBAR */}
@@ -344,8 +351,6 @@ useEffect(() => {
 
               {[
                 "Dashboard",
-                "Clientes",
-                "Apólices",
               ].map((item) => (
 
                 <button key={item} className={`w-full flex items-center gap-5 px-4 py-3 rounded-xl transition-all duration-300 
@@ -370,10 +375,10 @@ useEffect(() => {
             </nav>
           </div>
           <div>
-            <button className="mt-25 bg-orange-500/60 w-full flex items-center gap-3 px-5 py-4 rounded-xl transition-all duration-300
-          hover:bg-orange-500 hover: cursor-pointer">
+            <button onClick={Logout} className="mt-2 bg-orange-500/60 w-full flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300
+          hover:bg-orange-500 hover: cursor-pointer hover:scale-[1.02]">
               <LogOut size={18} />
-              Sair
+              Voltar a home
             </button>
           </div>
         </aside>
@@ -452,7 +457,7 @@ useEffect(() => {
 
             <StatsCard title="Apólices ativas" value={clientesAtivos.length} percentage={`${percentualClientes.toFixed(1)}`} positive={percentualClientes >= 0} icon={<Shield />} />
 
-            <StatsCard title="Apólices pendentes" value={clientesInativos.length} percentage={`${percentualClientes.toFixed(1)}`} positive={percentualClientes >= 0} icon={<FileText />} />
+            <StatsCard title="Pendências e cancelamentos" value={clientesInativos.length} percentage={`${percentualClientes.toFixed(1)}`} positive={percentualClientes >= 0} icon={<FileText />} />
 
             <StatsCard title="Faturamento" value={valorAtivos.toLocaleString("pt-BR",{style:"currency", currency:"BRL"})} percentage={`${percentualClientes.toFixed(2)}`} positive={percentualClientes >= 0} icon={<CreditCard />} />
           </div>

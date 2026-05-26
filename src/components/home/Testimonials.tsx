@@ -6,7 +6,7 @@ export default function TestimonialsBento() {
       name: "Noelia Nogueira",
       location: "São Paulo, SP",
       avatar: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=60",
-      text: "Fiz a simulação e contratei tudo direto pelo celular. O atendimento humanizado pelo WhatsApp me deu toda a segurança que eu precisava."
+      text: "Fiz a simulação e contratei tudo direto pelo celular. O atendimento humanizado pelo WhatsApp me deu toda a segurança que eu precisava. Que segurança!"
     },
     {
       name: "Afonso Oliveira",
@@ -15,7 +15,7 @@ export default function TestimonialsBento() {
       text: "O preço é bizarramente justo pelo nível de tranquilidade que entrega. Sem letras miúdas ou taxas escondidas."
     },
     {
-      name: "Marcos Silva",
+      name: "Marlos Bot",
       location: "Curitiba, PR",
       avatar: "https://images.unsplash.com/photo-1733348137551-dde596fd3cf5?w=60",
       text: "Finalmente uma empresa de seguros moderna que fala a nossa língua e não tenta complicar o que deveria ser simples."

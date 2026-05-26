@@ -66,7 +66,7 @@ export default function Footer() {
               Suporte Simulado
             </h3>
             <div className="text-xs text-white/70 space-y-1">
-              <p>Segunda a Sexta — <span className="font-semibold text-white">9h às 18h</span></p>
+              <p>Segunda a Sabado — <span className="font-semibold text-white">9h às 18h</span></p>
               <p>E-mail: <span className="text-[#FF7A38]">contato@vittalisprojeto.com</span></p>
             </div>
             

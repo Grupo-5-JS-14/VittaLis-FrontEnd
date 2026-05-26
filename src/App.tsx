@@ -14,6 +14,10 @@ import ListaPlanos from "./components/plano/ListaPlanos";
 import AdminDashboard from "./pages/Admin";
 import SimuladorChat from "./components/chat/SimuladorChat";
 import Perfil from "./pages/Perfil";
+import About from "./pages/About";
+import ScrollToTop from "./components/scrolltop";
+
+import ProjetosVitta from "./pages/ProjetosVitta";
 
 function LayoutComHeaderFooter() {
   return (
@@ -43,6 +47,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         {loading ? (
           <LoadingVittaLis />
         ) : (
@@ -53,6 +58,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/planos" element={<ListaPlanos />} />
               <Route path="/perfil" element={<Perfil />} />
+              <Route path="/sobre" element={<About />} />
             </Route>
 
             {/* ROTAS SEM NAVBAR E FOOTER */}
@@ -60,6 +66,7 @@ function App() {
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/simulacao" element={<SimuladorChat />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/projetos" element={<ProjetosVitta />} />
           </Routes>
         )}
       </BrowserRouter>

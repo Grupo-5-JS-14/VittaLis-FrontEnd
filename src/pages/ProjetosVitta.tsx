@@ -1292,7 +1292,7 @@ export default function VittaPortfolio() {
               "Andressa",
               "Lohanna",
               "Bruna",
-              "Kay",
+              "Kay Ira",
               "Douglas",
               "André",
               "Gabriel",
