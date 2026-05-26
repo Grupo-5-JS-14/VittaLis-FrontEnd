@@ -76,7 +76,7 @@ export default function Hero() {
                 playsInline
                 className="absolute inset-0 w-full h-full object-cover z-0 scale-100 group-hover:scale-[1.02] transition-transform duration-700 ease-out"
               >
-                <source src="./src/assets/hero.mp4" type="video/mp4" />
+                <source src="./public/hero.mp4" type="video/mp4" />
               </video>
 
               {/* Overlay gradiente artístico ajustado para o tema escuro */}
