@@ -9,12 +9,13 @@ import { useLocation } from 'react-router-dom';
 
 function Cadastro() {
     const navigate = useNavigate()
-
     const location = useLocation();
 
+    // 1. AJUSTADO: Incluído o campo 'emailPrePreenchido' vindo do estado da rota
     const dadosSimulacao = location.state as {
         nomePrePreenchido?: string;
         idadePrePreenchida?: number;
+        emailPrePreenchido?: string; // Adicionado aqui
         planoSelecionadoId?: number;
         valorFinalCalculado?: number;
     };
@@ -24,9 +25,10 @@ function Cadastro() {
     const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false)
     const [confirmarSenha, setConfirmarSenha] = useState<string>("")
 
+    // 2. AJUSTADO: O campo 'usuario' agora inicia com o e-mail preenchido no chat
     const [usuario, setUsuario] = useState<UsuarioCadastro>({
         nome: dadosSimulacao?.nomePrePreenchido || '',
-        usuario: '',
+        usuario: dadosSimulacao?.emailPrePreenchido || '', // Ajustado aqui
         senha: '',
         foto: '',
         idade: dadosSimulacao?.idadePrePreenchida || 0
@@ -134,7 +136,7 @@ function Cadastro() {
             <div className="flex-1 lg:w-1/2 flex flex-col justify-between p-8 lg:p-12 h-screen overflow-y-auto bg-background">
 
                 {/* Barra Superior */}
-                <div className="flex justify-between items-center w-full max-w-md mx-auto lg:mr-0布">
+                <div className="flex justify-between items-center w-full max-w-md mx-auto lg:mr-0">
                     <span className="text-xs text-text-light">
                         Já tem conta?{" "}
                         <Link to="/login" className="text-secondary hover:text-secondary-dark font-bold hover:underline">

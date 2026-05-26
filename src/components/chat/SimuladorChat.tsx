@@ -6,10 +6,20 @@ import CardPlanoChat from './CardPlanoChat';
 import type Plano from '../../models/Plano';
 import type { Mensagem, DadosSimulacao } from './Tipos';
 
+// 1. MANUTENÇÃO DA FIDELIDADE E ADIÇÃO DOS OUTROS 2 PLANOS
 const MOCK_PLANOS: Plano[] = [
-  { id: 1, nome: "Vitta Vida Individual", descricao: "O amparo perfeito para sua autonomia. Garante sua tranquilidade financeira em vida caso enfrente imprevistos de saúde, internações ou precise pausar o trabalho.", valor: 24.90, usuario: null, apolice: null },
-  { id: 2, nome: "Vitta Proteção Familiar", descricao: "O abraço seguro para quem você mais ama. Uma estrutura completa desenhada para amparar o futuro dos seus filhos e parceiro(a), mantendo o padrão de vida e os sonhos deles protegidos.", valor: 49.90, usuario: null, apolice: null }
+  { id: 1, nome: "Vitta Essencial", descricao: "A proteção básica ideal. Garante coberturas indispensáveis por doenças graves e acidentes pessoais com o menor custo do mercado.", valor: 14.90, usuario: null, apolice: null },
+  { id: 2, nome: "Vitta Vida Individual", descricao: "O amparo perfeito para sua autonomia. Garante sua tranquilidade financeira em vida caso enfrente imprevistos de saúde, internações ou precise pausar o trabalho.", valor: 24.90, usuario: null, apolice: null },
+  { id: 3, nome: "Vitta Proteção Familiar", descricao: "O abraço seguro para quem você mais ama. Uma estrutura completa desenhada para amparar o futuro dos seus filhos e parceiro(a), mantendo o padrão de vida.", valor: 49.90, usuario: null, apolice: null },
+  { id: 4, nome: "Vitta Corporate PME", descricao: "Segurança estratégica para o seu negócio. Proteja seus sócios, colaboradores ou garanta a continuidade da sua empresa contra imprevistos corporativos.", valor: 99.90, usuario: null, apolice: null }
 ];
+
+// Extensão da tipagem local para incluir e-mail e persistir a seleção do plano provisoriamente
+interface DadosSimulacaoVittalis extends DadosSimulacao {
+  email?: string;
+  planoTemporarioId?: number;
+  valorTemporarioFinal?: number;
+}
 
 export default function SimuladorChat() {
   const navigate = useNavigate();
@@ -20,7 +30,7 @@ export default function SimuladorChat() {
   const [historico, setHistorico] = useState<Mensagem[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
   const [tipoCobranca, setTipoCobranca] = useState<'mensal' | 'anual'>('mensal');
-  const [dadosSimulacao, setDadosSimulacao] = useState<DadosSimulacao>({ nome: '', idade: 0, perfil: '' });
+  const [dadosSimulacao, setDadosSimulacao] = useState<DadosSimulacaoVittalis>({ nome: '', idade: 0, perfil: '', email: '' });
   
   // Estado do Menu Hambúrguer Minimalista
   const [menuAberto, setMenuAberto] = useState<boolean>(false);
@@ -79,6 +89,25 @@ export default function SimuladorChat() {
       setPasso(4);
       botFalar("Para que eu possa entender melhor suas necessidades, qual dessas opções descreve melhor o seu momento?");
     }
+
+    // PASSO 6: Captura do e-mail assim que ele digita após escolher o plano
+    if (passo === 6) {
+      if (!respostaUsuario.includes('@') || !respostaUsuario.includes('.')) {
+        botFalar("Por favor, digite um e-mail válido (exemplo@email.com) para que possamos prosseguir.");
+        return;
+      }
+
+      // Redireciona com todas as informações coletadas, incluindo o e-mail
+      navigate('/cadastro', { 
+        state: { 
+          nomePrePreenchido: dadosSimulacao.nome,
+          idadePrePreenchida: dadosSimulacao.idade,
+          emailPrePreenchido: respostaUsuario,
+          planoSelecionadoId: dadosSimulacao.planoTemporarioId,
+          valorFinalCalculado: dadosSimulacao.valorTemporarioFinal
+        } 
+      });
+    }
   };
 
   const lidarComCliqueBotao = (opcaoTexto: string, acao: () => void) => {
@@ -86,15 +115,18 @@ export default function SimuladorChat() {
     acao();
   };
 
+  // Alterado para interceptar a contratação, pedir o e-mail no chat e avançar para o Passo 6
   const handleContratar = (planoId: number, valorFinal: number) => {
-    navigate('/cadastro', { 
-      state: { 
-        nomePrePreenchido: dadosSimulacao.nome,
-        idadePrePreenchida: dadosSimulacao.idade,
-        planoSelecionadoId: planoId,
-        valorFinalCalculado: valorFinal
-      } 
-    });
+    const planoSelecionado = MOCK_PLANOS.find(p => p.id === planoId);
+    
+    setDadosSimulacao(prev => ({
+      ...prev,
+      planoTemporarioId: planoId,
+      valorTemporarioFinal: valorFinal
+    }));
+
+    setPasso(6);
+    botFalar(`Excelente escolha com o ${planoSelecionado?.nome}! Para finalizarmos e gerarmos a sua proposta com segurança, digite o seu melhor e-mail abaixo:`);
   };
 
   return (
@@ -122,14 +154,12 @@ export default function SimuladorChat() {
         </nav>
       </div>
 
-      {/* 3. CABEÇALHO INTEGRADO (Estilo Mycon - Mesmo fundo, sem divisórias marcadas) */}
+      {/* 3. CABEÇALHO INTEGRADO */}
       <div className="bg-[#0F2221] px-6 py-5 flex items-center justify-between sticky top-0 z-30 max-w-3xl w-full mx-auto">
-        {/* Lado Esquerdo: Sua Logo (Pode trocar o texto abaixo pela tag <img src="..." /> da sua logo oficial) */}
         <div className="flex items-center gap-2">
           <span className="text-xl font-black tracking-tight text-white">vittalis<span className="text-[#FF7A38]">.</span></span>
         </div>
         
-        {/* Lado Direito: Hambúrguer Minimalista */}
         <button 
           onClick={() => setMenuAberto(true)}
           className="p-2 hover:bg-white/5 rounded-xl text-white/80 hover:text-[#FF7A38] transition-all"
@@ -171,7 +201,7 @@ export default function SimuladorChat() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && inputValue.trim() && lidarComCliqueBotao(inputValue, () => {
-                  setDadosSimulacao(prev => ({ ...prev, name: inputValue, nome: inputValue }));
+                  setDadosSimulacao(prev => ({ ...prev, nome: inputValue }));
                   setPasso(3);
                   setInputValue('');
                   botFalar(`Que prazer te conhecer, ${inputValue}! Sabendo o seu nome, agora me conta: qual a sua idade atual?`);
@@ -201,9 +231,21 @@ export default function SimuladorChat() {
           </div>
         )}
 
-        {/* Passo 4: Escolha de Perfil */}
+        {/* Passo 4: Escolha de Perfil (Expandido mantendo a fidelidade das classes e grid original) */}
         {passo === 4 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2 max-w-lg w-full animate-fadeIn">
+            <button 
+              onClick={() => lidarComCliqueBotao("Gostaria de uma Proteção Essencial", () => { 
+                setDadosSimulacao(prev => ({ ...prev, perfil: 'Essencial' })); 
+                setPasso(5); 
+                botFalar(`Excelente. Montei a proposta do plano Essencial ideal para o seu perfil:`); 
+              })} 
+              className="bg-[#12312F] hover:border-[#FF7A38] border border-white/5 p-5 rounded-2xl text-left transition-all flex flex-col gap-1 shadow-md hover:-translate-y-0.5"
+            >
+              <span className="text-sm font-bold text-[#FF7A38]">Proteção Essencial</span>
+              <p className="text-[11px] text-white/50 leading-relaxed">Cuidado básico, enxuto e ideal para iniciar sua segurança.</p>
+            </button>
+
             <button 
               onClick={() => lidarComCliqueBotao("Gostaria de uma Proteção Individual", () => { 
                 setDadosSimulacao(prev => ({ ...prev, perfil: 'Individual' })); 
@@ -212,9 +254,10 @@ export default function SimuladorChat() {
               })} 
               className="bg-[#12312F] hover:border-[#FF7A38] border border-white/5 p-5 rounded-2xl text-left transition-all flex flex-col gap-1 shadow-md hover:-translate-y-0.5"
             >
-              <span className="text-sm font-bold text-[#FF7A38]">Proteção para Mim</span>
+              <span className="text-sm font-bold text-[#FF7A38]">Proteção Individual</span>
               <p className="text-[11px] text-white/50 leading-relaxed">Foco em segurança para profissionais autônomos, diárias hospitalares e doenças graves.</p>
             </button>
+
             <button 
               onClick={() => lidarComCliqueBotao("Estou buscando Proteção Familiar", () => { 
                 setDadosSimulacao(prev => ({ ...prev, perfil: 'Familia' })); 
@@ -223,23 +266,40 @@ export default function SimuladorChat() {
               })} 
               className="bg-[#12312F] hover:border-[#FF7A38] border border-white/5 p-5 rounded-2xl text-left transition-all flex flex-col gap-1 shadow-md hover:-translate-y-0.5"
             >
-              <span className="text-sm font-bold text-[#FF7A38]">Proteção para minha Família</span>
+              <span className="text-sm font-bold text-[#FF7A38]">Proteção Familiar</span>
               <p className="text-[11px] text-white/50 leading-relaxed">Garante o amparo financeiro de filhos, cônjuge ou dependentes queridos caso você falte.</p>
+            </button>
+
+            <button 
+              onClick={() => lidarComCliqueBotao("Gostaria de uma Proteção Empresarial", () => { 
+                setDadosSimulacao(prev => ({ ...prev, perfil: 'Empresarial' })); 
+                setPasso(5); 
+                botFalar(`Proteção e segurança corporativa para o seu negócio e funcionários. Veja a proposta PME:`); 
+              })} 
+              className="bg-[#12312F] hover:border-[#FF7A38] border border-white/5 p-5 rounded-2xl text-left transition-all flex flex-col gap-1 shadow-md hover:-translate-y-0.5"
+            >
+              <span className="text-sm font-bold text-[#FF7A38]">Proteção Empresarial</span>
+              <p className="text-[11px] text-white/50 leading-relaxed">Ideal para sócios e pequenas/médias empresas que precisam de estabilidade corporativa.</p>
             </button>
           </div>
         )}
 
-        {/* Passo 5: Cards Finais com a Lógica de Desconto do Front */}
+        {/* Passo 5: Cards Finais com Filtro por Perfil */}
         {passo === 5 && (
           <div className="w-full flex flex-col gap-6 mt-2 items-start animate-fadeIn">
-            {/* Filtro minimalista de tempo (Estilo o print da Home) */}
             <div className="bg-[#12312F] p-1.5 rounded-xl border border-white/5 flex items-center gap-2 shadow-inner">
               <button onClick={() => setTipoCobranca('mensal')} className={`px-4 py-1.5 rounded-lg font-bold text-xs transition-all ${tipoCobranca === 'mensal' ? 'bg-[#FF7A38] text-white' : 'text-white/40'}`}>Mensal</button>
               <button onClick={() => setTipoCobranca('anual')} className={`px-4 py-1.5 rounded-lg font-bold text-xs transition-all flex items-center gap-1 ${tipoCobranca === 'anual' ? 'bg-emerald-600 text-white' : 'text-white/40'}`}>Anual <span className="bg-white/10 text-[9px] px-1 rounded flex items-center text-emerald-400"><Percent size={9} /> 10% OFF</span></button>
             </div>
 
             <div className="grid grid-cols-1 gap-4 w-full max-w-sm">
-              {MOCK_PLANOS.filter(p => dadosSimulacao.perfil === 'Individual' ? p.id === 1 : p.id === 2).map((plano) => (
+              {MOCK_PLANOS.filter(p => {
+                if (dadosSimulacao.perfil === 'Essencial') return p.id === 1;
+                if (dadosSimulacao.perfil === 'Individual') return p.id === 2;
+                if (dadosSimulacao.perfil === 'Familia') return p.id === 3;
+                if (dadosSimulacao.perfil === 'Empresarial') return p.id === 4;
+                return false;
+              }).map((plano) => (
                 <CardPlanoChat key={plano.id} plano={plano} tipoCobranca={tipoCobranca} idade={dadosSimulacao.idade} onContratar={handleContratar} />
               ))}
             </div>
@@ -250,6 +310,16 @@ export default function SimuladorChat() {
           </div>
         )}
 
+        {/* PASSO 6: Entrada de Email Ativada Instantaneamente Após a Escolha do Card */}
+        {passo === 6 && (
+          <div className="flex justify-end mt-2 animate-fadeIn w-full">
+            <form onSubmit={lidarComEnvioTexto} className="bg-[#12312F] p-3 rounded-2xl border border-white/5 flex w-full max-w-md gap-2 shadow-xl focus-within:border-[#FF7A38] transition-colors">
+              <input type="email" placeholder="Digite seu melhor e-mail para concluir..." className="bg-transparent flex-1 outline-none text-sm text-white px-2 placeholder:text-white/20" value={inputValue} onChange={(e) => setInputValue(e.target.value)} required />
+              <button type="submit" className="text-[#FF7A38] p-2 hover:bg-white/5 rounded-xl transition-colors"><PaperPlaneRight size={18} weight="fill" /></button>
+            </form>
+          </div>
+        )}
+
         {/* Passo 99: Bloqueio Humanizado */}
         {passo === 99 && (
           <div className="flex justify-start mt-2 animate-fadeIn w-full max-w-xs">
@@ -257,7 +327,6 @@ export default function SimuladorChat() {
           </div>
         )}
 
-        {/* Elemento invisível usado como âncora para a rolagem automática */}
         <div ref={campoMensagensFimRef} />
       </div>
     </div>
