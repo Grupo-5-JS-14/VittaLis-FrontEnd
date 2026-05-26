@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -11,12 +11,32 @@ import {
 
 import type Plano from "../../models/Plano";
 import { buscar } from "../../services/Service";
+import { AuthContext } from "../../contexts/AuthContext";
 
 function CarrosselPlanos() {
   const [planos, setPlanos] = useState<Plano[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const carrosselRef = useRef<HTMLDivElement>(null);
+
+  const auth = useContext(AuthContext) as any;
+  const usuario = auth?.usuario;
+
+  const token = usuario?.token || usuario?.acesso || "";
+
+  const tokenFormatado = token
+    ? token.startsWith("Bearer ")
+      ? token
+      : `Bearer ${token}`
+    : "";
+
+  const header = useMemo(() => {
+    return {
+      headers: {
+        Authorization: tokenFormatado,
+      },
+    };
+  }, [tokenFormatado]);
 
   function normalizarPlanos(resposta: any): Plano[] {
     if (Array.isArray(resposta)) return resposta;
@@ -40,7 +60,7 @@ function CarrosselPlanos() {
           const listaPlanos = normalizarPlanos(resposta);
           setPlanos(listaPlanos);
         },
-        {}
+        tokenFormatado ? header : {}
       );
     } catch (error) {
       console.error("Erro ao buscar planos:", error);
@@ -52,7 +72,7 @@ function CarrosselPlanos() {
 
   useEffect(() => {
     buscarPlanos();
-  }, []);
+  }, [token]);
 
   function scrollEsquerda() {
     carrosselRef.current?.scrollBy({
@@ -103,7 +123,6 @@ function CarrosselPlanos() {
               type="button"
               onClick={scrollEsquerda}
               className="pointer-events-auto cursor-pointer rounded-full border border-slate-200 bg-white p-2 text-slate-600 shadow-sm transition hover:bg-slate-50"
-              aria-label="Anterior"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -112,7 +131,6 @@ function CarrosselPlanos() {
               type="button"
               onClick={scrollDireita}
               className="pointer-events-auto cursor-pointer rounded-full border border-slate-200 bg-white p-2 text-slate-600 shadow-sm transition hover:bg-slate-50"
-              aria-label="Próximo"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -170,9 +188,7 @@ function CarrosselPlanos() {
                   )}
                 </div>
 
-                <div className="text-slate-400 transition-transform duration-200 group-hover:translate-x-1">
-                  <ArrowRight className="h-4 w-4" />
-                </div>
+                <ArrowRight className="h-4 w-4 text-slate-400 transition-transform duration-200 group-hover:translate-x-1" />
               </div>
             </div>
           ))}
