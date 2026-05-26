@@ -2,22 +2,22 @@ import { ShieldCheck, Zap, HeartHandshake, Sparkles } from "lucide-react";
 
 const itensBeneficios = [
   {
-    icon: <Zap className="h-5 w-5 text-[#12312F]" />,
-    title: "Pronto em 5 minutos",
+    icon: <Zap className="h-5 w-5 text-text" />,
+    title: "Agilidade",
     description: "Contratação 100% online, sem papelada ou fila de espera.",
   },
   {
-    icon: <ShieldCheck className="h-5 w-5 text-[#12312F]" />,
+    icon: <ShieldCheck className="h-5 w-5 text-text" />,
     title: "Proteção de verdade",
     description: "Cobrindo o que os outros seguros deixam de fora.",
   },
   {
-    icon: <HeartHandshake className="h-5 w-5 text-[#12312F]" />,
-    title: "Socorro 24h em 1 clique",
+    icon: <HeartHandshake className="h-5 w-5 text-text" />,
+    title: "Socorro a um clique",
     description: "Dinheiro na conta rápido quando você mais precisar.",
   },
   {
-    icon: <Sparkles className="h-5 w-5 text-[#12312F]" />,
+    icon: <Sparkles className="h-5 w-5 text-text" />,
     title: "Preço justo, sem pegadinhas",
     description:
       "Você sabe exatamente o que está pagando desde o primeiro dia.",
@@ -34,12 +34,12 @@ export default function Beneficios() {
               key={index}
               className="flex items-center space-x-4 md:justify-center lg:justify-start group"
             >
-              <div className="p-3 bg-[#EAECEB] rounded-full shrink-0 group-hover:bg-[#12312F]/10 transition-colors duration-200">
+              <div className="p-3 bg-[#EAECEB] rounded-full shrink-0 group-hover:bg-text/10 transition-colors duration-200">
                 {beneficio.icon}
               </div>
 
               <div className="flex flex-col">
-                <h4 className="text-sm font-bold text-[#12312F] leading-tight tracking-tight">
+                <h4 className="text-sm font-bold text-text leading-tight tracking-tight">
                   {beneficio.title}
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5 leading-snug max-w-50">

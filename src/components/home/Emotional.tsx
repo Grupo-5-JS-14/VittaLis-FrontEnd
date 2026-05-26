@@ -1,4 +1,4 @@
-import { Heart, ShieldCheck, Sparkles } from "lucide-react";
+import { ShieldCheck, Sparkles } from "lucide-react";
 
 export default function Emotional() {
   const newLocal =
@@ -8,8 +8,7 @@ export default function Emotional() {
       <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#FF7A38_1px,transparent_1px)] bg-size-[16px_16px]"></div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div className="inline-flex items-center space-x-2 bg-white/10 text-orange-400 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider mb-8 backdrop-blur-xs">
-          <Heart className="h-3.5 w-3.5 fill-current text-[#FF7A38]" />
+        <div className="inline-flex items-center space-x-2 text-orange-400 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider mb-8 backdrop-blur-xs">
           <span className="text-slate-200">
             A gente cuida do que você estima
           </span>
@@ -33,7 +32,7 @@ export default function Emotional() {
           <div className="w-1 h-1 bg-slate-600 rounded-full hidden sm:block"></div>
           <div className="flex items-center space-x-2">
             <Sparkles className="h-4 w-4 text-orange-500" />
-            <span>Proteção ativa no mesmo dia</span>
+            <span>Proteção ativa rapidamente</span>
           </div>
         </div>
       </div>

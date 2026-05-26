@@ -1,88 +1,129 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
-  Heart,
-  Users,
-  ShieldPlus,
-  Briefcase,
   ChevronLeft,
   ChevronRight,
   ArrowRight,
+  Heart,
+  Users,
+  Briefcase,
+  ShieldPlus,
 } from "lucide-react";
 
-const segurosVittalis = [
-  {
-    id: 1,
-    icon: <Heart className="h-6 w-6 text-[#12312F]" />,
-    title: "Seguro de Vida Individual",
-    description: "Proteção financeira para você e para quem você ama.",
-    price: "R$ 24,90",
-    isCustom: false,
-  },
-  {
-    id: 2,
-    icon: <Users className="h-6 w-6 text-[#12312F]" />,
-    title: "Seguro de Vida Familiar",
-    description: "Proteção completa para toda a sua família.",
-    price: "R$ 49,90",
-    isCustom: false,
-  },
-  {
-    id: 3,
-    icon: <ShieldPlus className="h-6 w-6 text-[#12312F]" />,
-    title: "Seguro de Acidentes Pessoais",
-    description: "Mais segurança no dia a dia para imprevistos.",
-    price: "R$ 19,90",
-    isCustom: false,
-  },
-  {
-    id: 4,
-    icon: <Briefcase className="h-6 w-6 text-[#12312F]" />,
-    title: "Seguro de Vida Empresarial",
-    description: "Cuidado e segurança para seus colaboradores e sua empresa.",
-    price: "",
-    isCustom: true,
-  },
-];
+import type Plano from "../../models/Plano";
+import { buscar } from "../../services/Service";
 
-export default function CarrosselPlanos() {
+function CarrosselPlanos() {
+  const [planos, setPlanos] = useState<Plano[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const carrosselRef = useRef<HTMLDivElement>(null);
 
-  const scrollEsquerda = () => {
-    if (carrosselRef.current) {
-      carrosselRef.current.scrollBy({ left: -320, behavior: "smooth" });
-    }
-  };
+  async function buscarPlanos() {
+    try {
+      setIsLoading(true);
 
-  const scrollDireita = () => {
-    if (carrosselRef.current) {
-      carrosselRef.current.scrollBy({ left: 320, behavior: "smooth" });
+      await buscar(
+        "/planos/all",
+        (resposta: any) => {
+          if (Array.isArray(resposta)) {
+            setPlanos(resposta);
+            return;
+          }
+
+          if (Array.isArray(resposta?.content)) {
+            setPlanos(resposta.content);
+            return;
+          }
+
+          if (Array.isArray(resposta?.data)) {
+            setPlanos(resposta.data);
+            return;
+          }
+
+          if (Array.isArray(resposta?.planos)) {
+            setPlanos(resposta.planos);
+            return;
+          }
+
+          console.error(
+            "Resposta de planos não veio como lista:",
+            resposta
+          );
+
+          setPlanos([]);
+        },
+        {}
+      );
+    } catch (error) {
+      console.error("Erro ao buscar planos:", error);
+      setPlanos([]);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }
+
+  useEffect(() => {
+    buscarPlanos();
+  }, []);
+
+  function scrollEsquerda() {
+    carrosselRef.current?.scrollBy({
+      left: -320,
+      behavior: "smooth",
+    });
+  }
+
+  function scrollDireita() {
+    carrosselRef.current?.scrollBy({
+      left: 320,
+      behavior: "smooth",
+    });
+  }
+
+  function getIcon(nome: string) {
+    const nomeLower = nome.toLowerCase();
+
+    if (nomeLower.includes("individual")) {
+      return <Heart className="h-6 w-6 text-text" />;
+    }
+
+    if (nomeLower.includes("familiar")) {
+      return <Users className="h-6 w-6 text-text" />;
+    }
+
+    if (nomeLower.includes("empresarial")) {
+      return <Briefcase className="h-6 w-6 text-text" />;
+    }
+
+    return <ShieldPlus className="h-6 w-6 text-text" />;
+  }
 
   return (
-    <section className="py-16 w-full bg-[#F5F7F6] font-['Poppins',sans-serif]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Título Centralizado*/}
-        <div className="text-center mb-10 relative">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#12312F]">
-            Nossos seguros
+    <section className="w-full bg-[#F5F7F6] py-16 font-['Poppins',sans-serif]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* HEADER */}
+        <div className="relative mb-10 text-center">
+          <h2 className="text-2xl font-bold text-text sm:text-3xl">
+            Nossos planos
           </h2>
-          <p className="text-sm text-slate-500 mt-2">
+
+          <p className="mt-2 text-sm text-slate-500">
             Escolha a proteção ideal para você e sua família.
           </p>
 
-          {/* Setas de navegação para Desktop */}
-          <div className="hidden md:flex justify-between w-full absolute top-1/2 -translate-y-1/2 px-2 pointer-events-none">
+          {/* SETAS DESKTOP */}
+          <div className="pointer-events-none absolute top-1/2 hidden w-full -translate-y-1/2 justify-between px-2 md:flex">
             <button
               onClick={scrollEsquerda}
-              className="p-2 rounded-full border border-slate-200 bg-white text-slate-600 shadow-xs hover:bg-slate-50 pointer-events-auto transition-all cursor-pointer"
+              className="pointer-events-auto cursor-pointer rounded-full border border-slate-200 bg-white p-2 text-slate-600 shadow-sm transition hover:bg-slate-50"
               aria-label="Anterior"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
+
             <button
               onClick={scrollDireita}
-              className="p-2 rounded-full border border-slate-200 bg-white text-slate-600 shadow-xs hover:bg-slate-50 pointer-events-auto transition-all cursor-pointer"
+              className="pointer-events-auto cursor-pointer rounded-full border border-slate-200 bg-white p-2 text-slate-600 shadow-sm transition hover:bg-slate-50"
               aria-label="Próximo"
             >
               <ChevronRight className="h-5 w-5" />
@@ -90,53 +131,66 @@ export default function CarrosselPlanos() {
           </div>
         </div>
 
-        {/* Listagem com Scroll em Linha (Esconde a barra de rolagem cinza de forma nativa) */}
+        {/* LOADING */}
+        {isLoading && (
+          <p className="mb-6 text-center text-slate-500">
+            Carregando planos...
+          </p>
+        )}
+
+        {/* CARROSSEL */}
         <div
           ref={carrosselRef}
-          className="flex gap-6 overflow-x-auto pb-6 px-2 snap-x snap-mandatory touch-pan-x scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          className="flex snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-6 scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
-          {segurosVittalis.map((plano) => (
+          {planos.map((plano) => (
             <div
               key={plano.id}
-              className="w-70 sm:w-75 shrink-0 snap-start bg-white rounded-2xl p-6 border border-slate-100 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col h-70 justify-between group"
+              className="group flex h-70 w-72.5 shrink-0 snap-start flex-col justify-between rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md"
             >
-              {/* Topo do Card - Ícone e Textos */}
+              {/* TOPO */}
               <div>
-                <div className="p-3 bg-[#F5F7F6] rounded-2xl w-fit mb-5">
-                  {plano.icon}
+                <div className="mb-5 w-fit rounded-2xl bg-[#F5F7F6] p-3">
+                  {getIcon(plano.nome)}
                 </div>
-                <h3 className="text-base font-bold text-[#12312F] mb-1.5">
-                  {plano.title}
+
+                <h3 className="mb-2 text-lg font-bold text-text">
+                  {plano.nome}
                 </h3>
-                <p className="text-xs text-slate-500 leading-relaxed line-clamp-3">
-                  {plano.description}
+
+                <p className="line-clamp-3 text-sm leading-relaxed text-slate-500">
+                  {plano.descricao}
                 </p>
               </div>
 
-              {/* Rodapé do Card - Preço e Seta indicativa */}
+              {/* RODAPÉ */}
               <div className="flex items-end justify-between pt-4">
                 <div>
-                  {plano.isCustom ? (
-                    <span className="text-sm font-semibold text-orange-500">
-                      Sob consulta
-                    </span>
-                  ) : (
+                  {Number(plano.valor) > 0 ? (
                     <>
-                      <span className="text-[10px] text-slate-400 block">
+                      <span className="block text-[10px] text-slate-400">
                         A partir de
                       </span>
-                      <span className="text-sm font-bold text-orange-500">
-                        {plano.price}
-                        <span className="text-[11px] font-normal text-slate-400">
+
+                      <span className="text-lg font-bold text-orange-500">
+                        R$ {" "}
+                        {Number(plano.valor)
+                          .toFixed(2)
+                          .replace(".", ",")}
+
+                        <span className="text-xs font-normal text-slate-400">
                           /mês
                         </span>
                       </span>
                     </>
+                  ) : (
+                    <span className="text-sm font-semibold text-orange-500">
+                      Sob consulta
+                    </span>
                   )}
                 </div>
 
-                {/* Flecha minimalista cinza*/}
-                <div className="text-slate-400 group-hover:translate-x-1 transition-transform duration-200">
+                <div className="text-slate-400 transition-transform duration-200 group-hover:translate-x-1">
                   <ArrowRight className="h-4 w-4" />
                 </div>
               </div>
@@ -144,13 +198,14 @@ export default function CarrosselPlanos() {
           ))}
         </div>
 
-        {/* Link / Botão de Ação no rodapé do carrossel direcionando para /planos */}
+        {/* CTA */}
         <div className="mt-10 flex justify-center">
           <a
             href="/planos"
-            className="inline-flex items-center space-x-2 text-sm font-bold text-[#12312F] hover:text-orange-500 transition-colors border-b-2 border-transparent hover:border-orange-500 pb-1 group"
+            className="group inline-flex items-center gap-2 border-b-2 border-transparent pb-1 text-sm font-bold text-text transition hover:border-orange-500 hover:text-orange-500"
           >
             <span>Conhecer todos os nossos planos</span>
+
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
         </div>
@@ -158,3 +213,5 @@ export default function CarrosselPlanos() {
     </section>
   );
 }
+
+export default CarrosselPlanos;
