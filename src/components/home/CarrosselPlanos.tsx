@@ -10,69 +10,42 @@ import {
 } from "lucide-react";
 
 import type Plano from "../../models/Plano";
-import { buscar } from "../../services/Service";
 import { AuthContext } from "../../contexts/AuthContext";
 
+// 1. Array de planos mockados conforme a imagem fornecida
+const PLANOS_MOCKADOS: Plano[] = [
+  {
+    id: 1,
+    nome: "Individual",
+    descricao: "Proteção financeira para você e para quem você ama.",
+    valor: 34.90,
+  },
+  {
+    id: 2,
+    nome: "Familiar",
+    descricao: "Proteção completa para toda sua família.",
+    valor: 79.90,
+  },
+  {
+    id: 3,
+    nome: "Essencial",
+    descricao: "Mais segurança no dia a dia para imprevistos.",
+    valor: 24.90,
+  },
+  {
+    id: 4,
+    nome: "Empresarial",
+    descricao: "Cuidado e segurança para seus colaboradores e sua empresa.",
+    valor: 0, // Definido como 0 para cair na condição de "Sob consulta"
+  },
+];
+
 function CarrosselPlanos() {
-  const [planos, setPlanos] = useState<Plano[]>([]);
+  // Inicializa o estado diretamente com os dados mockados
+  const [planos, setPlanos] = useState<Plano[]>(PLANOS_MOCKADOS);
   const [isLoading, setIsLoading] = useState(false);
 
   const carrosselRef = useRef<HTMLDivElement>(null);
-
-  const auth = useContext(AuthContext) as any;
-  const usuario = auth?.usuario;
-
-  const token = usuario?.token || usuario?.acesso || "";
-
-  const tokenFormatado = token
-    ? token.startsWith("Bearer ")
-      ? token
-      : `Bearer ${token}`
-    : "";
-
-  const header = useMemo(() => {
-    return {
-      headers: {
-        Authorization: tokenFormatado,
-      },
-    };
-  }, [tokenFormatado]);
-
-  function normalizarPlanos(resposta: any): Plano[] {
-    if (Array.isArray(resposta)) return resposta;
-    if (Array.isArray(resposta?.content)) return resposta.content;
-    if (Array.isArray(resposta?.data)) return resposta.data;
-    if (Array.isArray(resposta?.planos)) return resposta.planos;
-
-    console.error("Resposta de planos não veio como lista:", resposta);
-    return [];
-  }
-
-  async function buscarPlanos() {
-    try {
-      setIsLoading(true);
-
-      await buscar(
-        "/planos/all",
-        (resposta: any) => {
-          console.log("PLANOS CARROSSEL:", resposta);
-
-          const listaPlanos = normalizarPlanos(resposta);
-          setPlanos(listaPlanos);
-        },
-        tokenFormatado ? header : {}
-      );
-    } catch (error) {
-      console.error("Erro ao buscar planos:", error);
-      setPlanos([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    buscarPlanos();
-  }, [token]);
 
   function scrollEsquerda() {
     carrosselRef.current?.scrollBy({
@@ -137,12 +110,6 @@ function CarrosselPlanos() {
           </div>
         </div>
 
-        {isLoading && (
-          <p className="mb-6 text-center text-slate-500">
-            Carregando planos...
-          </p>
-        )}
-
         <div
           ref={carrosselRef}
           className="flex snap-x snap-mandatory gap-5 sm:gap-6 overflow-x-auto px-2 pb-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -168,7 +135,8 @@ function CarrosselPlanos() {
 
               <div className="flex items-end justify-between pt-4">
                 <div>
-                  {Number(plano.valor) > 0 ? (
+                  {/* Condicional refinada para garantir que o empresarial ou valor 0 exiba Sob Consulta */}
+                  {Number(plano.valor) > 0 && !plano.nome.toLowerCase().includes("empresarial") ? (
                     <>
                       <span className="block text-[10px] text-slate-400">
                         A partir de
@@ -182,9 +150,13 @@ function CarrosselPlanos() {
                       </span>
                     </>
                   ) : (
-                    <span className="text-sm font-semibold text-orange-500">
-                      Sob consulta
-                    </span>
+                    <div className="flex flex-col">
+                      {/* Espaçador invisível para manter o alinhamento da altura do card igual aos outros */}
+                      <span className="block text-[10px] invisible">A partir de</span>
+                      <span className="text-base font-bold text-orange-500">
+                        Sob consulta
+                      </span>
+                    </div>
                   )}
                 </div>
 
@@ -192,12 +164,6 @@ function CarrosselPlanos() {
               </div>
             </div>
           ))}
-
-          {planos.length === 0 && !isLoading && (
-            <p className="w-full text-center text-slate-500">
-              Nenhum plano encontrado.
-            </p>
-          )}
         </div>
 
         <div className="mt-10 flex justify-center">
