@@ -3,6 +3,7 @@ import { cadastrar } from "../../services/Service";
 import type Plano from "../../models/Plano";
 import ModalPlano from "./ModalPlano";
 import { AuthContext } from "../../contexts/AuthContext";
+import { toast } from "sonner";
 
 interface CardPlanoProps {
   plano: Plano;
@@ -48,17 +49,17 @@ function CardPlano({
     if (isLoading) return;
 
     if (!tokenRaw) {
-      alert("Você precisa estar logado para contratar um plano.");
+      toast.info("Você precisa estar logado para contratar um plano.");
       return;
     }
 
     if (!usuario?.id) {
-      alert("Não foi possível identificar o usuário logado.");
+      toast.info("Não foi possível identificar o usuário logado.");
       return;
     }
 
     if (!plano?.id) {
-      alert("Não foi possível identificar o plano selecionado.");
+      toast.info("Não foi possível identificar o plano selecionado.");
       return;
     }
 
@@ -91,11 +92,11 @@ function CardPlano({
         header
       );
 
-      alert("Plano contratado com sucesso!");
+     toast.success("Plano contratado com sucesso!");
     } catch (error: any) {
       console.error("Erro completo:", error.response?.data || error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Erro ao contratar plano."
       );

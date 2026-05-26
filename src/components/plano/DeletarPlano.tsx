@@ -3,6 +3,7 @@ import { AlertTriangle } from "lucide-react";
 
 import type Plano from "../../models/Plano";
 import { deletar } from "../../services/Service";
+import { toast } from "sonner";
 
 interface DeletarPlanoProps {
   plano?: Plano;
@@ -29,12 +30,12 @@ function DeletarPlano({
   async function deletarPlano() {
 
     if (!token) {
-      alert("Você precisa estar logado como admin para fazer essa ação.");
+     toast.info("Você precisa estar logado como admin para fazer essa ação.");
       return;
     }
 
     if (!plano?.id) {
-      alert("Plano não encontrado.");
+     toast.info("Plano não encontrado.");
       return;
     }
 
@@ -46,14 +47,14 @@ function DeletarPlano({
         header
       );
 
-      alert("Plano deletado com sucesso!");
+      toast.success("Plano deletado com sucesso!");
 
       buscarPlanos();
       fecharModal();
 
     } catch (error) {
       console.error("Erro ao deletar plano:", error);
-      alert("Erro ao deletar o plano.");
+    toast.error("Erro ao deletar o plano.");
 
     } finally {
       setIsLoading(false);

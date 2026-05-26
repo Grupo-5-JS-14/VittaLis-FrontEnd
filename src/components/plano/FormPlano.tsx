@@ -7,6 +7,7 @@ import {
 
 import type Plano from "../../models/Plano";
 import { atualizar, cadastrar } from "../../services/Service";
+import { toast } from "sonner";
 
 interface FormPlanoProps {
   plano?: Plano;
@@ -64,22 +65,22 @@ function FormPlano({
     e.preventDefault();
 
     if (!token) {
-      alert("Você precisa estar logado como admin para fazer essa ação.");
+     toast.info("Você precisa estar logado como admin para fazer essa ação.");
       return;
     }
 
     if (!planoForm.nome.trim()) {
-      alert("Preencha o nome do plano.");
+     toast.info("Preencha o nome do plano.");
       return;
     }
 
     if (!planoForm.descricao.trim()) {
-      alert("Preencha a descrição do plano.");
+     toast.info("Preencha a descrição do plano.");
       return;
     }
 
     if (Number(planoForm.valor) < 0) {
-      alert("O valor não pode ser negativo.");
+      toast.info("O valor não pode ser negativo.");
       return;
     }
 
@@ -94,17 +95,17 @@ function FormPlano({
         };
 
        await cadastrar( "/admin/planos/cadastrar", planoCadastro, setPlanoForm, header )
-        alert("Plano cadastrado com sucesso!");
+        toast.success("Plano cadastrado com sucesso!");
       } else {
         await atualizar( "/admin/planos/atualizar", planoForm, setPlanoForm, header )
-        alert("Plano atualizado com sucesso!");
+        toast.success("Plano atualizado com sucesso!");
       }
 
       buscarPlanos();
       fecharModal();
     } catch (error) {
       console.error("Erro ao salvar plano:", error);
-      alert("Erro ao salvar o plano.");
+      toast.error("Erro ao salvar o plano.");
     } finally {
       setIsLoading(false);
     }
