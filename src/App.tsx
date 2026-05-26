@@ -18,6 +18,8 @@ import About from "./pages/About";
 import ScrollToTop from "./components/scrolltop";
 
 import ProjetosVitta from "./pages/ProjetosVitta";
+import Ajuda from "./pages/Ajuda";
+import Sinistro from "./pages/Sinistro";
 
 function LayoutComHeaderFooter() {
   return (
@@ -59,6 +61,8 @@ function App() {
               <Route path="/planos" element={<ListaPlanos />} />
               <Route path="/perfil" element={<Perfil />} />
               <Route path="/sobre" element={<About />} />
+              <Route path="/ajuda" element={<Ajuda />} />
+              <Route path="/sinistro" element={<Sinistro />} />
             </Route>
 
             {/* ROTAS SEM NAVBAR E FOOTER */}
