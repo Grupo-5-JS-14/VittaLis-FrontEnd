@@ -18,6 +18,16 @@ function CarrosselPlanos() {
 
   const carrosselRef = useRef<HTMLDivElement>(null);
 
+  function normalizarPlanos(resposta: any): Plano[] {
+    if (Array.isArray(resposta)) return resposta;
+    if (Array.isArray(resposta?.content)) return resposta.content;
+    if (Array.isArray(resposta?.data)) return resposta.data;
+    if (Array.isArray(resposta?.planos)) return resposta.planos;
+
+    console.error("Resposta de planos não veio como lista:", resposta);
+    return [];
+  }
+
   async function buscarPlanos() {
     try {
       setIsLoading(true);
@@ -25,32 +35,10 @@ function CarrosselPlanos() {
       await buscar(
         "/planos/all",
         (resposta: any) => {
-          if (Array.isArray(resposta)) {
-            setPlanos(resposta);
-            return;
-          }
+          console.log("PLANOS CARROSSEL:", resposta);
 
-          if (Array.isArray(resposta?.content)) {
-            setPlanos(resposta.content);
-            return;
-          }
-
-          if (Array.isArray(resposta?.data)) {
-            setPlanos(resposta.data);
-            return;
-          }
-
-          if (Array.isArray(resposta?.planos)) {
-            setPlanos(resposta.planos);
-            return;
-          }
-
-          console.error(
-            "Resposta de planos não veio como lista:",
-            resposta
-          );
-
-          setPlanos([]);
+          const listaPlanos = normalizarPlanos(resposta);
+          setPlanos(listaPlanos);
         },
         {}
       );
@@ -81,7 +69,7 @@ function CarrosselPlanos() {
   }
 
   function getIcon(nome: string) {
-    const nomeLower = nome.toLowerCase();
+    const nomeLower = nome?.toLowerCase() || "";
 
     if (nomeLower.includes("individual")) {
       return <Heart className="h-6 w-6 text-text" />;
@@ -101,7 +89,6 @@ function CarrosselPlanos() {
   return (
     <section className="w-full bg-[#F5F7F6] py-16 font-['Poppins',sans-serif]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* HEADER */}
         <div className="relative mb-10 text-center">
           <h2 className="text-2xl font-bold text-text sm:text-3xl">
             Nossos planos
@@ -111,9 +98,9 @@ function CarrosselPlanos() {
             Escolha a proteção ideal para você e sua família.
           </p>
 
-          {/* SETAS DESKTOP */}
           <div className="pointer-events-none absolute top-1/2 hidden w-full -translate-y-1/2 justify-between px-2 md:flex">
             <button
+              type="button"
               onClick={scrollEsquerda}
               className="pointer-events-auto cursor-pointer rounded-full border border-slate-200 bg-white p-2 text-slate-600 shadow-sm transition hover:bg-slate-50"
               aria-label="Anterior"
@@ -122,6 +109,7 @@ function CarrosselPlanos() {
             </button>
 
             <button
+              type="button"
               onClick={scrollDireita}
               className="pointer-events-auto cursor-pointer rounded-full border border-slate-200 bg-white p-2 text-slate-600 shadow-sm transition hover:bg-slate-50"
               aria-label="Próximo"
@@ -131,24 +119,21 @@ function CarrosselPlanos() {
           </div>
         </div>
 
-        {/* LOADING */}
         {isLoading && (
           <p className="mb-6 text-center text-slate-500">
             Carregando planos...
           </p>
         )}
 
-        {/* CARROSSEL */}
         <div
           ref={carrosselRef}
-          className="flex snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-6 scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          className="flex snap-x snap-mandatory gap-5 sm:gap-6 overflow-x-auto px-2 pb-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {planos.map((plano) => (
             <div
               key={plano.id}
-              className="group flex h-70 w-72.5 shrink-0 snap-start flex-col justify-between rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md"
+              className="group flex h-[280px] w-[290px] sm:w-[300px] shrink-0 snap-start flex-col justify-between rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md"
             >
-              {/* TOPO */}
               <div>
                 <div className="mb-5 w-fit rounded-2xl bg-[#F5F7F6] p-3">
                   {getIcon(plano.nome)}
@@ -163,7 +148,6 @@ function CarrosselPlanos() {
                 </p>
               </div>
 
-              {/* RODAPÉ */}
               <div className="flex items-end justify-between pt-4">
                 <div>
                   {Number(plano.valor) > 0 ? (
@@ -173,11 +157,7 @@ function CarrosselPlanos() {
                       </span>
 
                       <span className="text-lg font-bold text-orange-500">
-                        R$ {" "}
-                        {Number(plano.valor)
-                          .toFixed(2)
-                          .replace(".", ",")}
-
+                        R$ {Number(plano.valor).toFixed(2).replace(".", ",")}
                         <span className="text-xs font-normal text-slate-400">
                           /mês
                         </span>
@@ -196,16 +176,20 @@ function CarrosselPlanos() {
               </div>
             </div>
           ))}
+
+          {planos.length === 0 && !isLoading && (
+            <p className="w-full text-center text-slate-500">
+              Nenhum plano encontrado.
+            </p>
+          )}
         </div>
 
-        {/* CTA */}
         <div className="mt-10 flex justify-center">
           <a
             href="/planos"
             className="group inline-flex items-center gap-2 border-b-2 border-transparent pb-1 text-sm font-bold text-text transition hover:border-orange-500 hover:text-orange-500"
           >
             <span>Conhecer todos os nossos planos</span>
-
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
         </div>

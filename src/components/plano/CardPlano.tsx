@@ -104,23 +104,23 @@ function CardPlano({
     }
   }
 
-  return (
-    <article className="flex flex-col justify-between rounded-2xl border border-[#dbe6e4] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+    return (
+    <article className="flex h-full w-full flex-col justify-between rounded-2xl border border-[#dbe6e4] bg-white p-5 sm:p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
       <div>
-        <h2 className="text-2xl font-black text-[#004346]">
+        <h2 className="text-xl sm:text-2xl font-black text-[#004346] wrap-break-words">
           {plano.nome}
         </h2>
 
-        <p className="mt-3 text-sm leading-relaxed text-gray-600">
+        <p className="mt-3 text-sm sm:text-base leading-relaxed text-gray-600 wrap-break-words">
           {plano.descricao}
         </p>
 
-        <div className="mt-6">
-          <span className="text-4xl font-black text-[#ff6b2c]">
+        <div className="mt-6 flex flex-wrap items-end gap-1">
+          <span className="text-3xl sm:text-4xl font-black text-[#ff6b2c]">
             R$ {valorFormatado}
           </span>
 
-          <span className="ml-1 text-sm text-gray-500">
+          <span className="text-sm text-gray-500">
             /{tipoCobranca === "mensal" ? "mês" : "ano"}
           </span>
         </div>
@@ -139,33 +139,37 @@ function CardPlano({
       </div>
 
       {isAdmin ? (
-        <div className="mt-6 flex gap-3">
-          <ModalPlano
-            tipo="editar"
-            plano={plano}
-            buscarPlanos={buscarPlanos}
-            token={tokenRaw}
-          />
+        <div className="mt-6 flex flex-col sm:flex-row gap-3">
+          <div className="w-full sm:w-auto">
+            <ModalPlano
+              tipo="editar"
+              plano={plano}
+              buscarPlanos={buscarPlanos}
+              token={tokenRaw}
+            />
+          </div>
 
-          <ModalPlano
-            tipo="deletar"
-            plano={plano}
-            buscarPlanos={buscarPlanos}
-            token={tokenRaw}
-          />
+          <div className="w-full sm:w-auto">
+            <ModalPlano
+              tipo="deletar"
+              plano={plano}
+              buscarPlanos={buscarPlanos}
+              token={tokenRaw}
+            />
+          </div>
         </div>
       ) : (
         <button
           type="button"
           onClick={contratarPlano}
           disabled={isLoading}
-          className="mt-6 w-full cursor-pointer rounded-xl bg-[#004346] px-4 py-3 font-bold text-white transition hover:bg-[#005f63] disabled:cursor-not-allowed disabled:bg-gray-400"
+          className="mt-6 w-full cursor-pointer rounded-xl bg-[#004346] px-4 py-3 text-sm sm:text-base font-bold text-white transition hover:bg-[#005f63] disabled:cursor-not-allowed disabled:bg-gray-400"
         >
           {isLoading ? "Selecionando..." : "Contratar"}
         </button>
       )}
     </article>
-  );
+);
 }
 
 export default CardPlano;

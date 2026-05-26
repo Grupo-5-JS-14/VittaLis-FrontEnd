@@ -40,33 +40,48 @@ function Login() {
         // h-screen + overflow-hidden mata qualquer barra de scroll na tela principal
         <section className="w-full h-screen bg-background flex font-sans antialiased overflow-hidden">
 
-            {/* ─── LADO ESQUERDO: Estilo Minimalista Porto (Tipografia + Frase Nova) ─── */}
-            <div className="hidden lg:flex w-[50%] h-full bg-surface flex-col justify-between p-16 xl:p-24 border-r border-border/50">
-                
-                {/* Logo Discreta no Topo */}
-                <div className="h-10">
+            {/* ─── LADO ESQUERDO COM VÍDEO ─── */}
+            <div className="hidden lg:flex relative w-1/2 h-full p-16 xl:p-24 flex-col justify-between overflow-hidden text-white">
+
+                {/* Vídeo de fundo */}
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover z-0"
+                >
+                    <source src="/src/assets/happyness.mp4" type="video/mp4" />
+                </video>
+
+                {/* Overlay escuro */}
+                <div className="absolute inset-0 bg-slate-900/50 z-10 mix-blend-multiply" />
+
+                {/* Logo */}
+                <div className="relative z-20 h-10">
                     <img
                         src="/icon-verde.png"
                         alt="Logo VittaLis"
-                        className="max-h-full object-contain"
+                        className="max-h-full object-contain brightness-0 invert"
                     />
                 </div>
 
-                {/* Frase Nova Escolhida por Você */}
-                <div className="max-w-xl space-y-3">
-                    <h1 className="text-primary text-5xl xl:text-6xl font-black tracking-tight leading-[1.1]">
+                {/* Texto institucional */}
+                <div className="relative z-20 max-w-xl space-y-3 drop-shadow-md">
+                    <h1 className="text-5xl xl:text-6xl font-black tracking-tight leading-[1.1]">
                         Sua vida em <br />
                         <span className="relative inline-block">
                             equilíbrio.
                         </span>
                     </h1>
-                    <p className="text-text-light text-lg font-medium pl-0.5">
+
+                    <p className="text-white/80 text-lg font-medium pl-0.5">
                         A gente cuida do resto.
                     </p>
                 </div>
 
-                {/* Rodapé institucional discreto */}
-                <div className="text-text-light/40 text-xs font-medium">
+                {/* Rodapé */}
+                <div className="relative z-20 text-white/50 text-xs font-medium">
                     © {new Date().getFullYear()} VittaLis. Viva com tranquilidade.
                 </div>
             </div>
