@@ -5,9 +5,19 @@ import { cadastrarUsuario } from "../services/Service"
 import { Eye, EyeOff } from "lucide-react"
 import { ClipLoader } from "react-spinners"
 import type UsuarioCadastro from "../models/UsuarioCadastro"
+import { useLocation } from 'react-router-dom';
 
 function Cadastro() {
     const navigate = useNavigate()
+
+    const location = useLocation();
+
+    const dadosSimulacao = location.state as {
+        nomePrePreenchido?: string;
+        idadePrePreenchida?: number;
+        planoSelecionadoId?: number;
+        valorFinalCalculado?: number;
+    };
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [mostrarSenha, setMostrarSenha] = useState(false)
@@ -15,11 +25,11 @@ function Cadastro() {
     const [confirmarSenha, setConfirmarSenha] = useState<string>("")
 
     const [usuario, setUsuario] = useState<UsuarioCadastro>({
-        nome: '',
+        nome: dadosSimulacao?.nomePrePreenchido || '',
         usuario: '',
         senha: '',
         foto: '',
-        idade: 0
+        idade: dadosSimulacao?.idadePrePreenchida || 0
     })
 
     function retornar() {
@@ -83,12 +93,12 @@ function Cadastro() {
             {/* LADO ESQUERDO (Metade da Tela com Vídeo de Fundo)     */}
             {/* ===================================================== */}
             <div className="hidden lg:flex relative w-1/2 min-h-screen p-12 flex-col justify-between overflow-hidden text-white">
-                
+
                 {/* Tag de vídeo */}
-                <video 
-                    autoPlay 
-                    loop 
-                    muted 
+                <video
+                    autoPlay
+                    loop
+                    muted
                     playsInline
                     className="absolute inset-0 w-full h-full object-cover z-0"
                 >
@@ -141,7 +151,7 @@ function Cadastro() {
 
                 {/* Formulário */}
                 <div className="w-full max-w-md mx-auto my-auto py-8 space-y-8">
-                    
+
                     {/* Boas-vindas */}
                     <div>
                         <h2 className="text-2xl font-bold tracking-tight text-primary">
@@ -153,7 +163,7 @@ function Cadastro() {
                     </div>
 
                     <form onSubmit={cadastrarNovoUsuario} className="space-y-4">
-                        
+
                         {/* Nome */}
                         <div className="space-y-1">
                             <label htmlFor="nome" className="block text-text-light text-xs font-medium">Nome completo</label>
