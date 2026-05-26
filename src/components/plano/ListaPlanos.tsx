@@ -41,7 +41,7 @@ function ListaPlanos() {
       id: 4,
       nome: "Empresarial",
       descricao: "Cuidado e segurança para seus colaboradores e sua empresa.",
-      valor: 0,
+      valor: 40,
     },
   ];
 
