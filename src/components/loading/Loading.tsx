@@ -46,8 +46,8 @@ export default function LoadingVittaLis() {
     >
       {/* Glows ambientes */}
       <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-[#12312F]/[0.04] blur-[120px]" />
-        <div className="absolute bottom-0 right-0 h-[300px] w-[300px] rounded-full bg-[#FF7A38]/[0.05] blur-[100px]" />
+        <div className="absolute -top-1/3 left-1/2 h-150 w-150 -translate-x-1/2 rounded-full bg-text/4 blur-[120px]" />
+        <div className="absolute bottom-0 right-0 h-75 w-75 rounded-full bg-[#FF7A38]/5 blur-[100px]" />
       </div>
 
       <div className="relative z-10 flex flex-col items-center gap-10">
@@ -58,7 +58,7 @@ export default function LoadingVittaLis() {
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="h-[140px] w-[140px]"
+            className="h-35 w-35"
             style={{ filter: "drop-shadow(0 0 20px rgba(255,122,56,0.25))" }}
           >
             <defs>
@@ -95,7 +95,7 @@ export default function LoadingVittaLis() {
 
         {/* ── Identidade da Marca ── */}
         <div className="flex flex-col items-center gap-3 select-none">
-          <h1 className="text-[20px] font-black tracking-[0.2em] text-[#12312F] uppercase">
+          <h1 className="text-[20px] font-black tracking-[0.2em] text-text uppercase">
             Vitta<span className="text-[#FF7A38]">Lis</span>
           </h1>
 
