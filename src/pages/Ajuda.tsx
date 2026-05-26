@@ -131,7 +131,7 @@ export default function Ajuda() {
             {/* Container da Imagem */}
             <div className="w-full aspect-square rounded-2xl overflow-hidden bg-slate-900 border border-white/5 shadow-inner mt-4">
               <img 
-                src="/src/assets/marlosbot.jpg" 
+                src="/marlosbot.jpg" 
                 alt="Marlos Bot Especialista" 
                 className="w-full h-full object-cover"
                 onError={(e) => {
