@@ -47,7 +47,9 @@ function ListaPlanos() {
 
   const [planos, setPlanos] = useState<Plano[]>(planosPadrao);
   const [isLoading, setIsLoading] = useState(false);
-  const [tipoCobranca, setTipoCobranca] = useState<"mensal" | "anual">("mensal");
+  const [tipoCobranca, setTipoCobranca] = useState<"mensal" | "anual">(
+    "mensal"
+  );
 
   const auth = useContext(AuthContext) as any;
   const usuario = auth?.usuario;
@@ -63,24 +65,35 @@ function ListaPlanos() {
     usuario?.admin === true;
 
   const tokenFormatado = token
-    ? token.startsWith("Bearer ")
-      ? token
-      : `Bearer ${token}`
-    : "";
+  ? token.startsWith("Bearer ")
+    ? token
+    : `Bearer ${token}`
+  : "";
 
-  const header = useMemo(() => {
-    return {
-      headers: {
-        Authorization: tokenFormatado,
-      },
-    };
-  }, [tokenFormatado]);
+const header = useMemo(() => {
+  return {
+    headers: {
+      Authorization: tokenFormatado,
+    },
+  };
+}, [tokenFormatado]);
 
   function normalizarPlanos(resposta: any): Plano[] {
-    if (Array.isArray(resposta)) return resposta;
-    if (Array.isArray(resposta?.content)) return resposta.content;
-    if (Array.isArray(resposta?.data)) return resposta.data;
-    if (Array.isArray(resposta?.planos)) return resposta.planos;
+    if (Array.isArray(resposta)) {
+      return resposta;
+    }
+
+    if (Array.isArray(resposta?.content)) {
+      return resposta.content;
+    }
+
+    if (Array.isArray(resposta?.data)) {
+      return resposta.data;
+    }
+
+    if (Array.isArray(resposta?.planos)) {
+      return resposta.planos;
+    }
 
     console.error("Resposta de planos não veio como lista:", resposta);
     return [];
@@ -118,19 +131,57 @@ function ListaPlanos() {
   const planosParaExibir = Array.isArray(planos) ? planos : planosPadrao;
 
   return (
-    <main className="w-full min-h-screen bg-radial-gradient(circle_at_top,_#ffffff_0%,_#f8fbfa_42%,_#f5f8f7_100%) text-[#004346] px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
-      <section className="w-full max-w-7xl mx-auto">
-        <div className="text-center">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#004346] tracking-tight">
+    <main
+      style={{
+        width: "100%",
+        minHeight: "100vh",
+        background:
+          "radial-gradient(circle at top, #ffffff 0%, #f8fbfa 42%, #f5f8f7 100%)",
+        color: "#004346",
+        padding: "34px 24px 44px",
+      }}
+    >
+      <section
+        style={{
+          width: "100%",
+          maxWidth: "1120px",
+          margin: "0 auto",
+        }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <h1
+            style={{
+              fontSize: "42px",
+              lineHeight: "48px",
+              fontWeight: 900,
+              color: "#004346",
+              margin: 0,
+              letterSpacing: "-1px",
+            }}
+          >
             Nossos planos
           </h1>
 
-          <p className="mt-2 text-sm sm:text-base text-[#5f6d70]">
+          <p
+            style={{
+              marginTop: "6px",
+              color: "#5f6d70",
+              fontSize: "15px",
+            }}
+          >
             Escolha a proteção ideal para você e sua família.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mt-8 items-start">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "34px",
+            marginTop: "34px",
+            alignItems: "start",
+          }}
+        >
           <InfoItem
             icon={<ShieldCheck size={24} />}
             title="Contratação 100% digital"
@@ -156,23 +207,60 @@ function ListaPlanos() {
           />
         </div>
 
-        <div className="flex justify-center mt-8 px-2">
-          <div className="relative flex w-full max-w-300px bg-white border border-[#dbe6e4] rounded-full p-1 shadow-lg overflow-hidden">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "34px",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              width: "300px",
+              background: "#ffffff",
+              border: "1px solid #dbe6e4",
+              borderRadius: "999px",
+              padding: "4px",
+              boxShadow: "0 8px 20px rgba(0, 67, 70, 0.10)",
+              overflow: "hidden",
+            }}
+          >
             <div
-              className="absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-full bg-lineear-to-br from-[#006b6b] to-[#004346] shadow-md transition-all duration-300"
               style={{
-                left: tipoCobranca === "mensal" ? "4px" : "50%",
+                position: "absolute",
+                top: "4px",
+                bottom: "4px",
+                left: tipoCobranca === "mensal" ? "4px" : "150px",
+                width: "146px",
+                borderRadius: "999px",
+                background:
+                  "linear-gradient(135deg, #006b6b 0%, #004346 100%)",
+                boxShadow: "0 6px 14px rgba(0, 67, 70, 0.22)",
+                transition:
+                  "left 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.25s ease",
               }}
             />
 
             <button
               type="button"
               onClick={() => setTipoCobranca("mensal")}
-              className={`relative z-10 w-1/2 rounded-full py-2 text-sm font-black transition ${
-                tipoCobranca === "mensal"
-                  ? "text-white scale-105"
-                  : "text-[#00565a]"
-              }`}
+              style={{
+                position: "relative",
+                zIndex: 1,
+                width: "146px",
+                border: "none",
+                background: "transparent",
+                color: tipoCobranca === "mensal" ? "#ffffff" : "#00565a",
+                borderRadius: "999px",
+                padding: "9px 0",
+                fontWeight: 900,
+                cursor: "pointer",
+                transition: "color 0.25s ease, transform 0.2s ease",
+                transform:
+                  tipoCobranca === "mensal" ? "scale(1.03)" : "scale(1)",
+              }}
             >
               Mensal
             </button>
@@ -180,17 +268,28 @@ function ListaPlanos() {
             <button
               type="button"
               onClick={() => setTipoCobranca("anual")}
-              className={`relative z-10 w-1/2 rounded-full py-2 text-sm font-black transition ${
-                tipoCobranca === "anual"
-                  ? "text-white scale-105"
-                  : "text-[#00565a]"
-              }`}
+              style={{
+                position: "relative",
+                zIndex: 1,
+                width: "146px",
+                border: "none",
+                background: "transparent",
+                color: tipoCobranca === "anual" ? "#ffffff" : "#00565a",
+                borderRadius: "999px",
+                padding: "9px 0",
+                fontWeight: 900,
+                cursor: "pointer",
+                transition: "color 0.25s ease, transform 0.2s ease",
+                transform:
+                  tipoCobranca === "anual" ? "scale(1.03)" : "scale(1)",
+              }}
             >
               Anual{" "}
               <span
-                className={
-                  tipoCobranca === "anual" ? "text-[#b9ffe0]" : "text-[#00a66a]"
-                }
+                style={{
+                  color: tipoCobranca === "anual" ? "#b9ffe0" : "#00a66a",
+                  transition: "color 0.25s ease",
+                }}
               >
                 10% OFF
               </span>
@@ -198,14 +297,29 @@ function ListaPlanos() {
           </div>
         </div>
 
-        <p className="text-center mt-2 text-[#5f6d70] text-sm min-h-18px">
+        <p
+          style={{
+            textAlign: "center",
+            marginTop: "8px",
+            color: "#5f6d70",
+            fontSize: "13px",
+            minHeight: "18px",
+            transition: "opacity 0.25s ease",
+          }}
+        >
           {tipoCobranca === "mensal"
             ? "Pague mensalmente e mantenha sua proteção ativa."
             : "Economize contratando no plano anual."}
         </p>
 
         {isAdmin && (
-          <div className="flex justify-center sm:justify-end mt-7">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginTop: "28px",
+            }}
+          >
             <ModalPlano
               tipo="cadastrar"
               buscarPlanos={buscarPlanos}
@@ -215,15 +329,28 @@ function ListaPlanos() {
         )}
 
         {isLoading && planosParaExibir.length === 0 && (
-          <p className="text-center mt-10 text-[#5f6d70]">
+          <p
+            style={{
+              textAlign: "center",
+              marginTop: "40px",
+              color: "#5f6d70",
+            }}
+          >
             Carregando planos...
           </p>
         )}
 
         <div
-          className={`relative grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mt-8 items-stretch transition-opacity duration-300 ${
-            isLoading ? "opacity-70" : "opacity-100"
-          }`}
+          style={{
+            position: "relative",
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "10px",
+            marginTop: "30px",
+            alignItems: "stretch",
+            opacity: isLoading ? 0.7 : 1,
+            transition: "opacity 0.25s ease",
+          }}
         >
           {planosParaExibir.map((plano) => (
             <CardPlano
@@ -238,23 +365,69 @@ function ListaPlanos() {
         </div>
 
         {isLoading && planosParaExibir.length > 0 && (
-          <p className="text-center mt-3 text-[#5f6d70] text-sm">
+          <p
+            style={{
+              textAlign: "center",
+              marginTop: "12px",
+              color: "#5f6d70",
+              fontSize: "13px",
+            }}
+          >
             Atualizando planos...
           </p>
         )}
 
-        <div className="w-full max-w-5xl mx-auto mt-8 bg-linear-to-r from-[#eaf7f4] to-[#f8fcfb] rounded-2xl p-5 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-white text-[#006b6b] flex items-center justify-center shrink-0">
+        <div
+          style={{
+            width: "82%",
+            maxWidth: "900px",
+            margin: "18px auto 0",
+            background: "linear-gradient(90deg, #eaf7f4, #f8fcfb)",
+            borderRadius: "13px",
+            padding: "11px 18px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "16px",
+            boxShadow: "0 6px 18px rgba(0, 67, 70, 0.06)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                background: "#ffffff",
+                color: "#006b6b",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
               <Headphones size={25} />
             </div>
 
             <div>
-              <h3 className="text-sm font-black text-[#004346]">
+              <h3
+                style={{
+                  margin: 0,
+                  fontSize: "14px",
+                  fontWeight: 900,
+                  color: "#004346",
+                }}
+              >
                 Precisa de ajuda para escolher?
               </h3>
 
-              <p className="mt-1 text-xs sm:text-sm text-[#5f6d70]">
+              <p
+                style={{
+                  marginTop: "2px",
+                  color: "#5f6d70",
+                  fontSize: "11.5px",
+                }}
+              >
                 Nossa equipe te ajuda a encontrar o plano ideal.
               </p>
             </div>
@@ -262,13 +435,40 @@ function ListaPlanos() {
 
           <button
             type="button"
-            className="w-full md:w-auto border-none bg-[#00565a] text-white px-5 py-3 rounded-lg text-sm font-black cursor-pointer whitespace-nowrap shadow-md transition hover:bg-[#004346] hover:-translate-y-1px"
+            style={{
+              border: "none",
+              background: "#00565a",
+              color: "#ffffff",
+              padding: "9px 16px",
+              borderRadius: "8px",
+              fontSize: "11.5px",
+              fontWeight: 900,
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+              boxShadow: "0 5px 12px rgba(0, 67, 70, 0.16)",
+              transition: "transform 0.2s ease, background 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-1px)";
+              e.currentTarget.style.background = "#004346";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.background = "#00565a";
+            }}
           >
             Falar com especialista
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "32px",
+            marginTop: "24px",
+          }}
+        >
           <InfoItem
             small
             icon={<BadgeCheck size={22} />}
@@ -311,19 +511,45 @@ interface InfoItemProps {
 
 function InfoItem({ icon, title, text, small = false }: InfoItemProps) {
   return (
-    <div className="flex items-start gap-3 sm:gap-4">
+    <div style={{ display: "flex", alignItems: "flex-start", gap: "14px" }}>
       <div
-        className={`${
-          small ? "w-11 h-11 min-w-11" : "w-12 h-12 min-w-12"
-        } rounded-full bg-[#dff3ef] text-[#006b6b] flex items-center justify-center`}
+        style={{
+          width: small ? "42px" : "48px",
+          height: small ? "42px" : "48px",
+          minWidth: small ? "42px" : "48px",
+          borderRadius: "50%",
+          background: "#dff3ef",
+          color: "#006b6b",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
         {icon}
       </div>
 
       <div>
-        <h3 className="text-sm font-black text-[#004346]">{title}</h3>
+        <h3
+          style={{
+            margin: 0,
+            color: "#004346",
+            fontSize: "14px",
+            fontWeight: 900,
+          }}
+        >
+          {title}
+        </h3>
 
-        <p className="mt-1 text-sm leading-5 text-[#5f6d70]">{text}</p>
+        <p
+          style={{
+            marginTop: "5px",
+            color: "#5f6d70",
+            fontSize: "13px",
+            lineHeight: "18px",
+          }}
+        >
+          {text}
+        </p>
       </div>
     </div>
   );
