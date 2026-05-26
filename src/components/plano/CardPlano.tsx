@@ -115,7 +115,11 @@ function CardPlano({
           {plano.descricao}
         </p>
 
-        <div className="mt-6 flex flex-wrap items-end gap-1">
+        <p className="mt-6 text-xs font-semibold text-gray-500">
+          à partir de:
+        </p>
+
+        <div className="mt-1 flex flex-wrap items-end gap-1">
           <span className="text-3xl sm:text-4xl font-black text-[#ff6b2c]">
             R$ {valorFormatado}
           </span>

@@ -100,8 +100,8 @@ const TIME: MembroItem[] = [
     linkedin: "https://www.linkedin.com/in/gabriel-coutinho-de-souza/",
   },
   {
-    nome: "Kay Ira do Val",
-    cargo: "PO e Developer",
+    nome: "Kay Ira",
+    cargo: "Front-end Developer",
     foto: "https://avatars.githubusercontent.com/u/260806102?v=4",
     linkedin: "https://www.linkedin.com/in/kayane-do-val-lima/",
   },
