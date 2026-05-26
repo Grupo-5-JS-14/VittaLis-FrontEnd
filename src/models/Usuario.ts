@@ -9,6 +9,10 @@ export default interface Usuario {
     foto: string
     idade: number
     dataCadastro: string
+
+    token?: string 
+    role?: string
+    
     apolice?: Apolice | null
     plano?: Plano | null
 }
