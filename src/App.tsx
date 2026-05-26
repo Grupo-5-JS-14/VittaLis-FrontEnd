@@ -49,7 +49,7 @@ function App() {
           <Routes>
             {/* ROTAS COM NAVBAR E FOOTER */}
             <Route element={<LayoutComHeaderFooter />}>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Login />} />
               <Route path="/home" element={<Home />} />
               <Route path="/planos" element={<ListaPlanos />} />
               <Route path="/perfil" element={<Perfil />} />
