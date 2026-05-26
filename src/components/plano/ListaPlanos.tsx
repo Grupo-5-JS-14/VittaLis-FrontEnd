@@ -33,7 +33,7 @@ function ListaPlanos() {
     },
     {
       id: 3,
-      nome: "Acidentes Pessoais",
+      nome: "Essencial",
       descricao: "Mais segurança no dia a dia para imprevistos.",
       valor: 24.9,
     },
@@ -51,6 +51,21 @@ function ListaPlanos() {
     "mensal"
   );
 
+  const [larguraTela, setLarguraTela] = useState(window.innerWidth);
+
+  useEffect(() => {
+    function atualizarLargura() {
+      setLarguraTela(window.innerWidth);
+    }
+
+    window.addEventListener("resize", atualizarLargura);
+
+    return () => window.removeEventListener("resize", atualizarLargura);
+  }, []);
+
+  const isMobile = larguraTela < 640;
+  const isTablet = larguraTela >= 640 && larguraTela < 1024;
+
   const auth = useContext(AuthContext) as any;
   const usuario = auth?.usuario;
 
@@ -65,18 +80,18 @@ function ListaPlanos() {
     usuario?.admin === true;
 
   const tokenFormatado = token
-  ? token.startsWith("Bearer ")
-    ? token
-    : `Bearer ${token}`
-  : "";
+    ? token.startsWith("Bearer ")
+      ? token
+      : `Bearer ${token}`
+    : "";
 
-const header = useMemo(() => {
-  return {
-    headers: {
-      Authorization: tokenFormatado,
-    },
-  };
-}, [tokenFormatado]);
+  const header = useMemo(() => {
+    return {
+      headers: {
+        Authorization: tokenFormatado,
+      },
+    };
+  }, [tokenFormatado]);
 
   function normalizarPlanos(resposta: any): Plano[] {
     if (Array.isArray(resposta)) {
@@ -130,6 +145,12 @@ const header = useMemo(() => {
 
   const planosParaExibir = Array.isArray(planos) ? planos : planosPadrao;
 
+  const colunasResponsivas = isMobile
+    ? "1fr"
+    : isTablet
+    ? "repeat(2, 1fr)"
+    : "repeat(4, 1fr)";
+
   return (
     <main
       style={{
@@ -138,7 +159,7 @@ const header = useMemo(() => {
         background:
           "radial-gradient(circle at top, #ffffff 0%, #f8fbfa 42%, #f5f8f7 100%)",
         color: "#004346",
-        padding: "34px 24px 44px",
+        padding: isMobile ? "26px 16px 34px" : "34px 24px 44px",
       }}
     >
       <section
@@ -151,8 +172,8 @@ const header = useMemo(() => {
         <div style={{ textAlign: "center" }}>
           <h1
             style={{
-              fontSize: "42px",
-              lineHeight: "48px",
+              fontSize: isMobile ? "32px" : "42px",
+              lineHeight: isMobile ? "38px" : "48px",
               fontWeight: 900,
               color: "#004346",
               margin: 0,
@@ -166,7 +187,7 @@ const header = useMemo(() => {
             style={{
               marginTop: "6px",
               color: "#5f6d70",
-              fontSize: "15px",
+              fontSize: isMobile ? "14px" : "15px",
             }}
           >
             Escolha a proteção ideal para você e sua família.
@@ -176,8 +197,8 @@ const header = useMemo(() => {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "34px",
+            gridTemplateColumns: colunasResponsivas,
+            gap: isMobile ? "22px" : "34px",
             marginTop: "34px",
             alignItems: "start",
           }}
@@ -218,7 +239,8 @@ const header = useMemo(() => {
             style={{
               position: "relative",
               display: "flex",
-              width: "300px",
+              width: isMobile ? "100%" : "300px",
+              maxWidth: "300px",
               background: "#ffffff",
               border: "1px solid #dbe6e4",
               borderRadius: "999px",
@@ -232,8 +254,8 @@ const header = useMemo(() => {
                 position: "absolute",
                 top: "4px",
                 bottom: "4px",
-                left: tipoCobranca === "mensal" ? "4px" : "150px",
-                width: "146px",
+                left: tipoCobranca === "mensal" ? "4px" : "50%",
+                width: "calc(50% - 4px)",
                 borderRadius: "999px",
                 background:
                   "linear-gradient(135deg, #006b6b 0%, #004346 100%)",
@@ -249,7 +271,7 @@ const header = useMemo(() => {
               style={{
                 position: "relative",
                 zIndex: 1,
-                width: "146px",
+                width: "50%",
                 border: "none",
                 background: "transparent",
                 color: tipoCobranca === "mensal" ? "#ffffff" : "#00565a",
@@ -271,7 +293,7 @@ const header = useMemo(() => {
               style={{
                 position: "relative",
                 zIndex: 1,
-                width: "146px",
+                width: "50%",
                 border: "none",
                 background: "transparent",
                 color: tipoCobranca === "anual" ? "#ffffff" : "#00565a",
@@ -316,7 +338,7 @@ const header = useMemo(() => {
           <div
             style={{
               display: "flex",
-              justifyContent: "flex-end",
+              justifyContent: isMobile ? "center" : "flex-end",
               marginTop: "28px",
             }}
           >
@@ -344,8 +366,8 @@ const header = useMemo(() => {
           style={{
             position: "relative",
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "10px",
+            gridTemplateColumns: colunasResponsivas,
+            gap: isMobile ? "18px" : "10px",
             marginTop: "30px",
             alignItems: "stretch",
             opacity: isLoading ? 0.7 : 1,
@@ -379,14 +401,15 @@ const header = useMemo(() => {
 
         <div
           style={{
-            width: "82%",
+            width: isMobile ? "100%" : "82%",
             maxWidth: "900px",
             margin: "18px auto 0",
             background: "linear-gradient(90deg, #eaf7f4, #f8fcfb)",
             borderRadius: "13px",
-            padding: "11px 18px",
+            padding: isMobile ? "16px" : "11px 18px",
             display: "flex",
-            alignItems: "center",
+            flexDirection: isMobile ? "column" : "row",
+            alignItems: isMobile ? "stretch" : "center",
             justifyContent: "space-between",
             gap: "16px",
             boxShadow: "0 6px 18px rgba(0, 67, 70, 0.06)",
@@ -436,6 +459,7 @@ const header = useMemo(() => {
           <button
             type="button"
             style={{
+              width: isMobile ? "100%" : "auto",
               border: "none",
               background: "#00565a",
               color: "#ffffff",
@@ -464,8 +488,8 @@ const header = useMemo(() => {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "32px",
+            gridTemplateColumns: colunasResponsivas,
+            gap: isMobile ? "22px" : "32px",
             marginTop: "24px",
           }}
         >
