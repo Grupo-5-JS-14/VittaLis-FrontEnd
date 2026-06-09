@@ -1,16 +1,4 @@
-import {
-  Heart,
-  Eye,
-  Lock,
-  DeviceMobile,
-  ShieldCheck,
-  Lightning,
-  Users,
-  CurrencyDollar,
-  Smiley,
-  Clock,
-  LinkedinLogo,
-} from "@phosphor-icons/react";
+import {Heart, Eye, Lock, DeviceMobile, ShieldCheck, Lightning, Users, CurrencyDollar, Smiley, Clock, LinkedinLogo, } from "@phosphor-icons/react";
 
 const heroImg =
   "https://images.unsplash.com/photo-1609220136736-443140cffec6?w=800&q=80";

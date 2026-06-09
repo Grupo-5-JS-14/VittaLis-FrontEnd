@@ -126,7 +126,7 @@ function Cadastro() {
                 </div>
 
                 <div className="relative z-20 text-[11px] text-text-white/60 font-medium tracking-wide uppercase drop-shadow-sm">
-                    Seguro de Vida Descomplicado!
+                    Seguro de Vida Descomplicado
                 </div>
             </div>
 
