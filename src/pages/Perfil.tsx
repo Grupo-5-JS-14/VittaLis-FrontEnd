@@ -192,14 +192,14 @@ function Perfil() {
 
         <main className="flex-1 px-8 pt-8 pb-10">
           <section>
-            <div className="mb-8 flex items-center gap-4 rounded-[28px] border border-[#e5e7eb] bg-white p-5 shadow-sm">
+            <div className="mb-8 flex items-center gap-9 rounded-[28px] border border-[#e5e7eb] bg-white p-5 shadow-sm">
               <img
                 src={
                   usuario.foto ||
                   "https://i.pinimg.com/736x/fe/6d/c3/fe6dc31f5d5f3463c9fbd7b4c5c9bca3.jpg"
                 }
                 alt={usuario.nome || "Usuário"}
-                className="h-16 w-16 rounded-full object-cover"
+                className="h-30 w-30 rounded-full object-cover"
               />
 
               <div>

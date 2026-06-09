@@ -215,7 +215,7 @@ const lineData = meses.map((mes, index) => ({
 
   const tipos = [...new Set(apolices.map(item => item.plano?.nome).filter(Boolean))] as string[];
 
-const pieData = meses.map((mes, index) => {
+  const pieData = meses.map((mes, index) => {
 
   const apoliceMes = apolicesFiltradas.filter(
     item => new Date(item.dataContratacao).getMonth() === index
@@ -394,7 +394,7 @@ useEffect(() => {
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="hover:cursor-pointer">
               <Menu />
             </button>
-            <h2 className="text-2xl font-semibold text-zinc-700">
+            <h2 className="text-2xl font-semibold text-zinc-800">
               Painel administrativo
             </h2>
           </div>
@@ -427,7 +427,7 @@ useEffect(() => {
               </h1>
 
               <p className="text-zinc-500 mt-2">
-                Bem-vindo ao painel administrativo da Vittalis. - {dataDiara}
+                Bem-vindo ao Dashboard da Vittalis. - {dataDiara}
               </p>
             </div>
 
@@ -649,7 +649,7 @@ useEffect(() => {
               <table className="w-full">
                 <thead>
                   <tr className="text-left text-zinc-800 border-b">
-                    <th className="pb-4">N° Apólice</th>
+                    <th className="pb-4">ID Clientes</th>
                     <th className="pb-4">Cliente</th>
                     <th className="pb-4">Tipo</th>
                     <th className="pb-4">Data</th>

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL
+    baseURL: "https://backend-seguro-vida.onrender.com/"
 });
 
 export const cadastrarUsuario = async (
@@ -37,5 +37,15 @@ export const atualizar = async (url: string, dados: Object, setDados: Function, 
 
 export const deletar = async (url: string, header: Object) => {
     await api.delete(url, header)
+}
+
+export const uploadFoto = async (foto: File) => {
+    const formData = new FormData();
+
+    formData.append("foto", foto)
+
+    const resposta = await api.post(`/usuarios/upload-foto`, formData)
+
+    return resposta.data
 }
 
