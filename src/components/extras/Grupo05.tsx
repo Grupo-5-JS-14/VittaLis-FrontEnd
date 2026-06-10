@@ -11,7 +11,7 @@ export default function Grupo05({ variante = "grande", isDarkMode = true }: Grup
   const integrantes = [
     {
       nome: "Lohanna Benjamim",
-      cargo: "Desenvolvedora UX/UI",
+      cargo: "Desenvolvedora Full Stack",
       foto: "https://avatars.githubusercontent.com/u/188930169?v=4",
       github: "https://github.com/lohannab",
       linkedin: "https://www.linkedin.com/in/lohannab/",

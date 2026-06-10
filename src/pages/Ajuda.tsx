@@ -104,10 +104,8 @@ export default function Ajuda() {
         </div>
 
       </div>
-
-      {/* ========================================== */}
-      {/* POP-UP / MODAL (Marlos Bot)                */}
-      {/* ========================================== */}
+      {/* ========================================== */}     
+  
       {mostrarPopUp && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn">
           
@@ -131,22 +129,22 @@ export default function Ajuda() {
             {/* Container da Imagem */}
             <div className="w-full aspect-square rounded-2xl overflow-hidden bg-slate-900 border border-white/5 shadow-inner mt-4">
               <img 
-                src="/marlosbot.jpg" 
-                alt="Marlos Bot Especialista" 
+                src="/equipe.png" 
+                alt="Equipe de Especialistas" 
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   // Fallback caso o caminho do asset mude temporariamente
-                  console.log("Erro ao carregar marlosbot.jpg");
+                  console.log("Erro ao carregar equipe.png");
                 }}
               />
             </div>
 
             {/* Texto do Pop-up */}
             <div className="pt-2">
-              <h4 className="text-lg font-bold text-white">Marlos Bot</h4>
-              <p className="text-xs text-[#FF7A38] font-medium tracking-wide uppercase">Especialista de Plantão</p>
+              <h4 className="text-lg font-bold text-white">Equipe de Suporte</h4>
+              <p className="text-xs text-[#FF7A38] font-medium tracking-wide uppercase">Especialistas de Plantão</p>
               <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                "Bip bop! Estou processando sua solicitação de contato com precisão computacional."
+                " Estamos processando sua solicitação de contato com precisão computacional."
               </p>
             </div>
 
