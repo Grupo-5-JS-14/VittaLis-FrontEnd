@@ -30,7 +30,7 @@ export default function TestimonialsBento() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           
           {/* CARD 1 - verde escuro */}
-          <div className="lg:col-span-4 bg-#12312F text-white p-8 rounded-3xl flex flex-col justify-between shadow-xs">
+          <div className="lg:col-span-4 bg-[#12312F]  text-white p-8 rounded-3xl flex flex-col justify-between shadow-xs">
             <div>
               <div className="flex space-x-1 text-[#FF7A38] mb-6">
                 {[...Array(5)].map((_, i) => (
@@ -42,7 +42,7 @@ export default function TestimonialsBento() {
               </p>
             </div>
             
-            <div className="mt-8 flex items-center space-x-3">
+            <div className="mt-8 flex items-center space-x-3 p-4 rounded-2xl">
               <img 
                 src="https://plus.unsplash.com/premium_photo-1689551670902-19b441a6afde?w=60" 
                 alt="Jessica" 
