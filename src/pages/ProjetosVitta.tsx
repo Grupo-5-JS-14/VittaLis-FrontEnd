@@ -1,12 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 
-// ============================================================================
-// VITTA PORTFOLIO — Versão Consolidada Estrita (.tsx)
-// Design, Layout, Hooks, Início, Navbar, Hero, Stats e Canvas Footer: 'gemini-code'
-// Seções de Projetos e Texto Exato do Marquee/Letreiro: 'ProjetosVitta'
-// Atualização Vittalis: Sem valores comerciais, sem bloco de aprendizados e com paleta de cores.
-// ============================================================================
-
 const DESIGN_SYSTEM_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
   @import url('https://api.fontshare.com/v2/css?f[]=clash-display@500;600;700;900&display=swap');
@@ -1043,27 +1036,32 @@ export default function VittaPortfolio() {
                     gap: 6,
                   }}
                 >
-                  <span
+                  
+                  // 
+                  
+
+                  
+
+                 <a
+                  href="https://vittalis.vercel.app/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn"
                     style={{
                       display: "inline-flex",
                       padding: "13px 26px",
                       background: "#12312F",
-                      color: "rgba(255,255,255,0.4)",
+                      color: "#FFFDF9",
                       fontWeight: 900,
                       fontSize: 10,
                       letterSpacing: ".2em",
                       textTransform: "uppercase",
-                      borderRadius: 12,
-                      opacity: 0.8,
-                      cursor: "not-allowed",
+                      borderRadius: 12,                    
                     }}
-                  >
-                    Em breve →
-                  </span>
-                  <p style={{ fontSize: 10, color: "#8FA3A1", marginTop: 4 }}>
-                    * Protótipo conceitual em refinamento final
-                  </p>
-                </div>
+                   >
+                  Ver protótipo →
+                </a>
+                  </div>
               </Reveal>
             </div>
 
