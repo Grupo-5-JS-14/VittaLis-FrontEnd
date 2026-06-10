@@ -6,7 +6,7 @@ export default function TestimonialsBento() {
       name: "Noelia Nogueira",
       location: "São Paulo, SP",
       avatar: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=60",
-      text: "Fiz a simulação e contratei tudo direto pelo celular. O atendimento humanizado pelo WhatsApp me deu toda a segurança que eu precisava. Que segurança!"
+      text: "Fiz a simulação e contratei tudo direto pelo celular. O atendimento humanizado pelo WhatsApp me deu toda a segurança que eu precisava."
     },
     {
       name: "Afonso Oliveira",
@@ -15,7 +15,7 @@ export default function TestimonialsBento() {
       text: "O preço é bizarramente justo pelo nível de tranquilidade que entrega. Sem letras miúdas ou taxas escondidas."
     },
     {
-      name: "Marlos Bot",
+      name: "Paulo Machado",
       location: "Curitiba, PR",
       avatar: "https://images.unsplash.com/photo-1733348137551-dde596fd3cf5?w=60",
       text: "Finalmente uma empresa de seguros moderna que fala a nossa língua e não tenta complicar o que deveria ser simples."
@@ -30,7 +30,7 @@ export default function TestimonialsBento() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           
           {/* CARD 1 - verde escuro */}
-          <div className="lg:col-span-4 bg-[#12312F] text-white p-8 rounded-3xl flex flex-col justify-between shadow-xs">
+          <div className="lg:col-span-4 bg-#12312F text-white p-8 rounded-3xl flex flex-col justify-between shadow-xs">
             <div>
               <div className="flex space-x-1 text-[#FF7A38] mb-6">
                 {[...Array(5)].map((_, i) => (
@@ -76,12 +76,12 @@ export default function TestimonialsBento() {
           {/* 4. Coluna de Métricas/Números */}
           <div className="lg:col-span-3 flex flex-col justify-center space-y-6 py-4 px-2">
             <div>
-              <p className="text-3xl sm:text-4xl font-black text-[#12312F]">10K+</p>
+              <p className="text-3xl sm:text-4xl font-black text-#12312F">10K+</p>
               <p className="text-xs font-semibold text-[#FF7A38] uppercase tracking-wider mt-1">Vidas Protegidas</p>
             </div>
             <div className="h-px bg-slate-200/60 w-16"></div>
             <div>
-              <p className="text-3xl sm:text-4xl font-black text-[#12312F]">98%</p>
+              <p className="text-3xl sm:text-4xl font-black text-#12312F">98%</p>
               <p className="text-xs font-semibold text-[#FF7A38] uppercase tracking-wider mt-1">De Aprovação Real</p>
             </div>
           </div>
@@ -104,7 +104,7 @@ export default function TestimonialsBento() {
                     className="w-8 h-8 rounded-full object-cover"
                   />
                   <div className="min-w-0">
-                    <p className="text-xs font-bold text-[#12312F] truncate">{rev.name}</p>
+                    <p className="text-xs font-bold text-#12312F truncate">{rev.name}</p>
                     <p className="text-[10px] text-slate-400 truncate">{rev.location}</p>
                   </div>
                 </div>

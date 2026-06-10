@@ -47,7 +47,7 @@ export default function Faq() {
         
         {/* Cabeçalho */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold sm:text-4xl tracking-tight text-[#12312F]">
+          <h2 className="text-3xl font-bold sm:text-4xl tracking-tight text-#12312F">
             Dúvidas frequentes
           </h2>
           <p className="mt-3 text-slate-500 text-sm sm:text-base">
