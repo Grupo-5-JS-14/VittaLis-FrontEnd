@@ -980,7 +980,6 @@ export default function VittaPortfolio() {
                   style={{ color: "#12312F", marginBottom: 12 }}
                 >
                   VITTA
-                  
                   <span style={{ color: "#FF7A38" }}>LIS</span>
                 </h2>
               </Reveal>
@@ -1036,17 +1035,11 @@ export default function VittaPortfolio() {
                     gap: 6,
                   }}
                 >
-                  
-                  // 
-                  
-
-                  
-
-                 <a
-                  href="https://vittalis.vercel.app/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn"
+                  <a
+                    href="https://vittalis.vercel.app/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn"
                     style={{
                       display: "inline-flex",
                       padding: "13px 26px",
@@ -1056,12 +1049,12 @@ export default function VittaPortfolio() {
                       fontSize: 10,
                       letterSpacing: ".2em",
                       textTransform: "uppercase",
-                      borderRadius: 12,                    
+                      borderRadius: 12,
                     }}
-                   >
-                  Ver protótipo →
-                </a>
-                  </div>
+                  >
+                    Ver protótipo →
+                  </a>
+                </div>
               </Reveal>
             </div>
 
