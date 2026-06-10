@@ -50,7 +50,7 @@ export default function Grupo05({ variante = "grande", isDarkMode = true }: Grup
       instagram: "https://www.instagram.com/g_coutinhoo"
     },
     {
-      nome: "Kay Ira do Val",
+      nome: "Kayane do Val Lima",
       cargo: "Desenvolvedor Full Stack",
       foto: "https://avatars.githubusercontent.com/u/260806102?v=4",
       github: "https://github.com/kayanedvlsantos-create",

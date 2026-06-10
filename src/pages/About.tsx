@@ -21,13 +21,13 @@ const VALORES: ValorItem[] = [
     icon: <Heart size={40} />,
     titulo: "Humanidade",
     descricao:
-      "Colocamos pessoas no centro de tudo. Cada decisão é tomada pensando no impacto real na vida dos nossos clientes.",
+      "Colocamos as pessoas no centro de nossas decisões.",
   },
   {
     icon: <Eye size={40} />,
     titulo: "Transparência",
     descricao:
-      "Contratos claros, sem letras miúdas. Você sabe exatamente o que está contratando.",
+      "Sem letras miúdas: você sabe o que contrata.",
   },
   {
     icon: <Lock size={40} />,
@@ -55,43 +55,43 @@ const VALORES: ValorItem[] = [
 const TIME: MembroItem[] = [
   {
     nome: "Lohanna Benjamim",
-    cargo: "Front-end Developer",
+    cargo: "Full Stack Developer",
     foto: "https://avatars.githubusercontent.com/u/188930169?v=4",
     linkedin: "https://www.linkedin.com/in/lohannab/",
   },
   {
     nome: "André Lucas",
-    cargo: "Front-end Developer",
+    cargo: "Full Stack Developer",
     foto: "https://avatars.githubusercontent.com/u/197832797?v=4",
     linkedin: "https://www.linkedin.com/in/andre-lucas-dias-lima/",
   },
   {
     nome: "Andressa Andrade",
-    cargo: "Front-end Developer",
+    cargo: "Full Stack Developer",
     foto: "https://avatars.githubusercontent.com/u/128521737?v=4",
     linkedin: "https://www.linkedin.com/in/andressa-andrade-dev/",
   },
   {
     nome: "Bruna Zuppini",
-    cargo: "Front-end Developer",
+    cargo: "Full Stack Developer",
     foto: "https://avatars.githubusercontent.com/u/48595147?s=400&u=37fda6b65b1ad54ff3d7d98f6f7662f12df7d2cc&v=4",
     linkedin: "https://www.linkedin.com/in/brunazuppini",
   },
   {
     nome: "Gabriel Coutinho",
-    cargo: "Front-end Developer",
+    cargo: "Full Stack Developer",
     foto: "https://avatars.githubusercontent.com/u/156151153?v=4",
     linkedin: "https://www.linkedin.com/in/gabriel-coutinho-de-souza/",
   },
   {
-    nome: "Kay Ira do Val",
-    cargo: "PO e Developer",
+    nome: "Kayane do Val Lima",
+    cargo: "Full Stack Developer",
     foto: "https://avatars.githubusercontent.com/u/260806102?v=4",
     linkedin: "https://www.linkedin.com/in/kayane-do-val-lima/",
   },
   {
     nome: "Douglas Santos",
-    cargo: "Front-end Developer",
+    cargo: "Full Stack Developer",
     foto: "https://avatars.githubusercontent.com/u/99764080?v=4",
     linkedin: "https://www.linkedin.com/in/douglas-santos-ds/",
   },
@@ -101,7 +101,7 @@ const DIFERENCIAIS = [
   {
     icon: <DeviceMobile size={36} />,
     titulo: "100% digital",
-    descricao: "Contrate e gerencie tudo pelo app, sem burocracia.",
+    descricao: "Tudo pelo app, sem burocracia.",
   },
   {
     icon: <ShieldCheck size={36} />,
@@ -126,7 +126,7 @@ const DIFERENCIAIS = [
   {
     icon: <Users size={36} />,
     titulo: "500k+ famílias",
-    descricao: "Milhares de brasileiros confiam na Vittalis.",
+    descricao: "Milhares confiam na Vittalis.",
   },
 ];
 
@@ -172,10 +172,6 @@ function About() {
         </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col items-center justify-center text-center px-4">
-          <span className="inline-flex items-center gap-2 bg-[#f97316]/20 border border-[#f97316]/40 rounded-full px-4 py-1 text-xs text-[#fdba74] font-semibold tracking-wider mb-6">
-            ♥ SEGURO DE VIDA DESCOMPLICADO
-          </span>
-
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-tight flex flex-wrap justify-center gap-3">
             <span>SOBRE A</span>
             <span className="text-[#f97316]">VITTALIS</span>
