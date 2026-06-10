@@ -39,3 +39,12 @@ export const deletar = async (url: string, header: Object) => {
     await api.delete(url, header)
 }
 
+export const uploadFoto = async (foto: File) => {
+    const formData = new FormData();
+
+    formData.append("foto", foto)
+
+    const resposta = await api.post(`/usuarios/upload-foto`, formData)
+
+    return resposta.data
+}

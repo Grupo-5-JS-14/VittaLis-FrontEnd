@@ -1,11 +1,16 @@
 import { useState, type ChangeEvent, type FormEvent } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "sonner"
-import { cadastrarUsuario } from "../services/Service"
+import { cadastrarUsuario, uploadFoto } from "../services/Service"
 import { Eye, EyeOff } from "lucide-react"
 import { ClipLoader } from "react-spinners"
 import type UsuarioCadastro from "../models/UsuarioCadastro"
 import { useLocation } from 'react-router-dom';
+import { ModalCropFoto } from "../components/modalCropFoto"
+
+
+
+
 
 function Cadastro() {
     const navigate = useNavigate()
@@ -66,27 +71,59 @@ function Cadastro() {
 
         setIsLoading(true)
 
-        try {
-            const payload = {
-                nome: usuario.nome.trim(),
-                usuario: usuario.usuario.trim(),
-                senha: usuario.senha,
-                foto: usuario.foto?.trim() || null,
-                idade: Number(usuario.idade)
-            }
+try {
+  let fotoUrl = "";
+  let fotoPublicId = "";
 
-            await cadastrarUsuario(`/usuarios/cadastrar`, payload, setUsuario)
+  if (foto) {
+    const upload = await uploadFoto(foto);
 
-            toast.success('Usuário cadastrado com sucesso!')
-            navigate('/')
+    fotoUrl = upload.foto;
+    fotoPublicId = upload.publicId;
+  }
 
-        } catch (error: any) {
+  const payload = {
+    nome: usuario.nome.trim(),
+    usuario: usuario.usuario.trim(),
+    senha: usuario.senha,
+    idade: Number(usuario.idade),
+    foto: fotoUrl,
+    fotoPublicId: fotoPublicId,
+  };
+
+  await cadastrarUsuario("/usuarios/cadastrar", payload, setUsuario);
+
+  toast.success("Usuário cadastrado com sucesso!");
+  navigate("/");
+
+} catch (error: any) {
             console.log("ERRO BACKEND:", error.response?.data)
             toast.error('Erro ao cadastrar usuário!')
         }
 
         setIsLoading(false)
     }
+
+    //Foto meu nobre!
+
+    const [foto, setFoto] = useState<File | null>(null);
+    const [preview, setPreview] = useState("");
+    const [modalAberto, setModalAberto] = useState(false);
+
+    function selecionarFoto(event: React.ChangeEvent<HTMLInputElement>) {
+        const arquivo = event.target.files?.[0];
+
+        if (!arquivo) return;
+
+        setFoto(arquivo);
+
+        const urlTemporaria = URL.createObjectURL(arquivo);
+
+        setPreview(urlTemporaria);
+        setModalAberto(true);
+    }
+
+    const nulo = "https://cdn-icons-png.flaticon.com/512/149/149071.png"
 
     return (
         <section className="w-full min-h-screen bg-background flex font-sans antialiased">
@@ -194,21 +231,42 @@ function Cadastro() {
                             />
                         </div>
 
-                        <div className="grid grid-cols-4 gap-6">
+                        <div className="flex justify-between">
                             {/* Foto */}
-                            <div className="col-span-3 space-y-1">
-                                <label htmlFor="foto" className="block text-text-light text-xs font-medium">Foto de Perfil (URL)</label>
-                                <input
-                                    type="text"
-                                    id="foto"
-                                    name="foto"
-                                    value={usuario.foto}
-                                    onChange={atualizarEstado}
-                                    className="w-full h-10 border-b border-border focus:border-primary text-sm outline-none transition-colors bg-transparent placeholder:text-text-light/40 text-text"
-                                    placeholder="Link da sua imagem"
-                                />
-                            </div>
+                            <div className="space-y-3">
+                                <label className="block text-text-light text-xs font-medium">
+                                    Foto de Perfil
+                                </label>
 
+                                <div className="flex items-center gap-3">
+
+                                    {/* BOTÃO */}
+                                    <div className="flex flex-col gap-4">
+                                        <label
+                                            htmlFor="foto"
+                                            className="px-1 py-3 rounded-lg bg-primary text-white text-sm cursor-pointer hover:opacity-90 transition text-center">
+                                            Escolher imagem
+                                        </label>
+
+                                        <div className="w-30 h-30 rounded-full overflow-hidden border border-border bg-zinc-100 flex items-center justify-center">
+                                            <img src={preview || nulo}
+                                                alt="Foto de perfil"
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input id="foto" type="file" accept="image/*" onChange={selecionarFoto} className="hidden"/>
+
+                                <ModalCropFoto 
+                                aberto={modalAberto} 
+                                preview={preview}
+                                onClose={() => {setPreview(""), setFoto(null), setModalAberto(false)}} onConfirm= {(imagemRecortada) => { setPreview(imagemRecortada); fetch(imagemRecortada).then((res)=> res.blob()).then((blob) =>{
+                                    const arquivoRecortado = new File([blob],"foto-perfil.jpg",{ type: "image/jpeg"});
+                                    setFoto(arquivoRecortado);
+                                }); setModalAberto(false);}}/>
+                            </div>
                             {/* Idade */}
                             <div className="space-y-1">
                                 <label className="block text-text-light text-xs font-medium">Idade</label>
@@ -279,18 +337,6 @@ function Cadastro() {
                                 {isLoading ? <ClipLoader color="#fff" size={16} /> : "Criar minha conta"}
                             </button>
 
-                            <button
-                                type="button"
-                                className="w-full h-11 border border-border hover:bg-surface-soft text-text text-xs font-semibold rounded-lg flex items-center justify-center gap-2 transition-all bg-surface"
-                            >
-                                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
-                                    <path fill="#EA4335" d="M12 5.04c1.64 0 3.12.56 4.28 1.67l3.2-3.2C17.52 1.58 14.96 1 12 1 7.35 1 3.37 3.67 1.39 7.56l3.78 2.93c.89-2.67 3.39-4.45 6.83-4.45z" />
-                                    <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.46c-.29 1.48-1.14 2.73-2.42 3.57l3.74 2.9c2.19-2.02 3.71-5 3.71-8.62z" />
-                                    <path fill="#FBBC05" d="M5.17 14.77c-.23-.69-.37-1.43-.37-2.2s.14-1.51.37-2.2L1.39 7.44C.5 9.21 0 11.16 0 13.2s.5 3.99 1.39 5.76l3.78-2.99z" />
-                                    <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.74-2.9c-1.1.74-2.51 1.18-4.22 1.18-3.44 0-5.94-1.78-6.83-4.45L1.39 16.9C3.37 20.79 7.35 23 12 23z" />
-                                </svg>
-                                Entrar com o Google
-                            </button>
                         </div>
                     </form>
                 </div>

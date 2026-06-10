@@ -41,23 +41,11 @@ function BarraLateral() {
   return (
     <aside className="hidden min-h-[calc(100vh-74px)] w-64 shrink-0 border-r border-[#dde8e5] bg-white font-poppins lg:flex lg:flex-col lg:justify-between">
       <div>
-        <div className="flex h-30 items-center justify-center bg-text px-8 text-white">
-          <div className="flex items-center gap-4">
-            {usuario.foto ? (
-  <img
-    src={usuario.foto}
-    alt={usuario.nome || "Usuário"}
-    className="h-16 w-16 rounded-full object-cover border-2 border-white"
-  />
-) : (
-  <div className="grid h-16 w-16 place-items-center rounded-full bg-white text-[#005b5b]">
-    <User size={36} fill="#005b5b" />
-  </div>
-)}
-
+        <div className="flex h-33 items-center justify-center bg-text px-4 text-white">
+          <div className="flex items-center gap-7">
             <div>
-              <p className="text-base font-bold">Olá, {usuario.nome}!</p>
-              <p className="mt-1 text-xs font-medium text-white/85">
+              <p className="text-2xl font-bold">Olá, {usuario.nome}!</p>
+              <p className="mt-4 text-xs font-medium text-white/85">
                 É um prazer tê-lo conosco novamente!
               </p>
             </div>
