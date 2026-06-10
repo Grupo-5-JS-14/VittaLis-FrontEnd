@@ -1,4 +1,4 @@
-import { ShieldCheck, Sparkles } from "lucide-react";
+// import { ShieldCheck, Sparkles } from "lucide-react";
 
 export default function Emotional() {
   const newLocal =
@@ -26,12 +26,12 @@ export default function Emotional() {
 
         <div className="mt-10 flex flex-wrap justify-center items-center gap-6 text-xs sm:text-sm text-slate-400">
           <div className="flex items-center space-x-2">
-            <ShieldCheck className="h-4 w-4 text-emerald-500" />
+            {/* <ShieldCheck className="h-4 w-4 text-emerald-500" /> */}
             <span>Sem letras miúdas</span>
           </div>
           <div className="w-1 h-1 bg-slate-600 rounded-full hidden sm:block"></div>
           <div className="flex items-center space-x-2">
-            <Sparkles className="h-4 w-4 text-orange-500" />
+            {/* <Sparkles className="h-4 w-4 text-orange-500" /> */}
             <span>Proteção ativa rapidamente</span>
           </div>
         </div>

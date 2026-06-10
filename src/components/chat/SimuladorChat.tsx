@@ -79,7 +79,7 @@ export default function SimuladorChat() {
         setDadosSimulacao(prev => ({ ...prev, idade: idadeNum }));
         setPasso(99);
         botFalar(
-          <div className="text-amber-500 font-medium">
+          <div className="text-red-700 font-medium">
             Ficamos muito felizes com o seu cuidado com o futuro! Contudo, por diretrizes e regulamentações do mercado de seguros, a contratação de apólices como titular é exclusiva para maiores de 18 anos.
           </div>
         );
