@@ -11,7 +11,7 @@ export default function Grupo05({ variante = "grande", isDarkMode = true }: Grup
   const integrantes = [
     {
       nome: "Lohanna Benjamim",
-      cargo: "Desenvolvedora Full Stack",
+      cargo: "Full Stack Developer",
       foto: "https://avatars.githubusercontent.com/u/188930169?v=4",
       github: "https://github.com/lohannab",
       linkedin: "https://www.linkedin.com/in/lohannab/",
@@ -19,7 +19,7 @@ export default function Grupo05({ variante = "grande", isDarkMode = true }: Grup
     },
     {
       nome: "André Lucas",
-      cargo: "Desenvolvedor Full Stack",
+      cargo: "Full Stack Developer",
       foto: "https://avatars.githubusercontent.com/u/197832797?v=4",
       github: "https://github.com/luhdias-png",
       linkedin: "https://www.linkedin.com/in/andre-lucas-dias-lima/",
@@ -27,7 +27,7 @@ export default function Grupo05({ variante = "grande", isDarkMode = true }: Grup
     },
     {
       nome: "Andressa Andrade",
-      cargo: "Desenvolvedor Full Stack",
+      cargo: "Full Stack Developer",
       foto: "https://avatars.githubusercontent.com/u/128521737?v=4",
       github: "https://github.com/Dessxevy",
       linkedin: "https://www.linkedin.com/in/andressa-andrade-dev/",
@@ -35,7 +35,7 @@ export default function Grupo05({ variante = "grande", isDarkMode = true }: Grup
     },
     {
       nome: "Bruna Zuppini",
-      cargo: "Desenvolvedor Full Stack",
+      cargo: "Full Stack Developer",
       foto: "https://avatars.githubusercontent.com/u/48595147?s=400&u=37fda6b65b1ad54ff3d7d98f6f7662f12df7d2cc&v=4",
       github: "https://github.com/bruzuppini",
       linkedin: "https://www.linkedin.com/in/brunazuppini",
@@ -43,7 +43,7 @@ export default function Grupo05({ variante = "grande", isDarkMode = true }: Grup
     },
     {
       nome: "Gabriel Coutinho",
-      cargo: "Desenvolvedor Full Stack",
+      cargo: "Full Stack Developer",
       foto: "https://avatars.githubusercontent.com/u/156151153?v=4",
       github: "https://github.com/gcoutinhoo",
       linkedin: "https://www.linkedin.com/in/gabriel-coutinho-de-souza/",
@@ -51,7 +51,7 @@ export default function Grupo05({ variante = "grande", isDarkMode = true }: Grup
     },
     {
       nome: "Kayane do Val Lima",
-      cargo: "Desenvolvedor Full Stack",
+      cargo: "Full Stack Developer",
       foto: "https://avatars.githubusercontent.com/u/260806102?v=4",
       github: "https://github.com/kayanedvlsantos-create",
       linkedin: "https://www.linkedin.com/in/kayane-do-val-lima/",
@@ -59,7 +59,7 @@ export default function Grupo05({ variante = "grande", isDarkMode = true }: Grup
     },
     {
       nome: "Douglas Santos",
-      cargo: "Desenvolvedor Full Stack",
+      cargo: "Full Stack Developer",
       foto: "https://avatars.githubusercontent.com/u/99764080?v=4",
       github: "https://github.com/DougSan7",
       linkedin: "https://www.linkedin.com/in/douglas-santos-ds/",

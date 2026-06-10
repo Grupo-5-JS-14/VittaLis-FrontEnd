@@ -144,7 +144,7 @@ export default function Ajuda() {
               <h4 className="text-lg font-bold text-white">Equipe de Suporte</h4>
               <p className="text-xs text-[#FF7A38] font-medium tracking-wide uppercase">Especialistas de Plantão</p>
               <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                " Estamos processando sua solicitação de contato com precisão computacional."
+                "Olá, tudo bem? Estamos aqui para ajudar!"
               </p>
             </div>
 
