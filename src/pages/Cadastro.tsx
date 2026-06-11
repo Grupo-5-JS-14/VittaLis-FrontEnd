@@ -336,7 +336,6 @@ try {
                             >
                                 {isLoading ? <ClipLoader color="#fff" size={16} /> : "Criar minha conta"}
                             </button>
-
                         </div>
                     </form>
                 </div>

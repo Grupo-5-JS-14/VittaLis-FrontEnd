@@ -183,13 +183,6 @@ function Login() {
                                 )}
                             </button>
 
-                            {/* Divisor neutro para login social */}
-                            <div className="flex items-center gap-3 py-2">
-                                <div className="flex-1 h-px bg-border" />
-                                <span className="text-text-light text-xs">ou continue com</span>
-                                <div className="flex-1 h-px bg-border" />
-                            </div>
-
                         </div>
 
                     </form>
