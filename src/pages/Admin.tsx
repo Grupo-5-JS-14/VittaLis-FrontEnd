@@ -5,6 +5,7 @@ import { ResponsiveContainer, LineChart, Line, Tooltip, CartesianGrid, XAxis, YA
 import type Apolice from "../models/Apolice";
 import { AuthContext } from "../contexts/AuthContext";
 import { buscar } from "../services/Service";
+import type Usuario from "../models/Usuario";
 
 
 const data = new Date();
@@ -20,7 +21,11 @@ function converterData(data: string) {
 
 
 function formatarInputDate(data: Date) {
-  return data.toISOString().split("T")[0];
+  const ano = data.getFullYear()
+  const mes = String(data.getMonth() + 1).padStart(2, "0")
+  const dia = String(data.getDate()).padStart(2, "0")
+
+  return `${ano}-${mes}-${dia}`
 }
 
 
@@ -89,12 +94,6 @@ await buscar("/admin/apolices", (dados: Apolice[]) => {
   }
 }
 
-useEffect(() => {
-  if (usuario.token) {
-    buscarApolices()
-  }
-}, [usuario.token])
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
 
@@ -122,7 +121,43 @@ useEffect(() => {
 
   }, [sidebarOpen])
 
+const [usuarios, setUsuarios] = useState<Usuario[]>([])
 
+async function buscarUsuarios() {
+  try {
+
+    const tokenRaw = usuario?.token || ""
+
+    const tokenFormatado = tokenRaw.startsWith("Bearer ")
+      ? tokenRaw
+      : `Bearer ${tokenRaw}`
+
+    await buscar(
+      "/usuarios/all",
+      (dados: Usuario[]) => {
+        console.log("USUÁRIOS:", dados)
+        setUsuarios(dados)
+      },
+      {
+        headers: {
+          Authorization: tokenFormatado
+        }
+      }
+    )
+
+  } catch (error) {
+
+    console.log("ERRO AO BUSCAR USUÁRIOS:", error)
+
+  }
+}
+
+useEffect(() => {
+  if (usuario?.token) {
+    buscarApolices()
+    buscarUsuarios()
+  }
+}, [usuario?.token])
 
 // ==============================
 // DATAS
@@ -146,32 +181,48 @@ const maiorData = datasConvertidas.length > 0
 // STATES DAS DATAS
 // ==============================
 
-const [dataInicial, setDataInicial] = useState(
-  formatarInputDate(menorData)
-)
+const [dataInicial, setDataInicial] = useState("")
 
-const [dataFinal, setDataFinal] = useState(
-  formatarInputDate(maiorData)
-)
+const [dataFinal, setDataFinal] = useState("")
+
+useEffect(()=>{
+  if (apolices.length > 0) {
+    setDataInicial(formatarInputDate(menorData))
+    setDataFinal(formatarInputDate(maiorData))
+  }
+},[apolices])
 
 // ==============================
 // FILTRO DAS APÓLICES
 // ==============================
 
-const apolicesFiltradas = apolices.filter((item) => {
+function criarDataLocal(data: string, fimDoDia = false) {
+  const [ano, mes, dia] = data.split("-").map(Number)
 
+  const novaData = new Date(ano, mes - 1, dia)
+
+  if (fimDoDia) {
+    novaData.setHours(23, 59, 59, 999)
+  } else {
+    novaData.setHours(0, 0, 0, 0)
+  }
+
+  return novaData
+}
+
+const apolicesFiltradas = apolices.filter((item) => {
   if (!dataInicial || !dataFinal) {
     return true
   }
 
   const dataItem = converterData(item.dataContratacao)
 
-  return (
-    dataItem >= new Date(dataInicial) &&
-    dataItem <= new Date(dataFinal)
-  )
+  const dataInicio = criarDataLocal(dataInicial)
+  const dataFim = criarDataLocal(dataFinal, true)
 
+  return dataItem >= dataInicio && dataItem <= dataFim
 })
+
 
 // ==============================
 // CÁLCULOS
@@ -250,7 +301,7 @@ useEffect(() => {
   // =====================================================================================================================
 
   function calcularVariacao(valorAtual: number, valorAnterior: number) {
-    if (valorAnterior === 0) {
+  if (valorAnterior === 0) {
       return valorAtual > 0 ? 100 : 0;
     }
 
@@ -258,29 +309,33 @@ useEffect(() => {
   }
 
 
-  function calcularPeriodoAnterior(dataInicial: string, dataFinal: string) {
-    const inicioAtual = new Date(dataInicial);
-    const fimAtual = new Date(dataFinal);
+function calcularPeriodoAnterior(dataInicial: string, dataFinal: string) {
+  const inicioAtual = criarDataLocal(dataInicial)
+  const fimAtual = criarDataLocal(dataFinal, true)
 
-    const diferencaDias =
-      (fimAtual.getTime() - inicioAtual.getTime()) / (1000 * 60 * 60 * 24);
+  const diferencaDias =
+    (fimAtual.getTime() - inicioAtual.getTime()) / (1000 * 60 * 60 * 24)
 
-    const fimAnterior = new Date(inicioAtual);
-    fimAnterior.setDate(fimAnterior.getDate() - 1);
+  const fimAnterior = new Date(inicioAtual)
+  fimAnterior.setDate(fimAnterior.getDate() - 1)
+  fimAnterior.setHours(23, 59, 59, 999)
 
-    const inicioAnterior = new Date(fimAnterior);
-    inicioAnterior.setDate(inicioAnterior.getDate() - diferencaDias);
+  const inicioAnterior = new Date(fimAnterior)
+  inicioAnterior.setDate(inicioAnterior.getDate() - Math.floor(diferencaDias))
+  inicioAnterior.setHours(0, 0, 0, 0)
 
-    return {
-      inicioAnterior,
-      fimAnterior
-    };
+  return {
+    inicioAnterior,
+    fimAnterior
   }
-
-  const { inicioAnterior, fimAnterior } = calcularPeriodoAnterior(
-    dataInicial,
-    dataFinal
-  );
+}
+const { inicioAnterior, fimAnterior } =
+  dataInicial && dataFinal
+    ? calcularPeriodoAnterior(dataInicial, dataFinal)
+    : {
+        inicioAnterior: new Date(),
+        fimAnterior: new Date()
+      }
 
   const apolicesPeriodoAnterior = apolices.filter((item) => {
     const dataItem = converterData(item.dataContratacao);
@@ -291,10 +346,24 @@ useEffect(() => {
     );
   });
 
-  const percentualClientes = calcularVariacao(
-    apolicesFiltradas.length,
-    apolicesPeriodoAnterior.length
-  );
+const percentualAtivas = calcularVariacao(
+  clientesAtivos.length,
+  apolicesPeriodoAnterior.filter(item => item.status).length
+)
+
+const percentualInativas = calcularVariacao(
+  clientesInativos.length,
+  apolicesPeriodoAnterior.filter(item => !item.status).length
+)
+
+const valorAtivosAnterior = apolicesPeriodoAnterior
+  .filter(item => item.status)
+  .reduce((acc, item) => acc + Number(item.valorFinal || 0), 0)
+
+const percentualFaturamento = calcularVariacao(
+  valorAtivos,
+  valorAtivosAnterior
+)
 
   // ===========================================================================================================================
 
@@ -349,17 +418,13 @@ useEffect(() => {
 
             <nav className="space-y-1">
 
-              {[
-                "Dashboard",
-              ].map((item) => (
-
+              {["Dashboard",].map((item) => (
                 <button key={item} className={`w-full flex items-center gap-5 px-4 py-3 rounded-xl transition-all duration-300 
-          hover:cursor-pointer hover:scale-[1.02]
-          ${item === "Dashboard"
+                    hover:cursor-pointer hover:scale-[1.02]
+                    ${item === "Dashboard"
                     ? "bg-white/10"
                     : "hover:bg-white/5"
-                  }
-            `}>
+                  }`}>
 
                   <div className="min-w-5">
                     <Shield size={18} />
@@ -453,13 +518,13 @@ useEffect(() => {
           {/* CARDS */}
 
           <div className="grid grid-cols-4 gap-5 mb-6">
-            <StatsCard title="Registro de Clientes" value={apolicesFiltradas.length} percentage={`${percentualClientes.toFixed(1)}`} positive={percentualClientes >= 0} icon={<Users />} />
+            <StatsCard title="Registro de Cadastro" value={usuarios.length} percentage="" icon={<Users />} />
 
-            <StatsCard title="Apólices ativas" value={clientesAtivos.length} percentage={`${percentualClientes.toFixed(1)}`} positive={percentualClientes >= 0} icon={<Shield />} />
+            <StatsCard title="Apólices ativas" value={clientesAtivos.length} percentage={`${percentualAtivas.toFixed(1)}`} positive={percentualAtivas >= 0} icon={<Shield />} />
 
-            <StatsCard title="Pendências e cancelamentos" value={clientesInativos.length} percentage={`${percentualClientes.toFixed(1)}`} positive={percentualClientes >= 0} icon={<FileText />} />
+            <StatsCard title="Pendências e cancelamentos" value={clientesInativos.length} percentage={`${percentualInativas.toFixed(1)}`} positive={percentualInativas >= 0} icon={<FileText />} />
 
-            <StatsCard title="Faturamento" value={valorAtivos.toLocaleString("pt-BR",{style:"currency", currency:"BRL"})} percentage={`${percentualClientes.toFixed(2)}`} positive={percentualClientes >= 0} icon={<CreditCard />} />
+            <StatsCard title="Faturamento" value={valorAtivos.toLocaleString("pt-BR",{style:"currency", currency:"BRL"})} percentage={`${percentualFaturamento.toFixed(2)}`} positive={percentualFaturamento >= 0} icon={<CreditCard />} />
           </div>
 
           {/* GRÁFICOS */}
@@ -544,7 +609,19 @@ useEffect(() => {
 
                     <YAxis />
 
-                    <Tooltip />
+                    <Tooltip 
+                    formatter={(value, name) =>{
+                      if(ativo !== null && name !== ativo){
+                        return null
+                      }
+                      return[
+                        Number(value).toLocaleString("pt-BR",{
+                          style: "currency",
+                          currency: "BRL"
+                        }),
+                        name
+                      ]
+                    }}/>
 
 
 
@@ -554,22 +631,18 @@ useEffect(() => {
                         key={tipo}
                         type="monotone"
                         dataKey={tipo}
-                        stroke={[
-                          "#014d4e",
-                          "#2c8c7b",
-                          "#3962e6",
-                          "#e63939"
-                        ][index]}
+                        stroke={["#014d4e", "#2c8c7b", "#3962e6", "#e63939" ][index]}
                         strokeWidth={3}
-                        dot={{ r: 2 }}
-                        activeDot={{ r: 5 }}
-
-                        opacity={
-                          ativo === null ? 1 : ativo === tipo ? 1 : 0.2
-                        }
-
-                        style={{ transition: "all 0.2s ease" }}
-                      />
+                        dot={ativo === null || ativo === tipo
+                            ? { r: 2 }
+                            : false}
+                        activeDot={ativo === null || ativo === tipo
+                            ? { r: 6 }
+                            : false}
+                        opacity={ativo === null ? 1 : ativo === tipo ? 1 : 0.2}
+                        
+                        
+                        />
 
                     ))}
 
@@ -663,7 +736,7 @@ useEffect(() => {
                       key={item.id}
                       className="border-b last:border-none"
                     >
-                      <td className="py-5">{item.id}</td>
+                      <td className="py-5">VIT-000000{item.id}</td>
 
                       <td>{item.usuario?.nome ?? "Não informado"}</td>
 
